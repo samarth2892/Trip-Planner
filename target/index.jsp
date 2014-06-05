@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="form">
-        <form>
+        <form action="/TripPlanner/login" method="POST">
             UserName:<input name="username" type="text" /><br/>
             Password: <input name="password" type="password" />
             <input type="submit" value="Submit" />
