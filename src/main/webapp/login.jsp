@@ -1,17 +1,19 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
+  <head>
     <title>Trip Planner</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-
-<body>
-    <div id="form">
-        <form>
+  </head>
+  <body>
+    <div id="form" >
+        <form action="/TripPlanner/login" method="POST">
+            <%= request.getAttribute("error") %>
             Username:<input name="username" type="text" /><br/>
             Password: <input name="password" type="password" />
-            <input type="submit" value="Login" />
+            <center>
+                <input type="submit" value="Submit" />
+            </center>
         </form>
-    </div></body>
+    </div>
+  </body>
 </html>
