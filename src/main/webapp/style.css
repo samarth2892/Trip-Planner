@@ -26,11 +26,10 @@ opacity: 1;
 }
 a:link {
   color: #331B3B;
-  text-decoration: none;
+  text-decoration:none;
   }
 
 a:hover {
-  color: #331B3B;
-  background-color: #fea44c;
-  text-decoration: underline;
+  color: black;
+  text-decoration:none;
   }
