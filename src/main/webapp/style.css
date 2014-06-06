@@ -1,7 +1,7 @@
 #form {
     position: absolute;
     top: 30%;
-    left: 40%; /*adjustment for size of box, need better way to center*/
+    left: 40%; /*need better way to center - adjust for size of box*/
     border: 1px solid black;
     border-radius: 15px;
     padding-top: 20px;
