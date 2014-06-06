@@ -7,7 +7,8 @@
   <body>
     <div id="form" >
         <form action="/TripPlanner/login" method="POST">
-            <%= request.getAttribute("error") %>
+            <% String error = String.valueOf(request.getAttribute("error")); %>
+            <%= ((error == "null")?"":error) %>
             UserName:<input name="username" type="text" /><br/>
             Password: <input name="password" type="password" />
             <input type="submit" value="Submit" />

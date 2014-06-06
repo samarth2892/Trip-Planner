@@ -12,9 +12,9 @@
         Name <br/><input name= "name" type= "text" /><br/> <br/>
         Create a username<br/><input name="username" type="text" /><br/> <br/>
         Create a password<br/> <input name="password" type="password" /> <center></center><br/>
-        <center>
+
             <input type="submit" value="Submit" />
-        </center>
+
     </form>
 </div>
 </body>

@@ -10,9 +10,9 @@
             <%= request.getAttribute("error") %>
             Username:<input name="username" type="text" /><br/>
             Password: <input name="password" type="password" />
-            <center>
+
                 <input type="submit" value="Submit" />
-            </center>
+
         </form>
     </div>
   </body>
