@@ -1,8 +1,11 @@
+body {
+    background-image:url("road-background.png");
+}
+
 #form {
     position: absolute;
     width: 200px;
     height: 200px;
-    position: absolute;
     top:0;
     bottom: 0;
     left: 0;
@@ -14,4 +17,20 @@
     box-shadow: 0 0 30px 0 black;
     float: right;
     font-family: "Berlin Sans FB Demi", Century Gothic, sans-serif;
+    background:rgba(255,255,255,.6);
 }
+
+a {
+font-size: 35pt;
+opacity: 1;
+}
+a:link {
+  color: #331B3B;
+  text-decoration: none;
+  }
+
+a:hover {
+  color: #331B3B;
+  background-color: #fea44c;
+  text-decoration: underline;
+  }

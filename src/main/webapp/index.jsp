@@ -6,12 +6,10 @@
   </head>
   <body>
     <div id="form" >
-        <form action="/TripPlanner/login" method="POST">
-            <%= request.getAttribute("error") %>
-            UserName:<input name="username" type="text" /><br/>
-            Password: <input name="password" type="password" />
-            <input type="submit" value="Submit" />
-        </form>
+        <a href = "/TripPlanner/login.jsp" title = "Click here to login">
+        Login</a><br/>
+        <a href = "/TripPlanner/signUp.jsp" title = "Click here to Sign Up">
+        Sign Up</a>
     </div>
   </body>
 </html>
