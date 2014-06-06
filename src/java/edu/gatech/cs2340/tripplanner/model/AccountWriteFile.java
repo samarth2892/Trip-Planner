@@ -9,7 +9,7 @@ public class AccountWriteFile {
     private int latest;
     private Integer fileNumber = (latest + 1);
     private String fileName = fileNumber.toString();
-    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+    //PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 
     //todo: a lot
 }
