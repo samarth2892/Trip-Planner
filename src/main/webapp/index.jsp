@@ -5,8 +5,9 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <div id="form">
+    <div id="form" >
         <form action="/TripPlanner/login" method="POST">
+            <%= request.getAttribute("error") %>
             UserName:<input name="username" type="text" /><br/>
             Password: <input name="password" type="password" />
             <input type="submit" value="Submit" />
