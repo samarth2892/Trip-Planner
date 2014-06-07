@@ -25,11 +25,11 @@ font-size: 35pt;
 opacity: 1;
 }
 a:link {
-  color: #331B3B;
+  color: black;
   text-decoration:none;
   }
 
 a:hover {
-  color: black;
+  color: #331B3B;
   text-decoration:none;
   }
