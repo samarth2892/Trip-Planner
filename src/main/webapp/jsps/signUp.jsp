@@ -7,15 +7,16 @@
 </head>
 
 <body>
-    <a href = "/TripPlanner">
-        <img src="../images/homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
-    </a>
-    <div id="form">
+    <div id="form" class="signUpForm">
         <form>
-            Name <br/><input name= "name" type= "text" /><br/> <br/>
-            Create a username<br/><input name="username" type="text" /><br/> <br/>
-            Create a password<br/> <input name="password" type="password" /> <br/>
-            <input type="submit" value="Submit" />
+            <input name= "name" type="text" placeholder="Your Name"/>
+            <input name="username" type="text" placeholder="Create a Username" />
+            <input name="password" type="password" placeholder="Create a Password" />
+            <input name="password" type="password" placeholder="Confirm Password" />
+            <input id="SignUpButton" type="submit" value="" />
+            or <br/>
+            <a id="LogInText"href = "../index.jsp" title = "Click here to sign up">
+                Log In</a>
         </form>
     </div>
 </body>
