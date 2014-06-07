@@ -9,10 +9,20 @@
           <img src="homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
       </a>
     <div id="form" >
+<<<<<<< HEAD
         <a href = "/TripPlanner/login.jsp" title = "Click here to login">
         Login</a><br/>
         <a href = "/TripPlanner/signUp.jsp" title = "Click here to sign up">
         Sign Up</a>
+=======
+        <form action="/TripPlanner/login" method="POST">
+            <% String error = String.valueOf(request.getAttribute("error")); %>
+            <%= ((error == "null")?"":error) %>
+            UserName:<input name="username" type="text" /><br/>
+            Password: <input name="password" type="password" />
+            <input type="submit" value="Submit" />
+        </form>
+>>>>>>> 2db1f25f4c358b6e4c2bf153667f56d056a402bd
     </div>
   </body>
 </html>
