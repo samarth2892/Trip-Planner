@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
   </head>
   <body>
     <a href = "/TripPlanner">
-        <img src="homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
+        <img src="../images/homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
     </a>
 
     <div id="form" >

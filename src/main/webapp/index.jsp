@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>Trip Planner</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
   </head>
   <body>
     <a href = "/TripPlanner">
-          <img src="homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
+          <img src="images/homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
      </a>
 
     <div id="form" >
@@ -17,7 +17,7 @@
             Password: <input name="password" type="password" />
             <input type="submit" value="Submit" />
         </form>
-        <a href = "/TripPlanner/signUp.jsp" title = "Click here to sign up">
+        <a href = "jsps/signUp.jsp" title = "Click here to sign up">
                        Sign Up</a>
     </div>
 
