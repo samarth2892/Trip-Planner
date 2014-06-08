@@ -1,24 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>Trip Planner</title>
+      <% String error = String.valueOf(request.getAttribute("error")); %>
+      <title>Trip Planner</title>
+      <script src="JavaScript/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
   </head>
   <body>
-    <a href = "/TripPlanner">
-          <img src="images/homeIcon.png" alt="Back to Home Page" title="Back to Home Page" width="45px" height="40px"/>
-     </a>
-
-    <div id="form" >
+    <div id="form" class="loginForm" >
         <form action="/TripPlanner/login" method="POST">
-            <% String error = String.valueOf(request.getAttribute("error")); %>
-            <%= ((error == "null")?"":error) %>
-            UserName:<input name="username" type="text" /><br/>
-            Password: <input name="password" type="password" />
-            <input type="submit" value="Submit" />
+            <%= ((error.equals("null"))?"":error) %>
+            <input name="username" type="text" placeholder="Username"/>
+            <input name="password" type="password" placeholder="Password" />
+            <input id="loginButton" type="submit" value="" />
+            or <br/>
+            <a id="SignUpText"href = "jsps/signUp.jsp" title = "Click here to sign up">
+                           Create an account</a>
         </form>
-        <a href = "jsps/signUp.jsp" title = "Click here to sign up">
-                       Sign Up</a>
     </div>
 
   </body>
