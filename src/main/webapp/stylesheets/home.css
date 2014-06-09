@@ -8,6 +8,7 @@
     font-family: "Berlin Sans FB Demi", Century Gothic, sans-serif;
     font-size: 21px;
     color: white;
+    line-height: 70px;
 }
 
 #googleMaps {
@@ -24,8 +25,8 @@
 
 #links {
     float: right;
-    display: block;
-    margin: 0 auto;
+    vertical-align: middle;
+    padding-right: 20px;
 }
 
 #links a:link {
@@ -43,19 +44,20 @@
     text-decoration:none;
 }
 
-#accLink, #homeLink, #logoutLink {
+#accLink, #logoutLink {
     padding-left: 5px;
     padding-right: 5px;
 }
 
 #accLink {
+    padding-left: 7px;
+    padding-right: 7px;
     border-right: 2px solid white;
     border-left: 2px solid white;
 }
 
 #welcome {
-    position: absolute;
     float: left;
-    display: block;
-    margin: 0 auto;
+    vertical-align: middle;
+    padding-left: 20px;
 }
