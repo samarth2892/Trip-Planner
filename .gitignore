@@ -3,6 +3,7 @@
 .idea
 *.iml
 # Package Files #
+out/
 *.war
 *.ear
 target/
