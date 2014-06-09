@@ -1,4 +1,4 @@
-package main.java.edu.gatech.cs2340.tripplanner.tripplanner.controller;
+package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,13 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Samarth on 6/5/2014.
- */
 
 @WebServlet(urlPatterns={
-        "/login"
-        })
+        "/LogOut",
+        "/LogIn",
+        "/Create"
+})
 
 public class LoginServlet extends HttpServlet {
 
@@ -22,12 +21,25 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
-        String error = "Couldn't find your ID!";
 
-        request.setAttribute("error", error);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-        dispatcher.forward(request,  response);
+        RequestDispatcher dispatcher;
+        String error;
+        String username = request.getParameter("username");
 
+        if((username != null) && username.equals("user")){
+            request.getSession().setAttribute("userStatus", username);
+            dispatcher = request.getRequestDispatcher("/Account/home.jsp");
+            dispatcher.forward(request, response);
+            return;
+        } else if(username != null || username.equals("")) {
+            error = "Please enter a valid Username!";
+            request.setAttribute("error", error);
+            dispatcher = request.getRequestDispatcher("index.jsp");
+        } else {
+            dispatcher = request.getRequestDispatcher("index.jsp");
+        }
+
+        dispatcher.forward(request, response);
     }
 
     @Override
@@ -35,5 +47,9 @@ public class LoginServlet extends HttpServlet {
                           HttpServletResponse response)
             throws IOException, ServletException {
 
+        response.setHeader("Cache-Control", "no-cache, no-store");
+        response.setHeader("Pragma", "no-cache");
+        request.getSession().invalidate();
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }
