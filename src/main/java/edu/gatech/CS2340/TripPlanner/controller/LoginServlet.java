@@ -12,7 +12,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns={
         "/LogOut",
         "/LogIn",
-        "/Create"
 })
 
 public class LoginServlet extends HttpServlet {
