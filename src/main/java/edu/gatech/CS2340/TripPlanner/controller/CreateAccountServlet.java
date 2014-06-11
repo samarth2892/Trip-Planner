@@ -31,10 +31,5 @@ public class CreateAccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
-
-        response.setHeader("Cache-Control", "no-cache, no-store");
-        response.setHeader("Pragma", "no-cache");
-        request.getSession().invalidate();
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }
