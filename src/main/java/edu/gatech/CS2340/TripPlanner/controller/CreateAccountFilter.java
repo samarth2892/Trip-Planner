@@ -11,7 +11,11 @@ import java.io.IOException;
 
 @WebFilter(
         filterName= "CreateAccountFilter",
-        urlPatterns = {"/Create/*"}
+        urlPatterns = {
+                "/Create/*",
+                "/updateUsername",
+                "/updatePassword"
+        }
 
 )
 public class CreateAccountFilter implements Filter {
@@ -33,12 +37,22 @@ public class CreateAccountFilter implements Filter {
                 request.getRequestDispatcher("signUp.jsp");
 
         StringBuffer error = new StringBuffer("");
-        String name = request.getParameter("name");
-        String username = request.getParameter("username");
-        String createPassword = request.getParameter("createPassword");
-        String confirmPassword = request.getParameter("confirmPassword");
+
         int errorCount = 0;
 
+        String operation = request.getParameter("operation");
+
+        if(operation.equals("create")) {
+            String name = request.getParameter("name");
+            String username = request.getParameter("username");
+            String createPassword = request.getParameter("createPassword");
+            String confirmPassword = request.getParameter("confirmPassword");
+
+        } else if (operation.equals("updateUsername")) {
+
+        } else if (operation.equals("updatePassword")) {
+
+        }
         if (name.equals("")) {
             error.append("Please enter a name");
             errorCount++;

@@ -17,11 +17,12 @@
             </div>
         </div>
         <div id="formContainer">
-            <div id="changeCredentialsForm" action="/Create" class="signUpForm">
+            <div id="changeCredentialsForm" >
                 <div id="changeUsernameForm">
                     <form action="<%=request.getContextPath()%>/Account/updateUsername"  method="POST">
                             <h3>Change your Username</h3>
                             <%= ((changeUsernameError.equals("null"))?"":changeUsernameError) %>
+                            <input name="operation" type="hidden" value="updateUsername" />
                             <input name="newUsername" type="text" placeholder="New Username" />
                             <input name="password" type="password" placeholder="Password" />
                             <input id="changeUsernameButton" type="submit" value="" />
@@ -31,6 +32,7 @@
                     <form action="<%=request.getContextPath()%>/Account/updatePassword"  method="POST">
                             <h3>Change your Password</h3>
                             <%= ((changePasswordError.equals("null"))?"":changePasswordError) %>
+                            <input name="operation" type="hidden" value="updatePassword" />
                             <input name="password" type="text" placeholder="Current Password" />
                             <input name="newPassword" type="password" placeholder="New Password" />
                             <input name="confirmPassword" type="password" placeholder="Confirm Password" />

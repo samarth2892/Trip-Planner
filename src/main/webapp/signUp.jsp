@@ -19,6 +19,7 @@
     <div id="form" class="signUpForm" style="height:<%= formHeight%>px">
         <form action="Create" method="POST">
             <%= ((error.equals("null"))?"":error) %>
+            <input name="operation" type="hidden" value="create" />
             <input name="name" type="text" placeholder="Your Name"/>
             <input name="username" type="text" placeholder="Create a Username" />
             <input name="createPassword" type="password" placeholder="Create a Password" />
