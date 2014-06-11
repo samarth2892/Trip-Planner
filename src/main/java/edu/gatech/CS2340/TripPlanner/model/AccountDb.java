@@ -55,12 +55,12 @@ public class AccountDb {
         return hash;
     }
 
-    public Integer create(String user, String pw) {
+    public Integer create(String user, String pw, String name) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+            Statement accountStatement = conn.createStatement();
             ResultSet id =
-                    stmt.executeQuery("SELECT id FROM accounts "
+                    accountStatement.executeQuery("SELECT id FROM accounts "
                             + "ORDER BY id DESC " + "LIMIT 1;");
             id.next();
             String sql;
@@ -68,14 +68,13 @@ public class AccountDb {
             ResultSet existingUser =
                     stmt.executeQuery("SELECT * FROM accounts "
                             + "WHERE user='" + user + "';");
-            existingUser.next();
-            if (existingUser.getString("user").equals(user)) {
+            if (existingUser.next()) {
                 System.out.println("Username already in use.");
             } else {
                 sql =
                         "INSERT INTO ACCOUNTS " + "VALUES("
                                 + (id.getInt(1) + 1) + ",'" + user + "','"
-                                + encode(pw) + "');";
+                                + encode(pw) + "','" + name + "');";
                 stmt.executeUpdate(sql);
             }
 
