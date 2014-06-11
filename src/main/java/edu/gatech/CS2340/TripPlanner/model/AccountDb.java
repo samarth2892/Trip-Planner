@@ -55,7 +55,7 @@ public class AccountDb {
         return hash;
     }
 
-    public Integer create(String user, String pw, String name) {
+    public boolean usernameIsInUse(String username) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement accountStatement = conn.createStatement();
@@ -67,16 +67,33 @@ public class AccountDb {
 
             ResultSet existingUser =
                     stmt.executeQuery("SELECT * FROM accounts "
-                            + "WHERE user='" + user + "';");
+                            + "WHERE user='" + username + "';");
             if (existingUser.next()) {
-                System.out.println("Username already in use.");
-            } else {
-                sql =
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public Integer create(String user, String pw, String name) {
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement accountStatement = conn.createStatement();
+            ResultSet id =
+                    accountStatement.executeQuery("SELECT id FROM accounts "
+                            + "ORDER BY id DESC " + "LIMIT 1;");
+            id.next();
+
+            String sql =
                         "INSERT INTO ACCOUNTS " + "VALUES("
                                 + (id.getInt(1) + 1) + ",'" + user + "','"
                                 + encode(pw) + "','" + name + "');";
                 stmt.executeUpdate(sql);
-            }
 
             id =
                     stmt.executeQuery("SELECT id FROM accounts "
