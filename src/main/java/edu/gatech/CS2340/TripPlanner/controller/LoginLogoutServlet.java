@@ -14,7 +14,7 @@ import java.io.IOException;
         "/LogIn",
 })
 
-public class LoginServlet extends HttpServlet {
+public class LoginLogoutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,

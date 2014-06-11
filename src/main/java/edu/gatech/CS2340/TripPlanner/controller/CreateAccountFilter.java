@@ -32,29 +32,41 @@ public class CreateAccountFilter implements Filter {
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("signUp.jsp");
 
-        String error = null;
+        StringBuffer error = new StringBuffer("");
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String createPassword = request.getParameter("createPassword");
         String confirmPassword = request.getParameter("confirmPassword");
+        int errorCount = 0;
 
-        if (name.equals("")) error = "Please enter a name";
-        else if (!validateUsername(username))
-            error = "Username must contain one letter " +
-                    "and be between 8 and 20 characters";
-        else if (!validatePassword(createPassword))
-            error = "Password must contain at least one number, one" +
-                    " uppercase letter, one lowercase letter, and be" +
-                    " between 8 and 20 characters";
-        else if (!createPassword.equals(confirmPassword))
-            error = "Passwords do not match";
-        else {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+        if (name.equals("")) {
+            error.append("Please enter a name");
+            errorCount++;
+        } else if (!validateUsername(username)) {
+            error.append("Username must contain one letter" +
+                    "<br/>and be between 8 and 20 characters");
+            errorCount = errorCount + 2;
         }
 
-        request.setAttribute("error", error);
-        dispatcher.forward(request, response);
+        if (!validatePassword(createPassword)) {
+            error.append("<br/>Password must contain at least" +
+                    "<br/>one number, one uppercase " +
+                    "<br/>letter, one lowercase letter," +
+                    "<br/>and should be between 8 and 20" +
+                    "<br/>characters");
+            errorCount = errorCount + 6;
+        } else if (!createPassword.equals(confirmPassword)) {
+            error.append("<br/>Passwords do not match");
+            errorCount++;
+        }
+
+        if (!error.toString().equals("")) {
+            request.setAttribute("error", error);
+            request.setAttribute("errorCount", Integer.toString(errorCount));
+            dispatcher.forward(request, response);
+            return;
+        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
@@ -66,7 +78,8 @@ public class CreateAccountFilter implements Filter {
         Pattern pattern;
         Matcher matcher;
 
-        String usernamePattern = "(((?=.*[a-z])|(?=.*[A-Z])).{8,20})";
+        String usernamePattern =
+                "(((?=.*[a-z])|(?=.*[A-Z])).{8,20})";
 
         pattern = Pattern.compile(usernamePattern);
         matcher = pattern.matcher(username);
@@ -78,7 +91,8 @@ public class CreateAccountFilter implements Filter {
         Pattern pattern;
         Matcher matcher;
 
-        String passwordPattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})";
+        String passwordPattern =
+                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})";
 
         pattern = Pattern.compile(passwordPattern);
         matcher = pattern.matcher(password);
