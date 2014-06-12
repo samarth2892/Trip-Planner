@@ -12,8 +12,7 @@ import java.io.IOException;
 @WebFilter(
         filterName= "CreateAccountFilter",
         urlPatterns = {
-                "/Create/*",
-                "/updateUsername",
+                "/Create",
                 "/updatePassword"
         }
 )
@@ -33,6 +32,7 @@ public class CreateAccountFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("signUp.jsp");
 
@@ -40,24 +40,11 @@ public class CreateAccountFilter implements Filter {
 
         int errorCount = 0;
 
-        String operation = request.getParameter("operation");
-
         String name = request.getParameter("name");
         String username = request.getParameter("username");
-        String createPassword = request.getParameter("createPassword");
+        String password = request.getParameter("createPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        if(operation.equals("create")) {
-            name = request.getParameter("name");
-            username = request.getParameter("username");
-            createPassword = request.getParameter("createPassword");
-            confirmPassword = request.getParameter("confirmPassword");
-
-        } else if (operation.equals("updateUsername")) {
-
-        } else if (operation.equals("updatePassword")) {
-
-        }
         if (name.equals("")) {
             error.append("Please enter a name");
             errorCount++;
@@ -67,14 +54,14 @@ public class CreateAccountFilter implements Filter {
             errorCount = errorCount + 2;
         }
 
-        if (!validatePassword(createPassword)) {
+        if (!validatePassword(password)) {
             error.append("<br/>Password must contain at least" +
                     "<br/>one number, one uppercase " +
                     "<br/>letter, one lowercase letter," +
                     "<br/>and should be between 8 and 20" +
                     "<br/>characters");
             errorCount = errorCount + 6;
-        } else if (!createPassword.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             error.append("<br/>Passwords do not match");
             errorCount++;
         }
@@ -85,6 +72,7 @@ public class CreateAccountFilter implements Filter {
             dispatcher.forward(request, response);
             return;
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
