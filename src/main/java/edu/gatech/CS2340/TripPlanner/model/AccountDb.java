@@ -20,7 +20,6 @@ public class AccountDb {
 
     public void connect() {
         try {
-
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);

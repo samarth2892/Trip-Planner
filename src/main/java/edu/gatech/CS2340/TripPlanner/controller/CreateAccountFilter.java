@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
+import java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
 @WebFilter(
         filterName= "CreateAccountFilter",
@@ -37,6 +38,10 @@ public class CreateAccountFilter implements Filter {
         String username = request.getParameter("username");
         String createPassword = request.getParameter("createPassword");
         String confirmPassword = request.getParameter("confirmPassword");
+
+        AccountDb database = new AccountDb();
+        database.connect();
+        database.create(username, password);
 
         if (name.equals("")) error = "Please enter a name";
         else if (!validateUsername(username))
