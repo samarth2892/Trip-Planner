@@ -21,9 +21,12 @@ public class LoginLogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
+
         AccountDb database = new AccountDb();
         database.connect();
+
         RequestDispatcher dispatcher;
+
         String error;
         String username = request.getParameter("username");
         String password = request.getParameter("password");
