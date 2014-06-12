@@ -21,20 +21,21 @@ public class LoginLogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
+        AccountDb database = new AccountDb();
+        database.connect();
         RequestDispatcher dispatcher;
         String error;
         String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if((username != null) && username.equals("user")){
+        if(database.login(username, password)){
             request.getSession().setAttribute("userStatus", username);
             dispatcher = request.getRequestDispatcher("/Account/home.jsp");
             dispatcher.forward(request, response);
             return;
-        } else if(username != null || username.equals("")) {
-            error = "Please enter a valid Username!";
-            request.setAttribute("error", error);
-            dispatcher = request.getRequestDispatcher("index.jsp");
         } else {
+            error = "Username or password incorrect";
+            request.setAttribute("error", error);
             dispatcher = request.getRequestDispatcher("index.jsp");
         }
 
