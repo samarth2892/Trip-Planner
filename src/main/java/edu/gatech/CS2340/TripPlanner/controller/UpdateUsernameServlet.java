@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
-public class UpdateUsernameServlet {
+@WebServlet(urlPatterns = {
+        "/updateUsername"
+        }
+)
+public class UpdateUsernameServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
@@ -31,6 +36,7 @@ public class UpdateUsernameServlet {
         dispatcher.forward(request, response);
     }
 
+    @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
