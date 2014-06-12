@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
 
 @WebServlet(urlPatterns={
@@ -20,7 +21,6 @@ public class LoginLogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
-
         RequestDispatcher dispatcher;
         String error;
         String username = request.getParameter("username");

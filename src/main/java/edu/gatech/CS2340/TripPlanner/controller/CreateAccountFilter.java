@@ -16,8 +16,8 @@ import java.io.IOException;
                 "/updateUsername",
                 "/updatePassword"
         }
-
 )
+
 public class CreateAccountFilter implements Filter {
 
     @Override
@@ -42,11 +42,16 @@ public class CreateAccountFilter implements Filter {
 
         String operation = request.getParameter("operation");
 
+        String name = request.getParameter("name");
+        String username = request.getParameter("username");
+        String createPassword = request.getParameter("createPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+
         if(operation.equals("create")) {
-            String name = request.getParameter("name");
-            String username = request.getParameter("username");
-            String createPassword = request.getParameter("createPassword");
-            String confirmPassword = request.getParameter("confirmPassword");
+            name = request.getParameter("name");
+            username = request.getParameter("username");
+            createPassword = request.getParameter("createPassword");
+            confirmPassword = request.getParameter("confirmPassword");
 
         } else if (operation.equals("updateUsername")) {
 
