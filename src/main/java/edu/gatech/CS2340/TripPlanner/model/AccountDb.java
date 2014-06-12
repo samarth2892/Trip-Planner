@@ -21,7 +21,7 @@ public class AccountDb {
     public void connect() {
         try {
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(DRIVER);
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connection sucessful.");
@@ -45,15 +45,10 @@ public class AccountDb {
                     accountStatement.executeQuery("SELECT id FROM accounts "
                             + "ORDER BY id DESC " + "LIMIT 1;");
             id.next();
-            String sql;
-
             ResultSet existingUser =
                     stmt.executeQuery("SELECT * FROM accounts "
                             + "WHERE user='" + username + "';");
-            if (existingUser.next()) {
-                return true;
-            }
-            return false;
+            return (existingUser.next());
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -129,7 +124,7 @@ public class AccountDb {
                             + "WHERE user='" + oldUsername + "' " + "AND pass='"
                             + encode(password) + "';");
             if (updateTarget.next()) {
-                stmt.executeUpdate("UPDATE accounts " + "SET user='" + newUsername"'"
+                stmt.executeUpdate("UPDATE accounts " + "SET user='" + newUsername + "'"
                         + "WHERE user='" + oldUsername + "';");
                 System.out.println("Update successful.");
             } else {
@@ -151,7 +146,7 @@ public class AccountDb {
                             + "WHERE user='" + username + "' " + "AND pass='"
                             + encode(oldPassword) + "';");
             if (updateTarget.next()) {
-                stmt.executeUpdate("UPDATE accounts " + "SET pass='" + encode(newPassword)"'"
+                stmt.executeUpdate("UPDATE accounts " + "SET pass='" + encode(newPassword) + "'"
                         + "WHERE user='" + username + "';");
                 System.out.println("Update successful.");
             } else {
@@ -165,7 +160,7 @@ public class AccountDb {
     }
 
     public String encode(String pw) throws Exception {
-        MessageDigest md = null;
+        MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA");
         } catch (NoSuchAlgorithmException e) {
