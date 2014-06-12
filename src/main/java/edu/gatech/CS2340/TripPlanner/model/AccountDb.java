@@ -37,23 +37,6 @@ public class AccountDb {
         }
     }
 
-    public String encode(String pw) throws Exception {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA");
-        } catch (NoSuchAlgorithmException e) {
-            throw new Exception(e.getMessage());
-        }
-        try {
-            md.update(pw.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new Exception(e.getMessage());
-        }
-        byte raw[] = md.digest();
-        String hash = (new BASE64Encoder()).encode(raw);
-        return hash;
-    }
-
     public boolean usernameIsInUse(String username) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -79,7 +62,7 @@ public class AccountDb {
         return false;
     }
     
-    public Integer create(String user, String pw, String name) {
+    public Integer create(String username, String password, String name) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement accountStatement = conn.createStatement();
@@ -90,8 +73,8 @@ public class AccountDb {
 
             String sql =
                         "INSERT INTO ACCOUNTS " + "VALUES("
-                                + (id.getInt(1) + 1) + ",'" + user + "','"
-                                + encode(pw) + "','" + name + "');";
+                                + (id.getInt(1) + 1) + ",'" + username + "','"
+                                + encode(password) + "','" + name + "');";
                 stmt.executeUpdate(sql);
 
             id =
@@ -109,16 +92,16 @@ public class AccountDb {
         return null;
     }
 
-    public boolean login(String user, String pass) {
+    public boolean login(String username, String password) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             ResultSet usernameInput =
                     stmt.executeQuery("SELECT * FROM accounts "
-                            + "WHERE user='" + user + "';");
+                            + "WHERE user='" + username + "';");
 
             if (usernameInput.next()) {
                 try {
-                    if (usernameInput.getString("pass").equals(encode(pass))) {
+                    if (usernameInput.getString("pass").equals(encode(password))) {
                         System.out.println("Login successful.");
                         return true;
                     } else {
@@ -138,17 +121,16 @@ public class AccountDb {
     }
 
     public void
-    update(String user, String pass, String newUser, String newPass) {
+    updateUsername(String oldUsername, String password, String newUsername) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             ResultSet updateTarget =
                     stmt.executeQuery("SELECT * FROM accounts "
-                            + "WHERE user='" + user + "' " + "AND pass='"
-                            + encode(pass) + "';");
+                            + "WHERE user='" + oldUsername + "' " + "AND pass='"
+                            + encode(password) + "';");
             if (updateTarget.next()) {
-                stmt.executeUpdate("UPDATE accounts " + "SET user='" + newUser
-                        + "', pass ='" + encode(newPass) + "' "
-                        + "WHERE user='" + user + "';");
+                stmt.executeUpdate("UPDATE accounts " + "SET user='" + newUsername"'"
+                        + "WHERE user='" + oldUsername + "';");
                 System.out.println("Update successful.");
             } else {
                 System.out.println("Invalid username or password.");
@@ -158,5 +140,44 @@ public class AccountDb {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void
+    updatePassword(String username, String oldPassword, String newPassword) {
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            ResultSet updateTarget =
+                    stmt.executeQuery("SELECT * FROM accounts "
+                            + "WHERE user='" + username + "' " + "AND pass='"
+                            + encode(oldPassword) + "';");
+            if (updateTarget.next()) {
+                stmt.executeUpdate("UPDATE accounts " + "SET pass='" + encode(newPassword)"'"
+                        + "WHERE user='" + username + "';");
+                System.out.println("Update successful.");
+            } else {
+                System.out.println("Invalid password.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String encode(String pw) throws Exception {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA");
+        } catch (NoSuchAlgorithmException e) {
+            throw new Exception(e.getMessage());
+        }
+        try {
+            md.update(pw.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new Exception(e.getMessage());
+        }
+        byte raw[] = md.digest();
+        String hash = (new BASE64Encoder()).encode(raw);
+        return hash;
     }
 }
