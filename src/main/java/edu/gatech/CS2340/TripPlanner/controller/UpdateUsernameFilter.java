@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebFilter (
         filterName = "UpdateUsernameFilter",
-        urlPatterns = { "/updateUsername" }
+        urlPatterns = { "/Account/updateUsername" }
 )
 
 
@@ -32,14 +32,13 @@ public class UpdateUsernameFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         RequestDispatcher dispatcher =
-                request.getRequestDispatcher("signUp.jsp");
+                request.getRequestDispatcher("settings.jsp");
 
         StringBuffer error = new StringBuffer("");
 
         int errorCount = 0;
 
         String newUsername = request.getParameter("newUsername");
-        String password = request.getParameter("password");
 
         if (!validateUsername(newUsername)) {
             error.append("Username must contain one letter" +
@@ -53,7 +52,6 @@ public class UpdateUsernameFilter implements Filter {
             dispatcher.forward(request, response);
             return;
         }
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
