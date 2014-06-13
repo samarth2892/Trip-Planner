@@ -4,6 +4,7 @@
     <head>
         <Title>Home</Title>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
         <%  String changeUsernameError = String.valueOf(request.getAttribute("changeUsernameError"));
             String changePasswordError = String.valueOf(request.getAttribute("changePasswordError"));
             int errorCount = 0;

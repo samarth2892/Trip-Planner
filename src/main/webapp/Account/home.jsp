@@ -4,6 +4,7 @@
     <head>
         <Title>Home</Title>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
     </head>
     <body>
         <div id="NavBar">

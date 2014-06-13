@@ -13,6 +13,7 @@
     %>
     <title>Sign Up</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="Fonts/fonts.css">
 </head>
 
 <body>

@@ -4,7 +4,8 @@
       <% String error = String.valueOf(request.getAttribute("error")); %>
       <title>Trip Planner</title>
       <script src="JavaScript/jquery-1.11.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+      <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+      <link rel="stylesheet" type="text/css" href="Fonts/stylesheet.css">
 
   </head>
   <body>
