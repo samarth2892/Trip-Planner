@@ -30,13 +30,15 @@ public class UpdateUsernameServlet extends HttpServlet {
         String newUsername = request.getParameter("newUsername");
         String password = request.getParameter("password");
 
-        if (database.login(username, password)) {
+        if (!database.login(username, password)) {
+            usernameChangedConfirmation = "Current password doesn't match";
+        } else if (database.usernameIsInUse(newUsername)) {
+            usernameChangedConfirmation = "Please choose a different Username";
+        } else {
             database.updateUsername(username, password, newUsername);
             request.getSession().setAttribute("userStatus",newUsername);
             usernameChangedConfirmation = "Username Changed";
-        } else {
-            usernameChangedConfirmation = "Current password doesn't match";
-        }
+         }
         request.setAttribute("errorCount", Integer.toString(1));
         request.setAttribute("changeUsernameError", usernameChangedConfirmation);
         dispatcher.forward(request, response);
