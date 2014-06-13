@@ -10,7 +10,7 @@ import java.io.IOException;
 import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
 @WebServlet(urlPatterns = {
-        "/updateUsername"
+        "/Account/updateUsername"
         }
 )
 public class UpdateUsernameServlet extends HttpServlet {
@@ -28,7 +28,7 @@ public class UpdateUsernameServlet extends HttpServlet {
         String newUsername = request.getParameter("newUsername");
         String password = request.getParameter("password");
 
-        database.updateUsername((String) username , password, newUsername);
+        database.updateUsername((String) username, password, newUsername);
 
         String usernameChangedConfirmation = "Username changed";
         request.setAttribute("error", usernameChangedConfirmation);
