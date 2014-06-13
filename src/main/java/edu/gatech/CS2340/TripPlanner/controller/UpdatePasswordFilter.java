@@ -2,12 +2,11 @@ package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.IOException;
 
 @WebFilter (
         filterName = "UpdatePasswordFilter",
@@ -32,7 +31,7 @@ public class UpdatePasswordFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         RequestDispatcher dispatcher =
-                request.getRequestDispatcher("settings.jsp");
+                request.getRequestDispatcher("/Account/settings.jsp");
 
         StringBuffer error = new StringBuffer("");
 
@@ -42,19 +41,19 @@ public class UpdatePasswordFilter implements Filter {
         String confirmPassword = request.getParameter("confirmPassword");
 
         if (!validatePassword(newPassword)) {
-            error.append("<br/>Password must contain at least" +
+            error.append("Password must contain at least" +
                     "<br/>one number, one uppercase " +
                     "<br/>letter, one lowercase letter," +
                     "<br/>and should be between 8 and 20" +
                     "<br/>characters");
             errorCount = errorCount + 6;
         } else if (!newPassword.equals(confirmPassword)) {
-            error.append("<br/>Passwords do not match");
+            error.append("Passwords do not match");
             errorCount++;
         }
 
         if (!error.toString().equals("")) {
-            request.setAttribute("error", error);
+            request.setAttribute("changePasswordError", error);
             request.setAttribute("errorCount", Integer.toString(errorCount));
             dispatcher.forward(request, response);
             return;

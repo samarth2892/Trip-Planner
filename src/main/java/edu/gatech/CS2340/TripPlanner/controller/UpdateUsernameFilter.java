@@ -2,12 +2,11 @@ package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.IOException;
 
 @WebFilter (
         filterName = "UpdateUsernameFilter",
@@ -32,7 +31,7 @@ public class UpdateUsernameFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         RequestDispatcher dispatcher =
-                request.getRequestDispatcher("settings.jsp");
+                request.getRequestDispatcher("/Account/settings.jsp");
 
         StringBuffer error = new StringBuffer("");
 
@@ -47,7 +46,7 @@ public class UpdateUsernameFilter implements Filter {
         }
 
         if (!error.toString().equals("")) {
-            request.setAttribute("error", error);
+            request.setAttribute("changeUsernameError", error);
             request.setAttribute("errorCount", Integer.toString(errorCount));
             dispatcher.forward(request, response);
             return;

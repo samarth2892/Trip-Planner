@@ -1,5 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
 @WebServlet(urlPatterns = {
         "/Account/updateUsername"
@@ -20,19 +21,24 @@ public class UpdateUsernameServlet extends HttpServlet {
                           HttpServletResponse response)
             throws IOException, ServletException {
 
-        RequestDispatcher dispatcher;
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/Account/settings.jsp");
         AccountDb database = new AccountDb();
         database.connect();
 
-        Object username = request.getSession().getAttribute("userStatus");
+        String usernameChangedConfirmation;
+        String username = (String) request.getSession().getAttribute("userStatus");
         String newUsername = request.getParameter("newUsername");
         String password = request.getParameter("password");
 
-        database.updateUsername((String) username, password, newUsername);
-
-        String usernameChangedConfirmation = "Username changed";
-        request.setAttribute("error", usernameChangedConfirmation);
-        dispatcher = request.getRequestDispatcher("home.jsp");
+        if (database.login(username, password)) {
+            database.updateUsername(username, password, newUsername);
+            request.getSession().setAttribute("userStatus",newUsername);
+            usernameChangedConfirmation = "Username Changed";
+        } else {
+            usernameChangedConfirmation = "Current password doesn't match";
+        }
+        request.setAttribute("errorCount", Integer.toString(1));
+        request.setAttribute("changeUsernameError", usernameChangedConfirmation);
         dispatcher.forward(request, response);
     }
 

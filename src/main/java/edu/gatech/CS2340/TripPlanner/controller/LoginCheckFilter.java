@@ -12,7 +12,7 @@ import java.io.IOException;
     urlPatterns = {"/Account/*"}
 
 )
-public class LoginFilter implements Filter {
+public class LoginCheckFilter implements Filter {
 
 
     @Override

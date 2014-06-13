@@ -1,19 +1,16 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
+import sun.misc.BASE64Encoder;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import sun.misc.BASE64Encoder;
+import java.sql.*;
 
 public class AccountDb {
     static final String DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/accounts";
     static final String USER = "root";
-    static final String PASS = "";
+    static final String PASS = "admin";
 
     private Connection conn;
     private Statement stmt;
