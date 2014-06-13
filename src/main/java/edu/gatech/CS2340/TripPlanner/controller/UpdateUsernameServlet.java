@@ -11,22 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {
-        "/Account/updateUsername"
-        }
+        "/Account/updateUsername" }
 )
 public class UpdateUsernameServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Account/settings.jsp");
+        RequestDispatcher dispatcher
+            = request.getRequestDispatcher("/Account/settings.jsp");
         AccountDb database = new AccountDb();
         database.connect();
 
         String usernameChangedConfirmation;
-        String username = (String) request.getSession().getAttribute("userStatus");
+        String username
+            = (String) request.getSession().getAttribute("userStatus");
         String newUsername = request.getParameter("newUsername");
         String password = request.getParameter("password");
 
@@ -36,17 +37,18 @@ public class UpdateUsernameServlet extends HttpServlet {
             usernameChangedConfirmation = "Please choose a different Username";
         } else {
             database.updateUsername(username, password, newUsername);
-            request.getSession().setAttribute("userStatus",newUsername);
+            request.getSession().setAttribute("userStatus", newUsername);
             usernameChangedConfirmation = "Username Changed";
-         }
+        }
         request.setAttribute("errorCount", Integer.toString(1));
-        request.setAttribute("changeUsernameError", usernameChangedConfirmation);
+        request.setAttribute("changeUsernameError",
+                usernameChangedConfirmation);
         dispatcher.forward(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
     }
 }

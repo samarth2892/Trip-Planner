@@ -1,5 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,20 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 
 
-@WebServlet(urlPatterns={
+@WebServlet(
+        urlPatterns = {
         "/LogOut",
-        "/LogIn",
-})
+        "/LogIn" }
+)
 
 public class LoginLogoutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         AccountDb database = new AccountDb();
         database.connect();
@@ -31,7 +33,7 @@ public class LoginLogoutServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if(database.login(username, password)){
+        if (database.login(username, password)) {
             request.getSession().setAttribute("userStatus", username);
             dispatcher = request.getRequestDispatcher("/Account/home.jsp");
             dispatcher.forward(request, response);
@@ -47,8 +49,8 @@ public class LoginLogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws IOException, ServletException {
+                         HttpServletResponse response)
+        throws IOException, ServletException {
 
         response.setHeader("Cache-Control", "no-cache, no-store");
         response.setHeader("Pragma", "no-cache");

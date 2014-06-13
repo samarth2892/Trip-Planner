@@ -4,7 +4,11 @@ import sun.misc.BASE64Encoder;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class AccountDb {
     static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -53,7 +57,7 @@ public class AccountDb {
         }
         return false;
     }
-    
+
     public Integer create(String username, String password, String name) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -67,7 +71,7 @@ public class AccountDb {
                         "INSERT INTO ACCOUNTS " + "VALUES("
                                 + (id.getInt(1) + 1) + ",'" + username + "','"
                                 + encode(password) + "','" + name + "');";
-                stmt.executeUpdate(sql);
+            stmt.executeUpdate(sql);
 
             id =
                     stmt.executeQuery("SELECT id FROM accounts "
@@ -93,7 +97,8 @@ public class AccountDb {
 
             if (usernameInput.next()) {
                 try {
-                    if (usernameInput.getString("pass").equals(encode(password))) {
+                    if (usernameInput.getString("pass")
+                            .equals(encode(password))) {
                         System.out.println("Login successful.");
                         return true;
                     } else {
@@ -121,7 +126,8 @@ public class AccountDb {
                             + "WHERE user='" + oldUsername + "' " + "AND pass='"
                             + encode(password) + "';");
             if (updateTarget.next()) {
-                stmt.executeUpdate("UPDATE accounts " + "SET user='" + newUsername + "'"
+                stmt.executeUpdate("UPDATE accounts "
+                        + "SET user='" + newUsername + "'"
                         + "WHERE user='" + oldUsername + "';");
                 System.out.println("Update successful.");
             } else {
@@ -143,7 +149,8 @@ public class AccountDb {
                             + "WHERE user='" + username + "' " + "AND pass='"
                             + encode(oldPassword) + "';");
             if (updateTarget.next()) {
-                stmt.executeUpdate("UPDATE accounts " + "SET pass='" + encode(newPassword) + "'"
+                stmt.executeUpdate("UPDATE accounts "
+                        + "SET pass='" + encode(newPassword) + "'"
                         + "WHERE user='" + username + "';");
                 System.out.println("Update successful.");
             } else {
@@ -168,7 +175,7 @@ public class AccountDb {
         } catch (UnsupportedEncodingException e) {
             throw new Exception(e.getMessage());
         }
-        byte raw[] = md.digest();
+        byte[] raw = md.digest();
         String hash = (new BASE64Encoder()).encode(raw);
         return hash;
     }

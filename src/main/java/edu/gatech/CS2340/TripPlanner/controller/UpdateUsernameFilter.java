@@ -1,6 +1,12 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,9 +14,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebFilter (
+@WebFilter(
         filterName = "UpdateUsernameFilter",
-        urlPatterns = { "/Account/updateUsername" }
+        urlPatterns = {"/Account/updateUsername" }
 )
 
 
@@ -25,7 +31,7 @@ public class UpdateUsernameFilter implements Filter {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -40,8 +46,8 @@ public class UpdateUsernameFilter implements Filter {
         String newUsername = request.getParameter("newUsername");
 
         if (!validateUsername(newUsername)) {
-            error.append("Username must contain one letter" +
-                    "<br/>and be between 8 and 20 characters");
+            error.append("Username must contain one letter"
+                    + "<br/>and be between 8 and 20 characters");
             errorCount = errorCount + 2;
         }
 

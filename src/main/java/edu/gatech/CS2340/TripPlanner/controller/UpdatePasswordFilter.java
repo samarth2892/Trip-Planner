@@ -1,6 +1,12 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,9 +14,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebFilter (
+@WebFilter(
         filterName = "UpdatePasswordFilter",
-        urlPatterns = { "/Account/updatePassword" }
+        urlPatterns = {"/Account/updatePassword" }
 )
 
 
@@ -25,7 +31,7 @@ public class UpdatePasswordFilter implements Filter {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         System.out.println("made it here");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -41,11 +47,11 @@ public class UpdatePasswordFilter implements Filter {
         String confirmPassword = request.getParameter("confirmPassword");
 
         if (!validatePassword(newPassword)) {
-            error.append("Password must contain at least" +
-                    "<br/>one number, one uppercase " +
-                    "<br/>letter, one lowercase letter," +
-                    "<br/>and should be between 8 and 20" +
-                    "<br/>characters");
+            error.append("Password must contain at least"
+                    + "<br/>one number, one uppercase "
+                    + "<br/>letter, one lowercase letter,"
+                    + "<br/>and should be between 8 and 20"
+                    + "<br/>characters");
             errorCount = errorCount + 6;
         } else if (!newPassword.equals(confirmPassword)) {
             error.append("Passwords do not match");

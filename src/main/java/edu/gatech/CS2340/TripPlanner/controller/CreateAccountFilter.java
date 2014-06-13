@@ -1,16 +1,22 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.IOException;
 
 @WebFilter(
-        filterName= "CreateAccountFilter",
+        filterName = "CreateAccountFilter",
         urlPatterns = {
                 "/Create",
                 "/updatePassword"
@@ -28,7 +34,7 @@ public class CreateAccountFilter implements Filter {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -49,17 +55,17 @@ public class CreateAccountFilter implements Filter {
             error.append("Please enter a name");
             errorCount++;
         } else if (!validateUsername(username)) {
-            error.append("Username must contain one letter" +
-                    "<br/>and be between 8 and 20 characters");
+            error.append("Username must contain one letter"
+                    + "<br/>and be between 8 and 20 characters");
             errorCount = errorCount + 2;
         }
 
         if (!validatePassword(password)) {
-            error.append("<br/>Password must contain at least" +
-                    "<br/>one number, one uppercase " +
-                    "<br/>letter, one lowercase letter," +
-                    "<br/>and should be between 8 and 20" +
-                    "<br/>characters");
+            error.append("<br/>Password must contain at least"
+                    + "<br/>one number, one uppercase "
+                    + "<br/>letter, one lowercase letter,"
+                    + "<br/>and should be between 8 and 20"
+                    + "<br/>characters");
             errorCount = errorCount + 6;
         } else if (!password.equals(confirmPassword)) {
             error.append("<br/>Passwords do not match");

@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns={
+@WebServlet(urlPatterns = {
         "/Create"
-})
+        })
 
 public class CreateAccountServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         RequestDispatcher dispatcher;
         AccountDb database = new AccountDb();
@@ -30,7 +30,7 @@ public class CreateAccountServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("createPassword");
 
-        if(!database.usernameIsInUse(username)) {
+        if (!database.usernameIsInUse(username)) {
             database.create(username, password, name);
             accountConfirmation = "Account created, please login";
             dispatcher = request.getRequestDispatcher("index.jsp");
@@ -46,6 +46,6 @@ public class CreateAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
     }
 }
