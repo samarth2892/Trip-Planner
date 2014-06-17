@@ -34,6 +34,10 @@
 
   <target name="compile" description="Compile Java sources">
 
+	<!-- Move JDBC Driver to build library -->
+	<mkdir    dir="${build.home}/WEB-INF/lib"/>
+	
+	
     <!-- Compile Java classes as necessary -->
     <mkdir    dir="${build.home}/WEB-INF/classes"/>
     <javac srcdir="${src.main}/java"
