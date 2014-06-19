@@ -11,8 +11,7 @@ public class Place {
     private int closeTime;
     private double latitude;
     private double longitude;
-    private double minCost;
-    private double maxCost;
+    private double priceRange;
     private double rating;
     private ArrayList<String> images;
     private ArrayList<String> reviews;
@@ -66,18 +65,11 @@ public class Place {
         this.longitude = longitude;
     }
 
-    public double getMinCost() {
-        return minCost;
+    public double getPriceRange() {
+        return priceRange;
     }
-    public void setMinCost(double minCost) {
-        this.minCost = minCost;
-    }
-
-    public double getMaxCost() {
-        return maxCost;
-    }
-    public void setMaxCost(double maxCost) {
-        this.maxCost = maxCost;
+    public void setPriceRange(double priceRange) {
+        this.priceRange = priceRange;
     }
 
     public double getRating() {
