@@ -17,9 +17,9 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class GooglePlaces {
+public class GooglePlaceSearch {
 
-    public GooglePlaces (String address, String city, String state, String key) throws MalformedURLException {
+    public GooglePlaceSearch(String address, String city, String state, String key) throws MalformedURLException {
 
         HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response;
@@ -74,7 +74,7 @@ public class GooglePlaces {
         city = city.replaceAll(" ", "+");
 
         try {
-            GooglePlaces g = new GooglePlaces(address, city, state, key);
+            GooglePlaceSearch g = new GooglePlaceSearch(address, city, state, key);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
