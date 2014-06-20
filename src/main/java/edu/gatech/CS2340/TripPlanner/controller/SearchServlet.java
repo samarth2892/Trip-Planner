@@ -1,6 +1,5 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
-import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 import main.java.edu.gatech.CS2340.TripPlanner.model.GooglePlaceSearch;
 
 import javax.servlet.RequestDispatcher;
@@ -32,14 +31,14 @@ public class SearchServlet extends HttpServlet {
 
         String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
-        String address = request.getParameter("address");
+        /*String address = request.getParameter("address");
         int openTime = request.getParameter("openTime");
         int closeTime = request.getParameter("closeTime");
         String address = request.getParameter("address");
         int radius = request.getParameter("radius");
         double rating = request.getParameter("rating");
 
-        search = new GooglePlaceSearch(address, key);
+        search = new GooglePlaceSearch(address, key);*/
 
     }
 

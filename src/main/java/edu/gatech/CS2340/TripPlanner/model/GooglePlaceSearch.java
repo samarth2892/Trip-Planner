@@ -86,7 +86,7 @@ public class GooglePlaceSearch {
         address = address.replaceAll(" ", "+");
         
         try {
-            GooglePlaceSearch g = new GooglePlaceSearch(address key);
+            GooglePlaceSearch g = new GooglePlaceSearch(address, key);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

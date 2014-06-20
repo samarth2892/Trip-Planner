@@ -3,6 +3,26 @@
 body{
     font-family: "berlin_sans_fb_demibold", Century Gothic, sans-serif;
 }
+#SearchBar {
+    top: 70px;
+    left: -5px;
+    position: relative;
+    height: 100px;
+}
+
+#SearchBar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#SearchBar ul li {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding:3px;
+}
+
 
 #NavBar {
     top: 0;
@@ -173,4 +193,3 @@ input:focus{
 #changePasswordButton:hover {
     background-position: 0 -48px;
 }
-/* Credentials change Form*/
