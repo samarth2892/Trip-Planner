@@ -26,9 +26,7 @@ public class SearchServlet extends HttpServlet {
                 request.getRequestDispatcher("/Account/home.jsp");
 
         StringBuffer error = new StringBuffer("");
-
         int errorCount = 0;
-
         String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
         /*String address = request.getParameter("address");
@@ -39,7 +37,8 @@ public class SearchServlet extends HttpServlet {
         double rating = request.getParameter("rating");
 
         search = new GooglePlaceSearch(address, key);*/
-
+        String address = request.getParameter("address");
+        search = new GooglePlaceSearch(address);
     }
 
     @Override

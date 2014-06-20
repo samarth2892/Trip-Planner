@@ -18,21 +18,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class GooglePlaceSearch {
-
+    final static String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
     private String address = "";
     private static String key;
-    private Object latitude;
-    private Object longitude;
+    private static Object latitude;
+    private static Object longitude;
     private JSONArray places;
     private HttpClient client = HttpClientBuilder.create().build();
     private HttpResponse response;
     private HttpEntity entity;
 
-
-    public GooglePlaceSearch(String address, String key) throws MalformedURLException {
+    public GooglePlaceSearch(String address) throws MalformedURLException {
 
         this.address = address;
-        this.key = key;
 
         try {
            generateGeocode(address, key);

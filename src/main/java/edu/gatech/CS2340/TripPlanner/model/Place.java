@@ -37,6 +37,13 @@ public class Place {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getReference() {
+        return reference;
+    }
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public int getOpenTime() {
         return openTime;
     }
