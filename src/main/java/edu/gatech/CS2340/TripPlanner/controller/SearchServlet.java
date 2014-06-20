@@ -38,6 +38,7 @@ public class SearchServlet extends HttpServlet {
 
         search = new GooglePlaceSearch(address, key);*/
         String address = request.getParameter("address");
+        address = address.replaceAll(" ", "+");
         search = new GooglePlaceSearch(address);
     }
 
