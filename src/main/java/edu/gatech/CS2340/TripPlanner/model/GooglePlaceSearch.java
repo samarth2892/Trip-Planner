@@ -12,27 +12,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Scanner;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class GooglePlaceSearch {
     final static String KEY = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
+
+    private int minprice = 0;
     private String address = "";
     private String keyword = "";
-    private static Object latitude;
-    private static Object longitude;
+    private Object latitude;
+    private Object longitude;
     private JSONArray places;
     private HttpClient client = HttpClientBuilder.create().build();
     private HttpResponse response;
     private HttpEntity entity;
 
-    public GooglePlaceSearch(String address, String keyword) throws MalformedURLException {
+    public GooglePlaceSearch(String address, String keyword, int minprice) {
         this.address = address;
         this.keyword = keyword;
+        this.minprice = minprice;
     }
 
-    public void search() {
+    public void search() throws MalformedURLException {
         try {
             generateGeocode();
             generatePlaces();
@@ -61,14 +63,12 @@ public class GooglePlaceSearch {
     }
 
     public void generatePlaces() throws Exception{
-        System.out.println("address: " + this.address);
-        System.out.println("keyword: " + this.keyword);
 
         StringBuilder searchURL = new StringBuilder(
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
                 + "?location=" + this.latitude + "," + this.longitude
-                + "&radius=50000&keyword=" + this.keyword
-                        + "&sensor=false&key=" + KEY);
+                + "&radius=50000&keyword=" + this.keyword + "&minprice="
+                        + this.minprice + "&sensor=false&key=" + KEY);
         response = client.execute(new HttpGet(searchURL.toString()));
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -79,20 +79,6 @@ public class GooglePlaceSearch {
         for(int i = 0; i < places.length(); i++) {
             JSONObject place = places.getJSONObject(i);
             System.out.println(place.getString("name"));
-        }
-    }
-
-    public static void main(String... agrs) {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter address:");
-        String address = scan.nextLine();
-
-        address = address.replaceAll(" ", "+");
-        
-        try {
-            GooglePlaceSearch g = new GooglePlaceSearch(address, "food");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         }
     }
 }

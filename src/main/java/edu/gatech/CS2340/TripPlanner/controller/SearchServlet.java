@@ -20,19 +20,18 @@ public class SearchServlet extends HttpServlet {
                           HttpServletResponse response)
             throws IOException, ServletException {
 
-        GooglePlaceSearch search;
-
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("/Account/home.jsp");
 
         StringBuffer error = new StringBuffer("");
         int errorCount = 0;
-        String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
-        String keyword = request.getParameter("search");
         String address = request.getParameter("address");
+        String keyword = request.getParameter("search");
+        int minprice = 0; //todo
+
         address = address.replaceAll(" ", "+");
-        search = new GooglePlaceSearch(address, keyword);
+        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minprice);
         search.search();
         dispatcher.forward(request, response);
     }
