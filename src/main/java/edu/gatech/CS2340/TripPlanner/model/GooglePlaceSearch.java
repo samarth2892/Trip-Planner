@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 public class GooglePlaceSearch {
     final static String KEY = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
     private String address = "";
+    private String keyword = "";
     private static Object latitude;
     private static Object longitude;
     private JSONArray places;
@@ -26,13 +27,15 @@ public class GooglePlaceSearch {
     private HttpResponse response;
     private HttpEntity entity;
 
-    public GooglePlaceSearch(String address) throws MalformedURLException {
-
+    public GooglePlaceSearch(String address, String keyword) throws MalformedURLException {
         this.address = address;
+        this.keyword = keyword;
+    }
 
+    public void search() {
         try {
-           generateGeocode(address, KEY);
-           generatePlaces(latitude, longitude, KEY);
+            generateGeocode();
+            generatePlaces();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -44,22 +47,28 @@ public class GooglePlaceSearch {
         }
     }
 
-    public void generateGeocode(String address, String KEY) throws Exception {
+    public void generateGeocode() throws Exception {
         response = client.execute(new HttpGet("https://maps.googleapis.com/maps/api/geocode/json"
-                + "?address=" + address + "&key=" + KEY));
+                + "?address=" + this.address + "&key=" + KEY));
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
         JSONObject j = new JSONObject(responseString);
         JSONArray locationDetails = j.getJSONArray("results");
         JSONObject location = locationDetails.getJSONObject(0);
-        latitude = location.getJSONObject("geometry").getJSONObject("location").get("lat");
-        longitude = location.getJSONObject("geometry").getJSONObject("location").get("lng");
+
+        this.latitude = location.getJSONObject("geometry").getJSONObject("location").get("lat");
+        this.longitude = location.getJSONObject("geometry").getJSONObject("location").get("lng");
     }
 
-    public void generatePlaces(Object latitude, Object longitude, String KEY) throws Exception{
-        StringBuilder searchURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-                + "?location=" + latitude + "," + longitude
-                + "&radius=50000&KEYword=food&sensor=false&key=" + KEY);
+    public void generatePlaces() throws Exception{
+        System.out.println("address: " + this.address);
+        System.out.println("keyword: " + this.keyword);
+
+        StringBuilder searchURL = new StringBuilder(
+                "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+                + "?location=" + this.latitude + "," + this.longitude
+                + "&radius=50000&keyword=" + this.keyword
+                        + "&sensor=false&key=" + KEY);
         response = client.execute(new HttpGet(searchURL.toString()));
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -81,7 +90,7 @@ public class GooglePlaceSearch {
         address = address.replaceAll(" ", "+");
         
         try {
-            GooglePlaceSearch g = new GooglePlaceSearch(address);
+            GooglePlaceSearch g = new GooglePlaceSearch(address, "food");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
