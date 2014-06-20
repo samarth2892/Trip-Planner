@@ -17,7 +17,7 @@
 </div>
 
 <div id = "SearchBar">
-    <form action="search" method="POST">
+    <form action="Account/Search" method="POST">
         <ul>
             <input name="operation" type="hidden" value="create" />
             <li><input id = "address" name="address" type="text" placeholder="Location" size = "30"/></li>
