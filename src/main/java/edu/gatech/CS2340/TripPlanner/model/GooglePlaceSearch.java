@@ -61,8 +61,6 @@ public class GooglePlaceSearch {
 
     public static void main(String... agrs){
         String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
-        //String lat = "33.989525";
-        //String lon = "-84.610013";
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter address:");
         String address = scan.nextLine();
