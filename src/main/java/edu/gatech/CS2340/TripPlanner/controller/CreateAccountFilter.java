@@ -1,6 +1,5 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
-
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
