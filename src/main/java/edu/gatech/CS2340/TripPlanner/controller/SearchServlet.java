@@ -29,17 +29,12 @@ public class SearchServlet extends HttpServlet {
         int errorCount = 0;
         String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
-        /*String address = request.getParameter("address");
-        int openTime = request.getParameter("openTime");
-        int closeTime = request.getParameter("closeTime");
-        String address = request.getParameter("address");
-        int radius = request.getParameter("radius");
-        double rating = request.getParameter("rating");
-
-        search = new GooglePlaceSearch(address, key);*/
+        String keyword = request.getParameter("search");
         String address = request.getParameter("address");
         address = address.replaceAll(" ", "+");
-        search = new GooglePlaceSearch(address);
+        search = new GooglePlaceSearch(address, keyword);
+        search.search();
+        dispatcher.forward(request, response);
     }
 
     @Override
