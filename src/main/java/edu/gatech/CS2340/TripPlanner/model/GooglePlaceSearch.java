@@ -24,11 +24,12 @@ public class GooglePlaceSearch {
     private Object latitude;
     private Object longitude;
     private JSONArray places;
+    private HttpClient client = HttpClientBuilder.create().build();
+    private HttpResponse response;
+    private HttpEntity entity;
+
 
     public GooglePlaceSearch(String address, String key) throws MalformedURLException {
-
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response;
 
         this.address = address;
         this.key = key;
@@ -48,7 +49,7 @@ public class GooglePlaceSearch {
     public void generateGeocode(String address, String key) {
         response = client.execute(new HttpGet("https://maps.googleapis.com/maps/api/geocode/json"
                 + "?address=" + address + "&key=" + key));
-        HttpEntity entity = response.getEntity();
+        entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
         JSONObject j = new JSONObject(responseString);
         JSONArray locationDetails = j.getJSONArray("results");
@@ -63,9 +64,9 @@ public class GooglePlaceSearch {
                 + "&radius=50000&keyword=food&sensor=false&key=" + key);
         response = client.execute(new HttpGet(searchURL.toString()));
         entity = response.getEntity();
-        responseString = EntityUtils.toString(entity, "UTF-8");
+        String responseString = EntityUtils.toString(entity, "UTF-8");
 
-        j = new JSONObject(responseString);
+        JSONObject j = new JSONObject(responseString);
         places = j.getJSONArray("results");
 
         for(int i = 0; i < places.length(); i++) {
