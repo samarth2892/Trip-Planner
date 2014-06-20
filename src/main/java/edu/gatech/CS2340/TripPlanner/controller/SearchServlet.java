@@ -27,20 +27,10 @@ public class SearchServlet extends HttpServlet {
                 request.getRequestDispatcher("/Account/home.jsp");
 
         StringBuffer error = new StringBuffer("");
-
         int errorCount = 0;
-
-        String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
-
         String address = request.getParameter("address");
-        int openTime = request.getParameter("openTime");
-        int closeTime = request.getParameter("closeTime");
-        String address = request.getParameter("address");
-        int radius = request.getParameter("radius");
-        double rating = request.getParameter("rating");
 
-        search = new GooglePlaceSearch(address, key);
-
+        search = new GooglePlaceSearch(address);
     }
 
     @Override
