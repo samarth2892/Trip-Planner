@@ -32,7 +32,7 @@ public class UpdatePasswordFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain)
         throws IOException, ServletException {
-        System.out.println("made it here");
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
