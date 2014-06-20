@@ -43,10 +43,12 @@ public class GooglePlaceSearch {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void generateGeocode(String address, String key) {
+    public void generateGeocode(String address, String key) throws Exception {
         response = client.execute(new HttpGet("https://maps.googleapis.com/maps/api/geocode/json"
                 + "?address=" + address + "&key=" + key));
         entity = response.getEntity();
@@ -58,7 +60,7 @@ public class GooglePlaceSearch {
         longitude = location.getJSONObject("geometry").getJSONObject("location").get("lng");
     }
 
-    public void generatePlaces(Object latitude, Object longitude, String key) {
+    public void generatePlaces(Object latitude, Object longitude, String key) throws Exception{
         StringBuilder searchURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json"
                 + "?location=" + latitude + "," + longitude
                 + "&radius=50000&keyword=food&sensor=false&key=" + key);
@@ -72,6 +74,7 @@ public class GooglePlaceSearch {
         for(int i = 0; i < places.length(); i++) {
             JSONObject place = places.getJSONObject(i);
             System.out.println(place.getString("name"));
+        }
     }
 
     public static void main(String... agrs){
@@ -81,15 +84,11 @@ public class GooglePlaceSearch {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter address:");
         String address = scan.nextLine();
-        System.out.println("Enter city:");
-        String city = scan.nextLine();
-        System.out.println("Enter two letter state abbreviation");
-        String state = scan.nextLine();
-        address = address.replaceAll(" ", "+");
-        city = city.replaceAll(" ", "+");
 
+        address = address.replaceAll(" ", "+");
+        
         try {
-            GooglePlaceSearch g = new GooglePlaceSearch(address, city, state, key);
+            GooglePlaceSearch g = new GooglePlaceSearch(address key);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
