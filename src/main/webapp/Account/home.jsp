@@ -1,3 +1,5 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Place" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -17,11 +19,10 @@
 </div>
 
 <div id = "SearchBar">
-    <form action="Account/Search" method="POST">
+    <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
-            <input name="operation" type="hidden" value="create" />
-            <li><input id = "address" name="address" type="text" placeholder="Location" size = "30"/></li>
-            <li><input id = "keyword" name="search" type="text" placeholder="Search" size="15" /></li>
+            <li><input name="address" type="text" placeholder="Location" size = "30"/></li>
+            <li><input name="keyword" type="text" placeholder="Search" size="15" /></li>
             <li><input name= "day" type= "text" placeholder = "Day" size = "1"/></li>
             <li><input name = "month" type = "text" placeholder = "Month" size = "4"/></li>
             <li><input name = "year" type = "text" placeholder = "Year" size = "2"/></li>
@@ -96,15 +97,21 @@
     </form>
 </div>
 
-<!--<div id="googleMaps">
-    <iframe
+<div id="googleMaps">
+    <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
+
+        for(Place place: places) {
+    %>
+    <div id="placeResultDiv" > <%= place.getAddress()%></div>
+    <!--<iframe
             width="100%"
             height="100%"
             frameborder="0" style="border:0"
             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
                &q=Space+Needle,Seattle+WA">
-    </iframe>
-</div>-->
+    </iframe>-->
+    <%}%>
+</div>
 </body>
 
 </html>

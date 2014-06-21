@@ -1,6 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.GooglePlaceSearch;
+import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = {
         "/Account/Search"
@@ -28,11 +30,13 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
         String keyword = request.getParameter("search");
-        int minprice = 0; //todo
+        int minPrice = 0; //todo
 
         address = address.replaceAll(" ", "+");
-        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minprice);
-        search.search();
+        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minPrice);
+        ArrayList<Place> placeResult = search.search();
+
+        request.setAttribute("placeResult", placeResult);
         dispatcher.forward(request, response);
     }
 

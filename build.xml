@@ -36,8 +36,13 @@
 
     <!-- Compile Java classes as necessary -->
 	<mkdir    dir="${build.home}/WEB-INF/lib"/>
-	<copyfile src="${basedir}/lib/mysql-connector-java-5.1.31-bin.jar" dest="${build.home}/WEB-INF/lib/mysql-connector-java-5.1.31-bin.jar" />
-	<mkdir    dir="${build.home}/WEB-INF/classes"/>
+	  <copyfile src="${basedir}/lib/mysql-connector-java-5.1.31-bin.jar" dest="${build.home}/WEB-INF/lib/mysql-connector-java-5.1.31-bin.jar" />
+      <copyfile src="${basedir}/lib/java-json.jar" dest="${build.home}/WEB-INF/lib/java-json.jar" />
+      <copy todir="${build.home}/WEB-INF/lib" >
+            <fileset dir="${basedir}/lib/Apache HttpComponents" includes="**"/>
+      </copy>
+
+      <mkdir    dir="${build.home}/WEB-INF/classes"/>
     <javac srcdir="${src.main}/java"
           destdir="${build.home}/WEB-INF/classes">
         <classpath refid="compile.classpath"/>
@@ -89,9 +94,9 @@
   </target>
 	
   <target name="tomcat">
-      <exec dir="${env.CATALINA_HOME}/bin" executable="startup.bat"></exec>
+      <exec dir="${env.CATALINA_HOME}/bin" executable="startup.bat"/>
   </target>
   <target name="tomcat_stop">
-      <exec dir="${env.CATALINA_HOME}/bin" executable="shutdown.bat"></exec>
+      <exec dir="${env.CATALINA_HOME}/bin" executable="shutdown.bat"/>
    </target>
 </project>
