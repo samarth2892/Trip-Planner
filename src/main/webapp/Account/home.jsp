@@ -21,21 +21,21 @@
 <div id = "SearchBar">
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
-            <li><input name="address" type="text" placeholder="Location" size = "30"/></li>
+            <li><input name="address" type="text" placeholder="Location" size="30"/></li>
             <li><input name="keyword" type="text" placeholder="Search" size="15" /></li>
-            <li><input name= "day" type= "text" placeholder = "Day" size = "1"/></li>
-            <li><input name = "month" type = "text" placeholder = "Month" size = "4"/></li>
-            <li><input name = "year" type = "text" placeholder = "Year" size = "2"/></li>
-            <li> Transportation:
-                <select>
+            <li><input name="day" type="text" placeholder="Day" size="1"/></li>
+            <li><input name="month" type="text" placeholder="Month" size="4"/></li>
+            <li><input name="year" type="text" placeholder="Year" size="2"/></li>
+            <li>Transportation:
+                <select name="transportation">
                     <option value="car">Car</option>
                     <option value="bike">Bicycle</option>
                     <option value="bus">Bus</option>
                     <option value="walk">Walk</option>
                 </select>
             </li>
-            <li> Hours:
-                <select>
+            <li>Hours:
+                <select name="hours">
                     <option value="1"> 1</option>
                     <option value="2"> 2</option>
                     <option value="3"> 3</option>
@@ -74,8 +74,8 @@
                 </select>
             </li>
 
-            <li> Price Range
-                <select>
+            <li>Price Range
+                <select name="minPrice">
                     <option value = '1'> $ </option>
                     <option value = '2'> $$ </option>
                     <option value = '3'> $$$ </option>
@@ -83,8 +83,8 @@
                     <option value = '5'> $$$$$ </option>
                 </select>
             </li>
-            <li> Rating
-                <select>
+            <li>Rating
+                <select name="minRating">
                     <option value = '1'> 1 </option>
                     <option value = '2'> 2 </option>
                     <option value = '3'> 3 </option>
@@ -99,18 +99,18 @@
 
 <div id="googleMaps">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
-
-        for(Place place: places) {
-    %>
-    <div id="placeResultDiv" > <%= place.getAddress()%></div>
-    <!--<iframe
-            width="100%"
-            height="100%"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
-               &q=Space+Needle,Seattle+WA">
-    </iframe>-->
-    <%}%>
+        if(!(places == null)) {
+            for(Place place: places) {%>
+                <div id="placeResultDiv" > <%= place.getAddress()%></div>
+                <!--<iframe
+                        width="100%"
+                        height="100%"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
+                           &q=Space+Needle,Seattle+WA">
+                </iframe>-->
+            <%}
+        }%>
 </div>
 </body>
 

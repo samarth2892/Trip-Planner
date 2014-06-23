@@ -21,8 +21,8 @@ public class GooglePlaceSearch {
     private String googleAPIURL = "https://maps.googleapis.com/maps/api";
     private String address = "";
     private String keyword = "Attractions";
-    private int minPrice = 0;
-    private int minRatting = 0;
+    private String minPrice = "";
+    private String minRating = "";
     private int radius = 50000;
     private int startHour = 0;
     private int endHour = 2400;
@@ -34,17 +34,19 @@ public class GooglePlaceSearch {
     private HttpEntity entity;
     private ArrayList<Place> placeResults;
 
-    public GooglePlaceSearch(String address, String keyword, int minPrice) {
+    public GooglePlaceSearch(String address, String keyword, String minPrice, String minRating) {
         if (!(null == address || address.equals(""))) this.address = address;
         if (!(null == keyword || keyword.equals(""))) this.keyword = keyword;
-        if (minPrice > 0 && minPrice < 5) this.minPrice = minPrice;
+        this.minPrice = minPrice;
+        this.minRating = minRating;
     }
 
-    public void setMinRatting(int minRatting) {
-        if(minRatting > 0 && minRatting < 5) {
-            this.minRatting = minRatting;
+    /*TODO
+    public void setMinRating(int minRating) {
+        if(minRating > 0 && minRating < 5) {
+            this.minRating = minRating;
         }
-    }
+    }*/
 
     public void setRadius(int radius) {
         if (radius > 0 && radius < 50000) {
@@ -97,12 +99,11 @@ public class GooglePlaceSearch {
     }
 
     public ArrayList<Place> generatePlaces() throws Exception{
-
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/nearbysearch/json?location=" + this.latitude
                 + "," + this.longitude + "&radius=" + Integer.toString(radius)
                 + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
-                + "&sensor=false&key=" + KEY));
+                + "&rating=" + this.minRating + "&sensor=false&key=" + KEY));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");

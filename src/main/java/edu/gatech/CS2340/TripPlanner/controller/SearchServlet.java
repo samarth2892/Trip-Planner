@@ -30,10 +30,11 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
         String keyword = request.getParameter("search");
-        int minPrice = 0; //todo
+        String minPrice = request.getParameter("minPrice");
+        String minRating = request.getParameter("minRating");
 
         address = address.replaceAll(" ", "+");
-        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minPrice);
+        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minPrice, minRating);
         ArrayList<Place> placeResult = search.search();
 
         request.setAttribute("placeResult", placeResult);
