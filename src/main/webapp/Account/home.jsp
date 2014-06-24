@@ -38,42 +38,44 @@
                     <option value="walk">Walk</option>
                 </select>
             </li>
+
             <li>
-                <select name="hours">
+                <select name="startHour">
                     <option value="" disabled selected>From</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
+                    <option value="0100"> 1</option>
+                    <option value="0200"> 2</option>
+                    <option value="0300"> 3</option>
+                    <option value="0400"> 4</option>
+                    <option value="0500"> 5</option>
+                    <option value="0600"> 6</option>
+                    <option value="0700"> 7</option>
+                    <option value="0800"> 8</option>
+                    <option value="0900"> 9</option>
+                    <option value="1000"> 10</option>
+                    <option value="1100">11 </option>
+                    <option value="0000"> 12</option>
+
                 </select>
-                <select>
+                <select name="startAMPM">
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
-                <select>
+                <select name="endHour">
                     <option value="" disabled selected>To</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
+                    <option value="0100"> 1</option>
+                    <option value="0200"> 2</option>
+                    <option value="0300"> 3</option>
+                    <option value="0400"> 4</option>
+                    <option value="0500"> 5</option>
+                    <option value="0600"> 6</option>
+                    <option value="0700"> 7</option>
+                    <option value="0800"> 8</option>
+                    <option value="0900"> 9</option>
+                    <option value="1000"> 10</option>
+                    <option value="1100">11 </option>
+                    <option value="0000"> 12</option>
                 </select>
-                <select>
+                <select name="endAMPM">
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
@@ -122,9 +124,12 @@
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {
             for(Place place: places) {%>
-                <div id="placeResultDiv" > <%=place.getName()%></div>
-                <div id="placeResultDiv" > <%=place.getAddress()%></div>
-                <div id="placeResultDiv" > <%=place.getRating()%></div>
+                <div id="placeResultDiv" >Name: <%=place.getName()%></div>
+                <div id="placeResultDiv" >Address: <%=place.getAddress()%></div>
+                <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
+                <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
+                <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
+                <div id="placeResultDiv" ></div>
                 <!--<iframe
                         width="100%"
                         height="100%"
