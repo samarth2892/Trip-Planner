@@ -145,10 +145,15 @@ public class GooglePlaceSearch {
                 System.out.println("Open time: " + openTime);
                 System.out.println("Close time: " + closeTime);
 
+                JSONObject firstReview = currentPlace
+                        .getJSONArray("reviews").getJSONObject(0);
+                System.out.println(firstReview);
+
                 singlePlace.setAddress(placeDetails.get("formatted_address").toString());
                 singlePlace.setName(placeDetails.get("name").toString());
                 singlePlace.setRating(placeDetails.get("rating").toString());
-                if (Double.parseDouble(this.minRating) <= Double.parseDouble(singlePlace.getRating())) {
+                if (Double.parseDouble(this.minRating)
+                        <= Double.parseDouble(singlePlace.getRating())) {
                     placeResults.add(singlePlace);
                 }
             } catch (JSONException e) {
