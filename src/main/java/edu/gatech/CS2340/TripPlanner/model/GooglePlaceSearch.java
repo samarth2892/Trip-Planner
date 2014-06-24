@@ -23,7 +23,7 @@ public class GooglePlaceSearch {
     private String keyword = "Attractions";
     private String minPrice = "";
     private String minRating;
-    private int radius = 50000;
+    private double radius = 0.0;
     private int startHour = 0;
     private int endHour = 2400;
 
@@ -34,11 +34,12 @@ public class GooglePlaceSearch {
     private HttpEntity entity;
     private ArrayList<Place> placeResults;
 
-    public GooglePlaceSearch(String address, String keyword, String minPrice, String minRating) {
+    public GooglePlaceSearch(String address, String keyword, String minPrice, String minRating, String maxDistance) {
         if (!(null == address || address.equals(""))) this.address = address;
         if (!(null == keyword || keyword.equals(""))) this.keyword = keyword;
         this.minPrice = minPrice;
         this.minRating = minRating;
+        this.setRadius(Double.parseDouble(maxDistance) / 3.28 * 5280.0);
     }
 
     /*TODO
@@ -48,8 +49,8 @@ public class GooglePlaceSearch {
         }
     }*/
 
-    public void setRadius(int radius) {
-        if (radius > 0 && radius < 50000) {
+    public void setRadius(double radius) {
+        if (radius > 0.0 && radius < 50000.0) {
             this.radius = radius;
         }
     }
@@ -101,7 +102,7 @@ public class GooglePlaceSearch {
     public ArrayList<Place> generatePlaces() throws Exception{
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/nearbysearch/json?location=" + this.latitude
-                + "," + this.longitude + "&radius=" + Integer.toString(radius)
+                + "," + this.longitude + "&radius=" + Double.toString(this.radius)
                 + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
                 + "&sensor=false&key=" + KEY));
 

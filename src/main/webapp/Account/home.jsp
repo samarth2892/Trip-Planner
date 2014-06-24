@@ -92,6 +92,19 @@
                     <option value = '5.0'> 5 </option>
                 </select>
             </li>
+            <li>Within
+                <select name="maxDistance">
+                    <option value = '1'> 1 mile</option>
+                    <option value = '2'> 2 miles</option>
+                    <option value = '3'> 3 miles</option>
+                    <option value = '4'> 4 miles</option>
+                    <option value = '5'> 5 miles</option>
+                    <option value = '10'> 10 miles</option>
+                    <option value = '15'> 15 miles</option>
+                    <option value = '20'> 20 miles</option>
+                    <option value = '30'> 30 miles</option>
+                </select>
+            </li>
             <li><input id="searchButton" type="Submit" value="Submit" /></li>
         </ul>
     </form>
