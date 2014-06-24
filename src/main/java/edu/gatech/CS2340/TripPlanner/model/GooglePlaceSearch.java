@@ -126,10 +126,34 @@ public class GooglePlaceSearch {
 
                 Place singlePlace = new Place();
                 singlePlace.setReference(place.getString("reference"));
+                response = client.execute(new HttpGet(googleAPIURL
+                        + "/place/details/json?reference="
+                        + singlePlace.getReference() + "&key=" + KEY));
+
+                entity = response.getEntity();
+                String responseString = EntityUtils.toString(entity, "UTF-8");
+
+                JSONObject jsonStringResult = new JSONObject(responseString);
+
+                JSONObject currentPlace = jsonStringResult.getJSONObject("result");
+                Object openTime = currentPlace.getJSONObject("opening_hours")
+                        .getJSONArray("periods").getJSONObject(0).
+                                getJSONObject("open").get("time");
+                Object closeTime = currentPlace.getJSONObject("opening_hours")
+                        .getJSONArray("periods").getJSONObject(0).
+                                getJSONObject("close").get("time");
+                System.out.println("Open time: " + openTime);
+                System.out.println("Close time: " + closeTime);
+
+                JSONObject firstReview = currentPlace
+                        .getJSONArray("reviews").getJSONObject(0);
+                System.out.println(firstReview);
+
                 singlePlace.setAddress(placeDetails.get("formatted_address").toString());
                 singlePlace.setName(placeDetails.get("name").toString());
                 singlePlace.setRating(placeDetails.get("rating").toString());
-                if (Double.parseDouble(this.minRating) <= Double.parseDouble(singlePlace.getRating())) {
+                if (Double.parseDouble(this.minRating)
+                        <= Double.parseDouble(singlePlace.getRating())) {
                     placeResults.add(singlePlace);
                 }
             } catch (JSONException e) {
