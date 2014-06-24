@@ -38,9 +38,10 @@
                     <option value="walk">Walk</option>
                 </select>
             </li>
-<<<<<<< HEAD
-            <li>Hours:
+
+            <li>
                 <select name="startHour">
+                    <option value="" disabled selected>From</option>
                     <option value="0100"> 1</option>
                     <option value="0200"> 2</option>
                     <option value="0300"> 3</option>
@@ -53,31 +54,14 @@
                     <option value="1000"> 10</option>
                     <option value="1100">11 </option>
                     <option value="0000"> 12</option>
-=======
-            <li>
-                <select name="hours">
-                    <option value="" disabled selected>From</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
->>>>>>> upstream/master
+
                 </select>
                 <select name="startAMPM">
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
-<<<<<<< HEAD
-                to
                 <select name="endHour">
+                    <option value="" disabled selected>To</option>
                     <option value="0100"> 1</option>
                     <option value="0200"> 2</option>
                     <option value="0300"> 3</option>
@@ -90,22 +74,6 @@
                     <option value="1000"> 10</option>
                     <option value="1100">11 </option>
                     <option value="0000"> 12</option>
-=======
-                <select>
-                    <option value="" disabled selected>To</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
->>>>>>> upstream/master
                 </select>
                 <select name="endAMPM">
                     <option value = 'am'> AM </option>
@@ -161,16 +129,15 @@
                 <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
                 <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
                 <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
-                <div id="placeResultDiv" ></div>
-                <!--<iframe
-                        width="100%"
-                        height="100%"
-                        frameborder="0" style="border:0"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
-                           &q=Space+Needle,Seattle+WA">
-                </iframe>-->
-            <%}
-        }%>
+    <!--<iframe
+            width="100%"
+            height="100%"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
+               &q=Space+Needle,Seattle+WA">
+    </iframe>-->
+    <%}
+    }%>
 </div>
 </body>
 
