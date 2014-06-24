@@ -12,7 +12,7 @@ public class Place {
     private double latitude;
     private double longitude;
     private double priceRange;
-    private double rating;
+    private String rating;
     private ArrayList<String> images;
     private ArrayList<String> reviews;
 
@@ -79,10 +79,10 @@ public class Place {
         this.priceRange = priceRange;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

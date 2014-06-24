@@ -22,7 +22,7 @@ public class GooglePlaceSearch {
     private String address = "";
     private String keyword = "Attractions";
     private String minPrice = "";
-    private String minRating = "";
+    private String minRating;
     private int radius = 50000;
     private int startHour = 0;
     private int endHour = 2400;
@@ -103,7 +103,7 @@ public class GooglePlaceSearch {
                 + "/place/nearbysearch/json?location=" + this.latitude
                 + "," + this.longitude + "&radius=" + Integer.toString(radius)
                 + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
-                + "&rating=" + this.minRating + "&sensor=false&key=" + KEY));
+                + "&sensor=false&key=" + KEY));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -113,20 +113,27 @@ public class GooglePlaceSearch {
         return generatePlaceList(places);
     }
 
-    private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception{
+    private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception {
 
         placeResults = new ArrayList<Place>();
 
         for(int i = 0; i < results.length(); i++) {
             JSONObject place = results.getJSONObject(i);
+            try {
+                JSONObject placeDetails =
+                        getPlaceDetails(place.getString("reference"));
 
-            JSONObject placeDetails =
-            getPlaceDetails(place.getString("reference"));
-
-            Place singlePlace = new Place();
-            singlePlace.setReference(place.getString("reference"));
-            singlePlace.setAddress(placeDetails.get("formatted_address").toString());
-            placeResults.add(singlePlace);
+                Place singlePlace = new Place();
+                singlePlace.setReference(place.getString("reference"));
+                singlePlace.setAddress(placeDetails.get("formatted_address").toString());
+                singlePlace.setName(placeDetails.get("name").toString());
+                singlePlace.setRating(placeDetails.get("rating").toString());
+                if (Double.parseDouble(this.minRating) <= Double.parseDouble(singlePlace.getRating())) {
+                    placeResults.add(singlePlace);
+                }
+            } catch (JSONException e) {
+                System.out.println(e.getMessage());
+            }
 
         }
 

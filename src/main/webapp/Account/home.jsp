@@ -76,20 +76,20 @@
 
             <li>Price Range
                 <select name="minPrice">
-                    <option value = '1'> $ </option>
-                    <option value = '2'> $$ </option>
-                    <option value = '3'> $$$ </option>
-                    <option value = '4'> $$$$ </option>
-                    <option value = '5'> $$$$$ </option>
+                    <option value = '0'> $ </option>
+                    <option value = '1'> $$ </option>
+                    <option value = '2'> $$$ </option>
+                    <option value = '3'> $$$$ </option>
+                    <option value = '4'> $$$$$ </option>
                 </select>
             </li>
             <li>Rating
                 <select name="minRating">
-                    <option value = '1'> 1 </option>
-                    <option value = '2'> 2 </option>
-                    <option value = '3'> 3 </option>
-                    <option value = '4'> 4 </option>
-                    <option value = '5'> 5 </option>
+                    <option value = '1.0'> 1 </option>
+                    <option value = '2.0'> 2 </option>
+                    <option value = '3.0'> 3 </option>
+                    <option value = '4.0'> 4 </option>
+                    <option value = '5.0'> 5 </option>
                 </select>
             </li>
             <li><input id="searchButton" type="Submit" value="Submit" /></li>
@@ -99,9 +99,11 @@
 
 <div id="googleMaps">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
-        if(!(places == null)) {
+        if(places != null) {
             for(Place place: places) {%>
-                <div id="placeResultDiv" > <%= place.getAddress()%></div>
+                <div id="placeResultDiv" > <%=place.getName()%></div>
+                <div id="placeResultDiv" > <%=place.getAddress()%></div>
+                <div id="placeResultDiv" > <%=place.getRating()%></div>
                 <!--<iframe
                         width="100%"
                         height="100%"
