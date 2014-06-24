@@ -140,7 +140,6 @@
                 <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
                 <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
                 <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
-                <div id="placeResultDiv" ></div>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=place.getLatitude()%>,<%=place.getLongitude()%>);
