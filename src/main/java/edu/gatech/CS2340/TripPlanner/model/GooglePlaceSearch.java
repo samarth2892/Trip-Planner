@@ -99,7 +99,6 @@ public class GooglePlaceSearch {
                 .getJSONObject("location").get("lat");
         this.longitude = geometry
                 .getJSONObject("location").get("lng");
-
     }
 
     public ArrayList<Place> generatePlaces() throws Exception{
@@ -141,7 +140,11 @@ public class GooglePlaceSearch {
                 JSONObject currentPlace = jsonStringResult
                         .getJSONObject("result");
 
-                String openTime = currentPlace.getJSONObject("opening_hours")
+                singlePlace.setLatitude(placeDetails.getJSONObject("geometry")
+                        .getJSONObject("location").get("lat").toString());
+                singlePlace.setLongitude(placeDetails.getJSONObject("geometry")
+                        .getJSONObject("location").get("lng").toString());
+                /*String openTime = currentPlace.getJSONObject("opening_hours")
                         .getJSONArray("periods").getJSONObject(0).
                                 getJSONObject("open").get("time").toString();
                 String closeTime = currentPlace.getJSONObject("opening_hours")
@@ -154,16 +157,17 @@ public class GooglePlaceSearch {
                 singlePlace.setOpenTime(Integer.parseInt(openTime));
                 singlePlace.setCloseTime(Integer.parseInt(closeTime));
                 singlePlace.setAddress(placeDetails.get("formatted_address")
-                        .toString());
+                        .toString());*/
                 singlePlace.setName(placeDetails.get("name").toString());
-                singlePlace.setRating(placeDetails.get("rating").toString());
+                //singlePlace.setRating(placeDetails.get("rating").toString());
 
-                if (Double.parseDouble(this.minRating)
+                /*if (Double.parseDouble(this.minRating)
                         <= Double.parseDouble(singlePlace.getRating())
                         && this.startHour >= singlePlace.getOpenTime()
                         && this.endHour <= singlePlace.getCloseTime()) {
                     placeResults.add(singlePlace);
-                }
+                }*/
+                placeResults.add(singlePlace);
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }
@@ -180,5 +184,13 @@ public class GooglePlaceSearch {
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
         return new JSONObject(responseString).getJSONObject("result");
+    }
+
+    public String getLatitude() {
+        return this.latitude.toString();
+    }
+
+    public String getLongitude() {
+        return this.longitude.toString();
     }
 }

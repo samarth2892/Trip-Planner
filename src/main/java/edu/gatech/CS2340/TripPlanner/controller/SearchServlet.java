@@ -50,7 +50,8 @@ public class SearchServlet extends HttpServlet {
                 keyword, minPrice, minRating, maxDistance,
                 startHour, endHour);
         ArrayList<Place> placeResult = search.search();
-
+        request.setAttribute("center",search.getLatitude()
+                + "," + search.getLongitude());
         request.setAttribute("placeResult", placeResult);
         dispatcher.forward(request, response);
     }
