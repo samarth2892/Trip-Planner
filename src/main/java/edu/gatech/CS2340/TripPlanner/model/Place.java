@@ -7,12 +7,12 @@ public class Place {
     private String address;
     private String phoneNumber;
     private String reference;
+    private String rating;
     private int openTime;
     private int closeTime;
     private double latitude;
     private double longitude;
     private double priceRange;
-    private String rating;
     private ArrayList<String> images;
     private ArrayList<String> reviews;
 
