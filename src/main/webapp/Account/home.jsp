@@ -7,8 +7,11 @@
     <Title>Home</Title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
+    <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
 </head>
-<body>
+<body onload="autoComplete()">
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
@@ -21,7 +24,7 @@
 <div id = "SearchBar">
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
-            <li><input name="address" type="text" placeholder="Location" style="width: 23%"/></li>
+            <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"/></li>
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
             <li><input name="day" type="text" placeholder="dd" style="width: 3%"/></li>
             <li><input name="month" type="text" placeholder="mm" style="width: 3%"/></li>
