@@ -29,7 +29,7 @@ public class SearchServlet extends HttpServlet {
         int errorCount = 0;
 
         String address = request.getParameter("address");
-        String keyword = request.getParameter("search");
+        String keyword = request.getParameter("keyword");
         String minPrice = request.getParameter("minPrice");
         String minRating = request.getParameter("minRating");
         String maxDistance = request.getParameter("maxDistance");

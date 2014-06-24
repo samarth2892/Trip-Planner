@@ -21,21 +21,23 @@
 <div id = "SearchBar">
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
-            <li><input name="address" type="text" placeholder="Location" size="30"/></li>
-            <li><input name="keyword" type="text" placeholder="Search" size="15" /></li>
-            <li><input name="day" type="text" placeholder="Day" size="1"/></li>
-            <li><input name="month" type="text" placeholder="Month" size="4"/></li>
-            <li><input name="year" type="text" placeholder="Year" size="2"/></li>
-            <li>Transportation:
+            <li><input name="address" type="text" placeholder="Location" style="width: 23%"/></li>
+            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
+            <li><input name="day" type="text" placeholder="dd" style="width: 3%"/></li>
+            <li><input name="month" type="text" placeholder="mm" style="width: 3%"/></li>
+            <li><input name="year" type="text" placeholder="yyyy" style="width: 4%"/></li>
+            <li>
                 <select name="transportation">
+                    <option value="" disabled selected>Transportation</option>
                     <option value="car">Car</option>
                     <option value="bike">Bicycle</option>
                     <option value="bus">Bus</option>
                     <option value="walk">Walk</option>
                 </select>
             </li>
-            <li>Hours:
+            <li>
                 <select name="hours">
+                    <option value="" disabled selected>From</option>
                     <option value="1"> 1</option>
                     <option value="2"> 2</option>
                     <option value="3"> 3</option>
@@ -53,8 +55,8 @@
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
-                to
                 <select>
+                    <option value="" disabled selected>To</option>
                     <option value="1"> 1</option>
                     <option value="2"> 2</option>
                     <option value="3"> 3</option>
@@ -74,8 +76,9 @@
                 </select>
             </li>
 
-            <li>Price Range
+            <li>
                 <select name="minPrice">
+                    <option value="" disabled selected>Price Range</option>
                     <option value = '0'> $ </option>
                     <option value = '1'> $$ </option>
                     <option value = '2'> $$$ </option>
@@ -83,8 +86,9 @@
                     <option value = '4'> $$$$$ </option>
                 </select>
             </li>
-            <li>Rating
+            <li>
                 <select name="minRating">
+                    <option value="" disabled selected>Rating</option>
                     <option value = '1.0'> 1 </option>
                     <option value = '2.0'> 2 </option>
                     <option value = '3.0'> 3 </option>
@@ -92,8 +96,9 @@
                     <option value = '5.0'> 5 </option>
                 </select>
             </li>
-            <li>Within
+            <li>
                 <select name="maxDistance">
+                    <option value="" disabled selected>Within</option>
                     <option value = '1'> 1 mile</option>
                     <option value = '2'> 2 miles</option>
                     <option value = '3'> 3 miles</option>
@@ -104,13 +109,13 @@
                     <option value = '20'> 20 miles</option>
                     <option value = '30'> 30 miles</option>
                 </select>
+                <input id="searchButton" type="submit" value="" />
             </li>
-            <li><input id="searchButton" type="Submit" value="Submit" /></li>
         </ul>
     </form>
 </div>
 
-<div id="googleMaps">
+<div id="searchResults">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {
             for(Place place: places) {%>
