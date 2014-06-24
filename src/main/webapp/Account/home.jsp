@@ -129,16 +129,15 @@
                 <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
                 <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
                 <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
-                <div id="placeResultDiv" ></div>
-                <!--<iframe
-                        width="100%"
-                        height="100%"
-                        frameborder="0" style="border:0"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
-                           &q=Space+Needle,Seattle+WA">
-                </iframe>-->
-            <%}
-        }%>
+    <!--<iframe
+            width="100%"
+            height="100%"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
+               &q=Space+Needle,Seattle+WA">
+    </iframe>-->
+    <%}
+    }%>
 </div>
 </body>
 
