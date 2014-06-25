@@ -144,7 +144,7 @@ public class GooglePlaceSearch {
                         .getJSONObject("location").get("lat").toString());
                 singlePlace.setLongitude(placeDetails.getJSONObject("geometry")
                         .getJSONObject("location").get("lng").toString());
-                /*String openTime = currentPlace.getJSONObject("opening_hours")
+                String openTime = currentPlace.getJSONObject("opening_hours")
                         .getJSONArray("periods").getJSONObject(0).
                                 getJSONObject("open").get("time").toString();
                 String closeTime = currentPlace.getJSONObject("opening_hours")
@@ -154,12 +154,17 @@ public class GooglePlaceSearch {
                 JSONObject firstReview = currentPlace
                         .getJSONArray("reviews").getJSONObject(0);
 
+                String phoneNumber = currentPlace.get("formatted_phone_number").toString();
+                String website = currentPlace.get("website").toString();
+
                 singlePlace.setOpenTime(Integer.parseInt(openTime));
                 singlePlace.setCloseTime(Integer.parseInt(closeTime));
                 singlePlace.setAddress(placeDetails.get("formatted_address")
-                        .toString());*/
+                        .toString());
                 singlePlace.setName(placeDetails.get("name").toString());
-                //singlePlace.setRating(placeDetails.get("rating").toString());
+                singlePlace.setRating(placeDetails.get("rating").toString());
+                singlePlace.setPhoneNumber(phoneNumber);
+                singlePlace.setWebsite(website);
 
                 /*if (Double.parseDouble(this.minRating)
                         <= Double.parseDouble(singlePlace.getRating())
