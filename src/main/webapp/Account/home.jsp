@@ -24,7 +24,8 @@
 <div id = "SearchBar">
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
-            <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"/></li>
+            <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
+                    onblur="geocode()"/></li>
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
             <li><input name="day" type="text" placeholder="dd" style="width: 3%"/></li>
             <li><input name="month" type="text" placeholder="mm" style="width: 3%"/></li>
@@ -38,42 +39,44 @@
                     <option value="walk">Walk</option>
                 </select>
             </li>
+
             <li>
-                <select name="hours">
+                <select name="startHour">
                     <option value="" disabled selected>From</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
+                    <option value="0100"> 1</option>
+                    <option value="0200"> 2</option>
+                    <option value="0300"> 3</option>
+                    <option value="0400"> 4</option>
+                    <option value="0500"> 5</option>
+                    <option value="0600"> 6</option>
+                    <option value="0700"> 7</option>
+                    <option value="0800"> 8</option>
+                    <option value="0900"> 9</option>
+                    <option value="1000"> 10</option>
+                    <option value="1100">11 </option>
+                    <option value="0000"> 12</option>
+
                 </select>
-                <select>
+                <select name="startAMPM">
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
-                <select>
+                <select name="endHour">
                     <option value="" disabled selected>To</option>
-                    <option value="1"> 1</option>
-                    <option value="2"> 2</option>
-                    <option value="3"> 3</option>
-                    <option value="4"> 4</option>
-                    <option value="5"> 5</option>
-                    <option value="6"> 6</option>
-                    <option value="7"> 7</option>
-                    <option value="8"> 8</option>
-                    <option value="9"> 9</option>
-                    <option value="10"> 10</option>
-                    <option value="11">11 </option>
-                    <option value="12"> 12</option>
+                    <option value="0100"> 1</option>
+                    <option value="0200"> 2</option>
+                    <option value="0300"> 3</option>
+                    <option value="0400"> 4</option>
+                    <option value="0500"> 5</option>
+                    <option value="0600"> 6</option>
+                    <option value="0700"> 7</option>
+                    <option value="0800"> 8</option>
+                    <option value="0900"> 9</option>
+                    <option value="1000"> 10</option>
+                    <option value="1100">11 </option>
+                    <option value="0000"> 12</option>
                 </select>
-                <select>
+                <select name="endAMPM">
                     <option value = 'am'> AM </option>
                     <option value = 'pm'> PM </option>
                 </select>
@@ -118,23 +121,38 @@
     </form>
 </div>
 
+<div id="map"></div>
+
 <div id="searchResults">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
-        if(places != null) {
-            for(Place place: places) {%>
-                <div id="placeResultDiv" > <%=place.getName()%></div>
-                <div id="placeResultDiv" > <%=place.getAddress()%></div>
-                <div id="placeResultDiv" > <%=place.getRating()%></div>
-                <!--<iframe
-                        width="100%"
-                        height="100%"
-                        frameborder="0" style="border:0"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM
-                           &q=Space+Needle,Seattle+WA">
-                </iframe>-->
+        if(places != null) {%>
+            <script type="text/javascript">
+                var mapCenter = new google.maps.LatLng(<%=request.getAttribute("center")%>);
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: mapCenter,
+                    zoom: 10
+                });
+
+            </script>
+            <%for(Place place: places) {%>
+                <div id="placeResultDiv" >Name: <%=place.getName()%></div>
+                <div id="placeResultDiv" >Address: <%=place.getAddress()%></div>
+                <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
+                <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
+                <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
+                <script type="text/javascript">
+                    var placeLocation
+                            = new google.maps.LatLng(<%=place.getLatitude()%>,<%=place.getLongitude()%>);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: placeLocation
+                    });
+                </script>
+
             <%}
         }%>
 </div>
+
 </body>
 
 </html>

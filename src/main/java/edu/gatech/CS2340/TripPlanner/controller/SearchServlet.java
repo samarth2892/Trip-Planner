@@ -33,11 +33,25 @@ public class SearchServlet extends HttpServlet {
         String minPrice = request.getParameter("minPrice");
         String minRating = request.getParameter("minRating");
         String maxDistance = request.getParameter("maxDistance");
-
+        int startHour = Integer.parseInt(request.getParameter("startHour"));
+        String startAMPM = request.getParameter("startAMPM");
+        int endHour = Integer.parseInt(request.getParameter("endHour"));
+        String endAMPM = request.getParameter("startAMPM");
+        
+        if (startAMPM.equals("pm")) {
+            startHour += 1200;
+        }
+        if (endAMPM.equals("pm")) {
+            endHour += 1200;
+        }
+        
         address = address.replaceAll(" ", "+");
-        GooglePlaceSearch search = new GooglePlaceSearch(address, keyword, minPrice, minRating, maxDistance);
+        GooglePlaceSearch search = new GooglePlaceSearch(address,
+                keyword, minPrice, minRating, maxDistance,
+                startHour, endHour);
         ArrayList<Place> placeResult = search.search();
-
+        request.setAttribute("center",search.getLatitude()
+                + "," + search.getLongitude());
         request.setAttribute("placeResult", placeResult);
         dispatcher.forward(request, response);
     }

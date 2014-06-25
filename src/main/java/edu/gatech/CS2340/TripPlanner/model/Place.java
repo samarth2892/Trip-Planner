@@ -10,8 +10,8 @@ public class Place {
     private String rating;
     private int openTime;
     private int closeTime;
-    private double latitude;
-    private double longitude;
+    private String latitude;
+    private String longitude;
     private double priceRange;
     private ArrayList<String> images;
     private ArrayList<String> reviews;
@@ -58,17 +58,17 @@ public class Place {
         this.closeTime = closeTime;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
