@@ -3,6 +3,46 @@
 body{
     font-family: "berlin_sans_fb_demibold", Century Gothic, sans-serif;
 }
+#SearchBar {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    height: 50px;
+    line-height: 50px;
+}
+
+#SearchBar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    vertical-align: middle;
+}
+
+#SearchBar ul li {
+    display: inline;
+    padding:3px;
+}
+
+#SearchBar input {
+    height: 20px;
+    font-size: 18px;
+    outline:none;
+}
+
+#searchButton{
+    background: url("../images/searchButton.jpg");
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+}
+#SearchBar input#searchButton {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border-style:none;
+    cursor: pointer;
+    vertical-align: middle;
+}
 
 #NavBar {
     top: 0;
@@ -61,11 +101,19 @@ body{
 
 /* End of Top bar */
 
-#googleMaps {
+#searchResults {
     position: absolute;
-    top:70px;
+    top: 120px;
     left: 0;
-    width: 100%;
+    width: 20%;
+    height: 100%;
+}
+
+#map {
+    position: absolute;
+    top: 120px;
+    left: 20%;
+    width: 80%;
     height: 100%;
 }
 
@@ -110,8 +158,16 @@ body{
     height: 100%;
 }
 
+#changeCredentialsForm input {
+    width: 80%;
+    height: 30px;
+    display: block;
+    margin: 10px auto;
+    font-size: 18px;
+    outline:none;
+}
 
-input {
+#signUpForm input {
     width: 80%;
     height: 30px;
     display: block;
@@ -152,7 +208,16 @@ input:focus{
     color: rgba(0, 0, 0, 0.29);
 }
 
-#changeUsernameButton, #changePasswordButton {
+#changeCredentialsForm input#changeUsernameButton {
+    display: block;
+    position: relative;
+    width: 142px;
+    height: 48px;
+    border-style:none;
+    cursor: pointer;
+}
+
+#changeCredentialsForm input#changePasswordButton {
     display: block;
     position: relative;
     width: 142px;
@@ -173,4 +238,3 @@ input:focus{
 #changePasswordButton:hover {
     background-position: 0 -48px;
 }
-/* Credentials change Form*/

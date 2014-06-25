@@ -7,12 +7,12 @@ public class Place {
     private String address;
     private String phoneNumber;
     private String reference;
+    private String rating;
     private int openTime;
     private int closeTime;
-    private double latitude;
-    private double longitude;
+    private String latitude;
+    private String longitude;
     private double priceRange;
-    private double rating;
     private ArrayList<String> images;
     private ArrayList<String> reviews;
 
@@ -37,6 +37,13 @@ public class Place {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getReference() {
+        return reference;
+    }
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public int getOpenTime() {
         return openTime;
     }
@@ -51,17 +58,17 @@ public class Place {
         this.closeTime = closeTime;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -72,10 +79,10 @@ public class Place {
         this.priceRange = priceRange;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

@@ -1,6 +1,5 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -8,35 +7,69 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Scanner;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 public class GooglePlaceSearch {
+    final static String KEY = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
+    private String googleAPIURL = "https://maps.googleapis.com/maps/api";
     private String address = "";
-    private static String key;
+    private String keyword = "Attractions";
+    private String minPrice = "";
+    private String minRating;
+    private double radius = 0.0;
+    private int startHour = 0;
+    private int endHour = 2359;
+
     private Object latitude;
     private Object longitude;
-    private JSONArray places;
     private HttpClient client = HttpClientBuilder.create().build();
     private HttpResponse response;
     private HttpEntity entity;
+    private ArrayList<Place> placeResults;
 
+    public GooglePlaceSearch(String address, String keyword, String minPrice,
+                             String minRating, String maxDistance,
+                             int startHour, int endHour) {
+        if (!(null == address || address.equals(""))) this.address = address;
+        if (!(null == keyword || keyword.equals(""))) this.keyword = keyword;
+        this.minPrice = minPrice;
+        this.minRating = minRating;
+        this.setRadius(Double.parseDouble(maxDistance) / 3.28 * 5280.0);
+        this.setStartEndHour(startHour, endHour);
+    }
 
-    public GooglePlaceSearch(String address, String key) throws MalformedURLException {
+    /*TODO
+    public void setMinRating(int minRating) {
+        if(minRating > 0 && minRating < 5) {
+            this.minRating = minRating;
+        }
+    }*/
 
-        this.address = address;
-        this.key = key;
+    public void setRadius(double radius) {
+        if (radius > 0.0 && radius < 50000.0) {
+            this.radius = radius;
+        }
+    }
 
+    public void setStartEndHour(int startHour, int endHour) {
+        if (startHour > 0 && endHour < 2400) {
+            this.startHour = startHour;
+            this.endHour = endHour;
+        }
+    }
+
+    public ArrayList<Place> search() throws MalformedURLException {
+        ArrayList<Place> places = new ArrayList<Place>();
         try {
-           generateGeocode(address, key);
-           generatePlaces(latitude, longitude, key);
+            generateGeocode();
+            places = generatePlaces();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -46,45 +79,118 @@ public class GooglePlaceSearch {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return places;
     }
 
-    public void generateGeocode(String address, String key) throws Exception {
-        response = client.execute(new HttpGet("https://maps.googleapis.com/maps/api/geocode/json"
-                + "?address=" + address + "&key=" + key));
-        entity = response.getEntity();
-        String responseString = EntityUtils.toString(entity, "UTF-8");
-        JSONObject j = new JSONObject(responseString);
-        JSONArray locationDetails = j.getJSONArray("results");
-        JSONObject location = locationDetails.getJSONObject(0);
-        latitude = location.getJSONObject("geometry").getJSONObject("location").get("lat");
-        longitude = location.getJSONObject("geometry").getJSONObject("location").get("lng");
-    }
+    public void generateGeocode() throws Exception {
 
-    public void generatePlaces(Object latitude, Object longitude, String key) throws Exception{
-        StringBuilder searchURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-                + "?location=" + latitude + "," + longitude
-                + "&radius=50000&keyword=food&sensor=false&key=" + key);
-        response = client.execute(new HttpGet(searchURL.toString()));
+        response = client.execute(new HttpGet(googleAPIURL
+                + "/geocode/json?address=" + this.address
+                + "&key=" + KEY));
+
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
 
-        JSONObject j = new JSONObject(responseString);
-        places = j.getJSONArray("results");
+        JSONObject jsonStringResult = new JSONObject(responseString);
+        JSONArray locationDetails = jsonStringResult.getJSONArray("results");
+        JSONObject geometry = locationDetails.getJSONObject(0)
+                .getJSONObject("geometry");
+        this.latitude = geometry
+                .getJSONObject("location").get("lat");
+        this.longitude = geometry
+                .getJSONObject("location").get("lng");
+    }
 
-        for(int i = 0; i < places.length(); i++) {
-            JSONObject place = places.getJSONObject(i);
-            System.out.println(place.getString("name"));
+    public ArrayList<Place> generatePlaces() throws Exception{
+        response = client.execute(new HttpGet(googleAPIURL
+                + "/place/nearbysearch/json?location=" + this.latitude
+                + "," + this.longitude + "&radius=" + Double.toString(this.radius)
+                + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
+                + "&sensor=false&key=" + KEY));
+
+        entity = response.getEntity();
+        String responseString = EntityUtils.toString(entity, "UTF-8");
+
+        JSONObject jsonStringResult = new JSONObject(responseString);
+        JSONArray places = jsonStringResult.getJSONArray("results");
+        return generatePlaceList(places);
+    }
+
+    private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception {
+
+        placeResults = new ArrayList<Place>();
+
+        for(int i = 0; i < results.length(); i++) {
+            JSONObject place = results.getJSONObject(i);
+            try {
+                JSONObject placeDetails =
+                        getPlaceDetails(place.getString("reference"));
+
+                Place singlePlace = new Place();
+                singlePlace.setReference(place.getString("reference"));
+                response = client.execute(new HttpGet(googleAPIURL
+                        + "/place/details/json?reference="
+                        + singlePlace.getReference() + "&key=" + KEY));
+
+                entity = response.getEntity();
+                String responseString = EntityUtils.toString(entity, "UTF-8");
+
+                JSONObject jsonStringResult = new JSONObject(responseString);
+
+                JSONObject currentPlace = jsonStringResult
+                        .getJSONObject("result");
+
+                singlePlace.setLatitude(placeDetails.getJSONObject("geometry")
+                        .getJSONObject("location").get("lat").toString());
+                singlePlace.setLongitude(placeDetails.getJSONObject("geometry")
+                        .getJSONObject("location").get("lng").toString());
+                /*String openTime = currentPlace.getJSONObject("opening_hours")
+                        .getJSONArray("periods").getJSONObject(0).
+                                getJSONObject("open").get("time").toString();
+                String closeTime = currentPlace.getJSONObject("opening_hours")
+                        .getJSONArray("periods").getJSONObject(0).
+                                getJSONObject("close").get("time").toString();
+
+                JSONObject firstReview = currentPlace
+                        .getJSONArray("reviews").getJSONObject(0);
+
+                singlePlace.setOpenTime(Integer.parseInt(openTime));
+                singlePlace.setCloseTime(Integer.parseInt(closeTime));
+                singlePlace.setAddress(placeDetails.get("formatted_address")
+                        .toString());*/
+                singlePlace.setName(placeDetails.get("name").toString());
+                //singlePlace.setRating(placeDetails.get("rating").toString());
+
+                /*if (Double.parseDouble(this.minRating)
+                        <= Double.parseDouble(singlePlace.getRating())
+                        && this.startHour >= singlePlace.getOpenTime()
+                        && this.endHour <= singlePlace.getCloseTime()) {
+                    placeResults.add(singlePlace);
+                }*/
+                placeResults.add(singlePlace);
+            } catch (JSONException e) {
+                System.out.println(e.getMessage());
+            }
+
         }
+
+        return placeResults;
     }
 
-    public static void main(String... agrs){
-        String key = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
-        //String lat = "33.989525";
-        //String lon = "-84.610013";
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter address:");
-        String address = scan.nextLine();
+    private JSONObject getPlaceDetails(String reference) throws Exception{
+        response = client.execute(new HttpGet(googleAPIURL
+                + "/place/details/json?reference=" + reference
+                + "&sensor=false&key=" + KEY));
+        entity = response.getEntity();
+        String responseString = EntityUtils.toString(entity, "UTF-8");
+        return new JSONObject(responseString).getJSONObject("result");
+    }
 
+    public String getLatitude() {
+        return this.latitude.toString();
+    }
+
+<<<<<<< HEAD
         address = address.replaceAll(" ", "+");
 
         try {
@@ -92,5 +198,9 @@ public class GooglePlaceSearch {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+=======
+    public String getLongitude() {
+        return this.longitude.toString();
+>>>>>>> upstream/master
     }
 }
