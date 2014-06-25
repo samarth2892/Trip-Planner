@@ -27,9 +27,10 @@
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
                     onblur="geocode()"/></li>
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
-            <li><input name="day" type="text" placeholder="dd" style="width: 3%"/></li>
-            <li><input name="month" type="text" placeholder="mm" style="width: 3%"/></li>
-            <li><input name="year" type="text" placeholder="yyyy" style="width: 4%"/></li>
+            <li><input id="date" name="date" type="text" placeholder="dd/mm/yyyy" style="width: 10%"
+                       onblur="dateValidation()" />
+                <input type="hidden" id="day" name="day" value="">
+            </li>
             <li>
                 <select name="transportation">
                     <option value="" disabled selected>Transportation</option>
@@ -53,7 +54,7 @@
                     <option value="0800"> 8</option>
                     <option value="0900"> 9</option>
                     <option value="1000"> 10</option>
-                    <option value="1100">11 </option>
+                    <option value="1100"> 11</option>
                     <option value="0000"> 12</option>
 
                 </select>
@@ -73,7 +74,7 @@
                     <option value="0800"> 8</option>
                     <option value="0900"> 9</option>
                     <option value="1000"> 10</option>
-                    <option value="1100">11 </option>
+                    <option value="1100"> 11</option>
                     <option value="0000"> 12</option>
                 </select>
                 <select name="endAMPM">
@@ -115,6 +116,8 @@
                     <option value = '20'> 20 miles</option>
                     <option value = '30'> 30 miles</option>
                 </select>
+            </li>
+            <li>
                 <input id="searchButton" type="submit" value="" />
             </li>
         </ul>
@@ -126,6 +129,8 @@
 <div id="searchResults">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
+            <h4 style="color: lightsteelblue;text-align: center;">Click on a place to see it on the map and more details</h4>
+
             <script type="text/javascript">
                 var mapCenter = new google.maps.LatLng(<%=request.getAttribute("center")%>);
                 map = new google.maps.Map(document.getElementById('map'), {
@@ -133,24 +138,41 @@
                     zoom: 10
                 });
 
+                var infoWindow = new google.maps.InfoWindow();
             </script>
-            <%for(Place place: places) {%>
-                <div id="placeResultDiv" >Name: <%=place.getName()%></div>
-                <div id="placeResultDiv" >Address: <%=place.getAddress()%></div>
-                <div id="placeResultDiv" >Rating: <%=place.getRating()%></div>
-                <div id="placeResultDiv" >Open Time: <%=place.getOpenTime()%></div>
-                <div id="placeResultDiv" >Close Time: <%=place.getCloseTime()%></div>
+            <%for(int x = 0; x < places.size(); x++) {%>
+            <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
+                <h3><%=places.get(x).getName()%></h3></a>
+                <p style="text-align: center;">Rating:<%=places.get(x).getRating()%></p>
                 <script type="text/javascript">
                     var placeLocation
-                            = new google.maps.LatLng(<%=place.getLatitude()%>,<%=place.getLongitude()%>);
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: placeLocation
-                    });
+                            = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
+                    var contentString = "<div id='content'>"
+                            +"<h3><%=places.get(x).getName()%></h3>"
+                            +"<p>Address <%=places.get(x).getAddress()%><br/>"
+                            +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
+                            +"Rating: <%=places.get(x).getRating()%><br/>"
+                            +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
+                            +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
+                            +"More info: <%=places.get(x).getWebsite()%></p>"
+                            +"<div style='width:100%;height: 150px;overflow-y: auto'>"
+                            +"<% if(null != places.get(x).getReviews()) {
+                                for(String review: places.get(x).getReviews()) {%>"
+                            +"<%=review%><br/>"
+                            +"<%}
+                                }%>"
+                            +"</div>"
+                            +"</div>";
+
+                    createMarker(placeLocation,contentString,<%=x%>);
                 </script>
 
             <%}
-        }%>
+
+        } else if( null != request.getAttribute("resultsStatus") &&
+                    request.getAttribute("resultsStatus").equals("null")){%>
+            <h3>No Results found!</h3>
+        <%}%>
 </div>
 
 </body>
