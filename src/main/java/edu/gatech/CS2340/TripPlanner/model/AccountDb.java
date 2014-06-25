@@ -1,42 +1,11 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
-import sun.misc.BASE64Encoder;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
-public class AccountDb {
-    static final String DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/accounts";
-    static final String USER = "root";
-    static final String PASS = "admin";
-
-    private Connection conn;
-    private Statement stmt;
-
-    public void connect() {
-        try {
-
-            Class.forName(DRIVER);
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connection sucessful.");
-            stmt = conn.createStatement();
-
-        } catch (ClassNotFoundException ex) {
-            System.out.println("ClassNotFound: Unable to load driver class.");
-            System.exit(1);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+public class AccountDb extends TripPlannerServer {
 
     public boolean usernameIsInUse(String username) {
         try {
@@ -67,11 +36,12 @@ public class AccountDb {
                             + "ORDER BY id DESC " + "LIMIT 1;");
             id.next();
 
-            String sql =
-                        "INSERT INTO ACCOUNTS " + "VALUES("
-                                + (id.getInt(1) + 1) + ",'" + username + "','"
-                                + encode(password) + "','" + name + "');";
-            stmt.executeUpdate(sql);
+            String insertAccount =
+                        "INSERT INTO accounts (user, pass, name) VALUES(('"
+                                + username + "'),('"
+                                + encode(password) + "'),('"
+                                + name + "'));";
+            stmt.executeUpdate(insertAccount);
 
             id =
                     stmt.executeQuery("SELECT id FROM accounts "
@@ -161,22 +131,5 @@ public class AccountDb {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String encode(String pw) throws Exception {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA");
-        } catch (NoSuchAlgorithmException e) {
-            throw new Exception(e.getMessage());
-        }
-        try {
-            md.update(pw.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new Exception(e.getMessage());
-        }
-        byte[] raw = md.digest();
-        String hash = (new BASE64Encoder()).encode(raw);
-        return hash;
     }
 }
