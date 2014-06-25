@@ -152,7 +152,7 @@
                             +"<p>Address <%=places.get(x).getAddress()%><br/>"
                             +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
                             +"Rating:<%=places.get(x).getRating()%></p>"
-                            +"<div style='width:100%;height: 150px;overflow-y: scroll'>"
+                            +"<div style='width:100%;height: 150px;overflow-y: auto'>"
                             +"<% if(null != places.get(x).getReviews()) {
                                 for(String review: places.get(x).getReviews()) {%>"
                             +"<%=review%><br/>"
