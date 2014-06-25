@@ -14,7 +14,7 @@ public class Place {
     private String latitude;
     private String longitude;
     private double priceRange;
-    private ArrayList<String> images;
+    private String imageURL;
     private ArrayList<String> reviews;
 
     public String getName() {
@@ -94,11 +94,11 @@ public class Place {
         this.website = website;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
+    public String getImageURL() {
+        return imageURL;
     }
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public ArrayList<String> getReviews() {

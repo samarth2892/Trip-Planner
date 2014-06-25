@@ -153,6 +153,8 @@ public class GooglePlaceSearch {
 
                 JSONObject firstReview = currentPlace
                         .getJSONArray("reviews").getJSONObject(0);
+                String photoReference = currentPlace.getJSONArray("photos")
+                        .getJSONObject(0).get("photo_reference").toString();
 
                 String phoneNumber = currentPlace.get("formatted_phone_number").toString();
                 String website = currentPlace.get("website").toString();
@@ -165,7 +167,9 @@ public class GooglePlaceSearch {
                 singlePlace.setRating(placeDetails.get("rating").toString());
                 singlePlace.setPhoneNumber(phoneNumber);
                 singlePlace.setWebsite(website);
-
+                singlePlace.setImageURL("https://maps.googleapis.com/maps/api/place/photo?"
+                        + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
+                System.out.println(singlePlace.getImageURL());
                 /*if (Double.parseDouble(this.minRating)
                         <= Double.parseDouble(singlePlace.getRating())
                         && this.startHour >= singlePlace.getOpenTime()

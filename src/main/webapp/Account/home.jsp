@@ -149,7 +149,8 @@
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
                     var contentString = "<div id='content'>"
                             +"<h3><%=places.get(x).getName()%></h3>"
-                            +"<p>Address <%=places.get(x).getAddress()%><br/>"
+                            +"<p><img src='<%=places.get(x).getImageURL()%>'/><br/>"
+                            +"Address <%=places.get(x).getAddress()%><br/>"
                             +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
                             +"Rating: <%=places.get(x).getRating()%><br/>"
                             +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
