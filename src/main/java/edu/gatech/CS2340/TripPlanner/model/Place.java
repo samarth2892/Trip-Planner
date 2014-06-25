@@ -8,6 +8,7 @@ public class Place {
     private String phoneNumber;
     private String reference;
     private String rating;
+    private String website;
     private int openTime;
     private int closeTime;
     private String latitude;
@@ -84,6 +85,13 @@ public class Place {
     }
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public ArrayList<String> getImages() {

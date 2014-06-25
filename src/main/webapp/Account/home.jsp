@@ -54,7 +54,7 @@
                     <option value="0800"> 8</option>
                     <option value="0900"> 9</option>
                     <option value="1000"> 10</option>
-                    <option value="1100">11 </option>
+                    <option value="1100"> 11</option>
                     <option value="0000"> 12</option>
 
                 </select>
@@ -74,7 +74,7 @@
                     <option value="0800"> 8</option>
                     <option value="0900"> 9</option>
                     <option value="1000"> 10</option>
-                    <option value="1100">11 </option>
+                    <option value="1100"> 11</option>
                     <option value="0000"> 12</option>
                 </select>
                 <select name="endAMPM">
@@ -151,7 +151,10 @@
                             +"<h3><%=places.get(x).getName()%></h3>"
                             +"<p>Address <%=places.get(x).getAddress()%><br/>"
                             +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
-                            +"Rating:<%=places.get(x).getRating()%></p>"
+                            +"Rating: <%=places.get(x).getRating()%><br/>"
+                            +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
+                            +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
+                            +"More info: <%=places.get(x).getWebsite()%></p>"
                             +"<div style='width:100%;height: 150px;overflow-y: auto'>"
                             +"<% if(null != places.get(x).getReviews()) {
                                 for(String review: places.get(x).getReviews()) {%>"
