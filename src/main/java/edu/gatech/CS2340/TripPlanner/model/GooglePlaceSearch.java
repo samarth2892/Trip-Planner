@@ -169,7 +169,7 @@ public class GooglePlaceSearch {
                 singlePlace.setWebsite(website);
                 singlePlace.setImageURL("https://maps.googleapis.com/maps/api/place/photo?"
                         + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
-                System.out.println(singlePlace.getImageURL());
+                
                 /*if (Double.parseDouble(this.minRating)
                         <= Double.parseDouble(singlePlace.getRating())
                         && this.startHour >= singlePlace.getOpenTime()
