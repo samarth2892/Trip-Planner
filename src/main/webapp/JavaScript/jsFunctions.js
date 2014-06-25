@@ -1,33 +1,56 @@
 
 var geoCoder;
-var center;
+var markers = [];
 function autoComplete() {
     var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
         { types: ['geocode'] });
 }
 
 
-/*$(document).ready(function() {
-
-     var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
-
-     map = new google.maps.Map(document.getElementById('map'), {
-     center: pyrmont,
-     zoom: 15
-     });
-});*/
-
 function geocode() {
-    geoCoder = new google.maps.Geocoder();
     var address = document.getElementById('address').value;
-    geoCoder.geocode( {'address': address}, geocodeCallback);
+    geoCoder = new google.maps.Geocoder();
+    geoCoder.geocode({'address': address}, geocodeCallback);
 }
 
 function geocodeCallback(results, status) {
     if (!(status == google.maps.GeocoderStatus.OK)) {
 
-        $('#address').val('').attr("placeholder", "Please enter a valid address");
+        $('#address').val('').attr("placeholder", "Please enter a valid address")
+            .css('box-shadow','0 0 8px red');
         return;
+    } else {
+        $('#address').css('box-shadow','none');
     }
-    center = results[0].geometry.location;
+
 }
+
+function dateValidation(){
+    var date = $("#date").val();
+    var d = new Date('"' + date + '"');
+    var n = d.getDay();
+    if(isNaN(n)) {
+        $("#date").val('').attr("placeholder", "Not valid")
+            .css('box-shadow','0 0 8px red');
+    } else {
+        $("#date").css('box-shadow','none');
+        $("#day").val(n);
+    }
+}
+
+function createMarker(placeLocation,contentString,i){
+    var marker = new google.maps.Marker({
+        map: map,
+        position: placeLocation
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.setContent(contentString);
+        infoWindow.open(map, this);
+    });
+    markers[i] = marker
+}
+
+function show(i) {
+    google.maps.event.trigger(markers[i], 'click');
+};
