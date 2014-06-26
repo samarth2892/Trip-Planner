@@ -1,7 +1,5 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
-import java.util.ArrayList;
-
 public class Place {
     private String name;
     private String address;
@@ -15,7 +13,7 @@ public class Place {
     private String longitude;
     private double priceRange;
     private String imageURL;
-    private ArrayList<String> reviews;
+    private String reviews;
 
     public String getName() {
         return name;
@@ -101,10 +99,10 @@ public class Place {
         this.imageURL = imageURL;
     }
 
-    public ArrayList<String> getReviews() {
+    public String getReviews() {
         return reviews;
     }
-    public void setReviews(ArrayList<String> reviews) {
+    public void setReviews(String reviews) {
         this.reviews = reviews;
     }
 }

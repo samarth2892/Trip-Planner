@@ -151,12 +151,14 @@ public class GooglePlaceSearch {
                         .getJSONArray("periods").getJSONObject(0).
                                 getJSONObject("close").get("time").toString();
 
-                JSONObject firstReview = currentPlace
-                        .getJSONArray("reviews").getJSONObject(0);
+                String firstReview = currentPlace
+                        .getJSONArray("reviews").getJSONObject(0).get("text")
+                        .toString();
                 String photoReference = currentPlace.getJSONArray("photos")
                         .getJSONObject(0).get("photo_reference").toString();
 
-                String phoneNumber = currentPlace.get("formatted_phone_number").toString();
+                String phoneNumber = currentPlace.get("formatted_phone_number")
+                        .toString();
                 String website = currentPlace.get("website").toString();
 
                 singlePlace.setOpenTime(Integer.parseInt(openTime));
@@ -169,14 +171,14 @@ public class GooglePlaceSearch {
                 singlePlace.setWebsite(website);
                 singlePlace.setImageURL("https://maps.googleapis.com/maps/api/place/photo?"
                         + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
-                
-                /*if (Double.parseDouble(this.minRating)
+                singlePlace.setReviews(firstReview);
+
+                if (Double.parseDouble(this.minRating)
                         <= Double.parseDouble(singlePlace.getRating())
                         && this.startHour >= singlePlace.getOpenTime()
                         && this.endHour <= singlePlace.getCloseTime()) {
                     placeResults.add(singlePlace);
-                }*/
-                placeResults.add(singlePlace);
+                }
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }

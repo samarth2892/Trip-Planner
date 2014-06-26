@@ -155,13 +155,9 @@
                             +"Rating: <%=places.get(x).getRating()%><br/>"
                             +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
                             +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
-                            +"More info: <%=places.get(x).getWebsite()%></p>"
+                            +"More info: <%=places.get(x).getWebsite()%><br/>"
                             +"<div style='width:100%;height: 150px;overflow-y: auto'>"
-                            +"<% if(null != places.get(x).getReviews()) {
-                                for(String review: places.get(x).getReviews()) {%>"
-                            +"<%=review%><br/>"
-                            +"<%}
-                                }%>"
+                            +"Reviews: <%=places.get(x).getReviews()%><br/>"
                             +"</div>"
                             +"</div>";
 
