@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class PlaceDb extends TripPlannerServer {
 
-    public void addPlace(int userId, Place place) {
+    public void addPlace(Place place) {
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -16,7 +16,7 @@ public class PlaceDb extends TripPlannerServer {
             int nextOrderValue;
 
             ResultSet itinerarySizeResult = placeStatement.executeQuery(
-                    "SELECT * FROM itineraries WHERE accountid=" + userId + " ORDER BY userorder DESC;");
+                    "SELECT * FROM itineraries WHERE accountid=" + getUserId() + " ORDER BY userorder DESC;");
             if (itinerarySizeResult.next()) {
                 nextOrderValue = itinerarySizeResult.getInt(2) + 1;
             } else {
@@ -25,7 +25,7 @@ public class PlaceDb extends TripPlannerServer {
 
             String insertPlace =
                     "INSERT INTO itineraries VALUES("
-                            + userId + ","
+                            + getUserId() + ","
                             + nextOrderValue + ",'"
                             + place.getReference() + "','"
                             + place.getName() + "','"
@@ -42,7 +42,24 @@ public class PlaceDb extends TripPlannerServer {
         }
     }
 
-    public ArrayList<Place> loadItinerary(int userId) {
+    public boolean placeExists(Place place) {
+        try {
+
+            String reference = place.getReference();
+            String selectReference =
+                    "SELECT * FROM itineraries WHERE " +
+                            "(reference='" + reference + "' AND userid=" + getUserId() + ");";
+            ResultSet exists = stmt.executeQuery(selectReference);
+            return exists.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public ArrayList<Place> loadItinerary() {
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -50,7 +67,7 @@ public class PlaceDb extends TripPlannerServer {
             ArrayList<Place> itinerary = new ArrayList<Place>();
 
             String selectPlaces =
-                    "SELECT * FROM itineraries WHERE accountid='" + userId + "' ORDER BY userorder;";
+                    "SELECT * FROM itineraries WHERE accountid='" + getUserId() + "' ORDER BY userorder;";
             ResultSet places = placeStatement.executeQuery(selectPlaces);
 
             Place place;
@@ -80,7 +97,6 @@ public class PlaceDb extends TripPlannerServer {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement placeStatement = conn.createStatement();
             String selectPlaces;
-            String update;
 
             selectPlaces =
                     "SELECT * FROM itineraries WHERE " +
