@@ -24,7 +24,7 @@ public class AccountDb extends TripPlannerServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     public Integer create(String username, String password, String name) {
@@ -69,6 +69,7 @@ public class AccountDb extends TripPlannerServer {
                 try {
                     if (usernameInput.getString("pass")
                             .equals(encode(password))) {
+                        currentUser = username;
                         System.out.println("Login successful.");
                         return true;
                     } else {
@@ -100,6 +101,7 @@ public class AccountDb extends TripPlannerServer {
                         + "SET user='" + newUsername + "'"
                         + "WHERE user='" + oldUsername + "';");
                 System.out.println("Update successful.");
+                currentUser = newUsername;
             } else {
                 System.out.println("Invalid username or password.");
             }
