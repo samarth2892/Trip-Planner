@@ -27,12 +27,15 @@ body{
     margin: 0 auto;
     list-style-type: none;
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 #SearchBar ul li {
     display: inline;
     padding: 2px;
 }
+
+
 
 #SearchBar input {
     height: 20px;
@@ -249,4 +252,20 @@ input:focus{
 
 #changePasswordButton:hover {
     background-position: 0 -48px;
+}
+
+/*Tooltip*/
+.tooltip {
+    background-color:#000;
+    border:1px solid #fff;
+    padding:10px 15px;
+    width:200px;
+    display:none;
+    color:#fff;
+    text-align:left;
+    font-size:12px;
+
+    /* outline radius for mozilla/firefox only */
+    -moz-box-shadow:0 0 10px #000;
+    -webkit-box-shadow:0 0 10px #000;
 }

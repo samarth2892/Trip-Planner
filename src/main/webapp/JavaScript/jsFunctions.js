@@ -1,6 +1,13 @@
 
 var geoCoder;
 var markers = [];
+var today  = new Date();
+function initialize() {
+    autoComplete();
+    currentDate();
+    $("#SearchBar:input").tooltip();
+}
+
 function autoComplete() {
     var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
         { types: ['geocode'] });
@@ -53,4 +60,27 @@ function createMarker(placeLocation,contentString,i){
 
 function show(i) {
     google.maps.event.trigger(markers[i], 'click');
-};
+}
+
+function validateForm(){
+    if($("#")){
+
+    }
+}
+
+function currentDate() {
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd='0'+dd
+    }
+
+    if(mm<10) {
+        mm='0'+mm
+    }
+
+    today = mm+'/'+dd+'/'+yyyy;
+}
+

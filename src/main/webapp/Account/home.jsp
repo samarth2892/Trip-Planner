@@ -10,8 +10,9 @@
     <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
+    <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
 </head>
-<body onload="autoComplete()">
+<body onload="initialize()">
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
@@ -26,10 +27,10 @@
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
                     onblur="geocode()"/></li>
-            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
-            <li><input id="date" name="date" type="text" placeholder="dd/mm/yyyy" style="width: 10%"
-                       onblur="dateValidation()" />
+            <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm/dd/yyyy"
+                       onblur="dateValidation()"  title="Default is current date." />
                 <input type="hidden" id="day" name="day" value="">
+            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
             </li>
             <li>
                 <select name="transportation">
@@ -116,8 +117,6 @@
                     <option value = '20'> 20 miles</option>
                     <option value = '30'> 30 miles</option>
                 </select>
-            </li>
-            <li>
                 <input id="searchButton" type="submit" value="" />
             </li>
         </ul>
@@ -126,10 +125,10 @@
 
 <div id="map"></div>
 
-<div id="searchResults">
+<div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
-            <h4 style="color: lightsteelblue;text-align: center;">Click on a place to see it on the map and more details</h4>
+            <h4 style="color: lightsteelblue;">Click on a place to see it on the map and more details</h4>
 
             <script type="text/javascript">
                 var mapCenter = new google.maps.LatLng(<%=request.getAttribute("center")%>);
@@ -143,7 +142,7 @@
             <%for(int x = 0; x < places.size(); x++) {%>
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
-                <p style="text-align: center;">Rating:<%=places.get(x).getRating()%></p>
+                <p>Rating:<%=places.get(x).getRating()%></p>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
