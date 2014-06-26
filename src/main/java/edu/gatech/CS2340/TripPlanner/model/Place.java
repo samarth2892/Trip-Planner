@@ -1,20 +1,19 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
-import java.util.ArrayList;
-
 public class Place {
     private String name;
     private String address;
     private String phoneNumber;
     private String reference;
     private String rating;
+    private String website;
     private int openTime;
     private int closeTime;
     private String latitude;
     private String longitude;
     private double priceRange;
-    private ArrayList<String> images;
-    private ArrayList<String> reviews;
+    private String imageURL;
+    private String reviews;
 
     public String getName() {
         return name;
@@ -86,17 +85,24 @@ public class Place {
         this.rating = rating;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
+    public String getWebsite() {
+        return website;
     }
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
-    public ArrayList<String> getReviews() {
+    public String getImageURL() {
+        return imageURL;
+    }
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getReviews() {
         return reviews;
     }
-    public void setReviews(ArrayList<String> reviews) {
+    public void setReviews(String reviews) {
         this.reviews = reviews;
     }
 }
