@@ -155,7 +155,7 @@
                             +"Rating: <%=places.get(x).getRating()%><br/>"
                             +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
                             +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
-                            +"More info: <%=places.get(x).getWebsite()%><br/>"
+                            +"More info: <a href='<%=places.get(x).getWebsite()%>'><%=places.get(x).getWebsite()%></a><br/>"
                             +"<div style='width:100%;height: 150px;overflow-y: auto'>"
                             +"Reviews: <%=places.get(x).getReviews()%><br/>"
                             +"<br/><button type='button'>Add to Itinerary</button>"
