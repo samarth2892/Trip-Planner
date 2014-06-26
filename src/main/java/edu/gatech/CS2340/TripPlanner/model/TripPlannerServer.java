@@ -20,6 +20,7 @@ public class TripPlannerServer {
 
     protected Connection conn;
     protected Statement stmt;
+    protected String currentUser;
 
     public void connect() {
         try {
@@ -81,6 +82,23 @@ public class TripPlannerServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getUserId() {
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            String selectUser =
+                    "SELECT id FROM accounts WHERE user=" + currentUser + ";";
+            ResultSet findUser = stmt.executeQuery(selectUser);
+            if (findUser.next()) {
+                return findUser.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public String encode(String pw) throws Exception {
