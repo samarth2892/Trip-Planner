@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {
-        "/AddPlace"
+        "/Account/AddPlace"
 })
 
 public class AddPlaceServlet extends HttpServlet {

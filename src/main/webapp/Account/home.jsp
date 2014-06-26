@@ -158,6 +158,8 @@
                             +"More info: <%=places.get(x).getWebsite()%><br/>"
                             +"<div style='width:100%;height: 150px;overflow-y: auto'>"
                             +"Reviews: <%=places.get(x).getReviews()%><br/>"
+                            +"<br/><button type='button'>Add to Itinerary</button>"
+
                             +"</div>"
                             +"</div>";
 
