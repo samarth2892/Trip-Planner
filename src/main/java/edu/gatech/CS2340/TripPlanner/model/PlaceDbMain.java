@@ -20,7 +20,7 @@ public class PlaceDbMain {
         // Test adding contents
         for (int i = 0; i < 5; i++) {
             place.setOpenTime(rand.nextInt(1000)); //Compare to database to verify results are in order
-            pdb.addPlace(1, place);
+            pdb.addPlace(place);
         }
         // Test updating order
         Place place2 = new Place();
@@ -30,11 +30,11 @@ public class PlaceDbMain {
         place2.setPhoneNumber("2");
         place2.setOpenTime(902);
         place2.setCloseTime(1702);
-        pdb.addPlace(1, place2);
-        pdb.updateOrder(1, place, place2);
+        pdb.addPlace(place2);
+        pdb.updateOrder(place, place2);
 
         // Test viewing contents of an itinerary
-        ArrayList<Place> itinerary = pdb.loadItinerary(1);
+        ArrayList<Place> itinerary = pdb.loadItinerary();
         for (int i = 0; i < itinerary.size(); i++) {
             System.out.print(itinerary.get(i).getReference() + ", ");
             System.out.print(itinerary.get(i).getName() + ", ");

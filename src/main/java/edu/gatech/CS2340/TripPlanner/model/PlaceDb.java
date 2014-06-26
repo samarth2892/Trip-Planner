@@ -91,7 +91,7 @@ public class PlaceDb extends TripPlannerServer {
         return null;
     }
 
-    public void updateOrder(int userId, Place place1, Place place2) {
+    public void updateOrder(Place place1, Place place2) {
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -100,14 +100,14 @@ public class PlaceDb extends TripPlannerServer {
 
             selectPlaces =
                     "SELECT * FROM itineraries WHERE " +
-                            "(accountid=" + userId + " AND reference='" + place1.getReference() + "');";
+                            "(accountid=" + getUserId() + " AND reference='" + place1.getReference() + "');";
             ResultSet result1 = placeStatement.executeQuery(selectPlaces);
             result1.next();
             int userOrder1 = result1.getInt(2);
 
             selectPlaces =
                     "SELECT * FROM itineraries WHERE " +
-                            "(accountid=" + userId + " AND reference='" + place2.getReference() + "');";
+                            "(accountid=" + getUserId() + " AND reference='" + place2.getReference() + "');";
             ResultSet result2 = placeStatement.executeQuery(selectPlaces);
             result2.next();
             int userOrder2 = result2.getInt(2);
@@ -115,19 +115,19 @@ public class PlaceDb extends TripPlannerServer {
             placeStatement.executeUpdate(
                     "UPDATE itineraries " +
                             "SET userorder=0 WHERE " +
-                            "(accountid=" + userId + " AND userorder=" + userOrder1 + ");"
+                            "(accountid=" + getUserId() + " AND userorder=" + userOrder1 + ");"
             );
 
             placeStatement.executeUpdate(
                     "UPDATE itineraries " +
                             "SET userorder=" + userOrder1 + " WHERE " +
-                            "(accountid=" + userId + " AND userorder=" + userOrder2 + ");"
+                            "(accountid=" + getUserId() + " AND userorder=" + userOrder2 + ");"
             );
 
             placeStatement.executeUpdate(
                     "UPDATE itineraries " +
                             "SET userorder=" + userOrder2 + " WHERE " +
-                            "(accountid=" + userId + " AND userorder=0);"
+                            "(accountid=" + getUserId() + " AND userorder=0);"
             );
 
         } catch (SQLException e) {
