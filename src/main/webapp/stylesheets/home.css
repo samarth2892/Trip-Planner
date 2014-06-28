@@ -275,9 +275,7 @@ input:focus{
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background-color: black;
-    background-size: 100%;
-    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.8);
     display: none;
 }
 
@@ -296,7 +294,6 @@ input:focus{
     height: 100%;
     overflow-y: auto;
     float: right;
-    opacity: 1;
 }
 
 #photosDiv {
@@ -304,7 +301,6 @@ input:focus{
     height: 100%;
     overflow-y: auto;
     float: left;
-    opacity: 1;
 }
 
 #loadingDiv {

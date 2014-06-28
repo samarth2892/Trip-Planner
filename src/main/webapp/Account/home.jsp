@@ -28,95 +28,95 @@
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
-                    onblur="geocode()"/></li>
+                    onblur="geocode()" value="${param.address}"/></li>
             <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm-dd-yyyy"
-                       onblur="dateValidation()"  title="Default is current date." />
+                       onblur="dateValidation()" value="${param.date}"/>
                 <input type="hidden" id="day" name="day" value="0">
-            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
+            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" value="${param.keyword}" /></li>
             <li>
                 <select name="transportation">
                     <option value="" disabled selected>Transportation</option>
-                    <option value="car">Car</option>
-                    <option value="bike">Bicycle</option>
-                    <option value="bus">Bus</option>
-                    <option value="walk">Walk</option>
+                    <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
+                    <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
+                    <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
+                    <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
                 </select>
             </li>
 
             <li>
                 <select name="startHour">
                     <option value="" disabled selected>From</option>
-                    <option value="0100"> 1</option>
-                    <option value="0200"> 2</option>
-                    <option value="0300"> 3</option>
-                    <option value="0400"> 4</option>
-                    <option value="0500"> 5</option>
-                    <option value="0600"> 6</option>
-                    <option value="0700"> 7</option>
-                    <option value="0800"> 8</option>
-                    <option value="0900"> 9</option>
-                    <option value="1000"> 10</option>
-                    <option value="1100"> 11</option>
-                    <option value="0000"> 12</option>
+                    <option value="0100" ${param.startHour == '0100' ? 'selected' : ''}> 1</option>
+                    <option value="0200" ${param.startHour == '0200' ? 'selected' : ''}> 2</option>
+                    <option value="0300" ${param.startHour == '0300' ? 'selected' : ''}> 3</option>
+                    <option value="0400" ${param.startHour == '0400' ? 'selected' : ''}> 4</option>
+                    <option value="0500" ${param.startHour == '0500' ? 'selected' : ''}> 5</option>
+                    <option value="0600" ${param.startHour == '0600' ? 'selected' : ''}> 6</option>
+                    <option value="0700" ${param.startHour == '0700' ? 'selected' : ''}> 7</option>
+                    <option value="0800" ${param.startHour == '0800' ? 'selected' : ''}> 8</option>
+                    <option value="0900" ${param.startHour == '0900' ? 'selected' : ''}> 9</option>
+                    <option value="1000" ${param.startHour == '1000' ? 'selected' : ''}> 10</option>
+                    <option value="1100" ${param.startHour == '1100' ? 'selected' : ''}> 11</option>
+                    <option value="0000" ${param.startHour == '0000' ? 'selected' : ''}> 12</option>
 
                 </select>
                 <select name="startAMPM">
-                    <option value = 'am'> AM </option>
-                    <option value = 'pm'> PM </option>
+                    <option value = 'am' ${param.startAMPM == 'am' ? 'selected' : ''}> AM </option>
+                    <option value = 'pm' ${param.startAMPM == 'pm' ? 'selected' : ''}> PM </option>
                 </select>
                 <select name="endHour">
                     <option value="" disabled selected>To</option>
-                    <option value="0100"> 1</option>
-                    <option value="0200"> 2</option>
-                    <option value="0300"> 3</option>
-                    <option value="0400"> 4</option>
-                    <option value="0500"> 5</option>
-                    <option value="0600"> 6</option>
-                    <option value="0700"> 7</option>
-                    <option value="0800"> 8</option>
-                    <option value="0900"> 9</option>
-                    <option value="1000"> 10</option>
-                    <option value="1100"> 11</option>
-                    <option value="0000"> 12</option>
+                    <option value="0100" ${param.endHour == '0100' ? 'selected' : ''}> 1</option>
+                    <option value="0200" ${param.endHour == '0200' ? 'selected' : ''}> 2</option>
+                    <option value="0300" ${param.endHour == '0300' ? 'selected' : ''}> 3</option>
+                    <option value="0400" ${param.endHour == '0400' ? 'selected' : ''}> 4</option>
+                    <option value="0500" ${param.endHour == '0500' ? 'selected' : ''}> 5</option>
+                    <option value="0600" ${param.endHour == '0600' ? 'selected' : ''}> 6</option>
+                    <option value="0700" ${param.endHour == '0700' ? 'selected' : ''}> 7</option>
+                    <option value="0800" ${param.endHour == '0800' ? 'selected' : ''}> 8</option>
+                    <option value="0900" ${param.endHour == '0900' ? 'selected' : ''}> 9</option>
+                    <option value="1000" ${param.endHour == '1000' ? 'selected' : ''}> 10</option>
+                    <option value="1100" ${param.endHour == '1100' ? 'selected' : ''}> 11</option>
+                    <option value="0000" ${param.endHour == '0000' ? 'selected' : ''}> 12</option>
                 </select>
                 <select name="endAMPM">
-                    <option value = 'am'> AM </option>
-                    <option value = 'pm'> PM </option>
+                    <option value = 'am' ${param.endAMPM == 'am' ? 'selected' : ''}> AM </option>
+                    <option value = 'pm' ${param.endAMPM == 'pm' ? 'selected' : ''}> PM </option>
                 </select>
             </li>
 
             <li>
                 <select name="minPrice">
                     <option value="" disabled selected>Price Range</option>
-                    <option value = '0'> $ </option>
-                    <option value = '1'> $$ </option>
-                    <option value = '2'> $$$ </option>
-                    <option value = '3'> $$$$ </option>
-                    <option value = '4'> $$$$$ </option>
+                    <option value = '0' ${param.minPrice == '0' ? 'selected' : ''}> $ </option>
+                    <option value = '1' ${param.minPrice == '1' ? 'selected' : ''}> $$ </option>
+                    <option value = '2' ${param.minPrice == '2' ? 'selected' : ''}> $$$ </option>
+                    <option value = '3' ${param.minPrice == '3' ? 'selected' : ''}> $$$$ </option>
+                    <option value = '4' ${param.minPrice == '4' ? 'selected' : ''}> $$$$$ </option>
                 </select>
             </li>
             <li>
                 <select name="minRating">
                     <option value="" disabled selected>Rating</option>
-                    <option value = '1.0'> 1 </option>
-                    <option value = '2.0'> 2 </option>
-                    <option value = '3.0'> 3 </option>
-                    <option value = '4.0'> 4 </option>
-                    <option value = '5.0'> 5 </option>
+                    <option value = '1.0' ${param.minRating == '1.0' ? 'selected' : ''}> 1 </option>
+                    <option value = '2.0' ${param.minRating == '2.0' ? 'selected' : ''}> 2 </option>
+                    <option value = '3.0' ${param.minRating == '3.0' ? 'selected' : ''}> 3 </option>
+                    <option value = '4.0' ${param.minRating == '4.0' ? 'selected' : ''}> 4 </option>
+                    <option value = '5.0' ${param.minRating == '5.0' ? 'selected' : ''}> 5 </option>
                 </select>
             </li>
             <li>
                 <select name="maxDistance">
                     <option value="" disabled selected>Within</option>
-                    <option value = '1'> 1 mile</option>
-                    <option value = '2'> 2 miles</option>
-                    <option value = '3'> 3 miles</option>
-                    <option value = '4'> 4 miles</option>
-                    <option value = '5'> 5 miles</option>
-                    <option value = '10'> 10 miles</option>
-                    <option value = '15'> 15 miles</option>
-                    <option value = '20'> 20 miles</option>
-                    <option value = '30'> 30 miles</option>
+                    <option value = '1' ${param.maxDistance == '1' ? 'selected' : ''}> 1 mile</option>
+                    <option value = '2' ${param.maxDistance == '2' ? 'selected' : ''}> 2 miles</option>
+                    <option value = '3' ${param.maxDistance == '3' ? 'selected' : ''}> 3 miles</option>
+                    <option value = '4' ${param.maxDistance == '4' ? 'selected' : ''}> 4 miles</option>
+                    <option value = '5' ${param.maxDistance == '5' ? 'selected' : ''}> 5 miles</option>
+                    <option value = '10' ${param.maxDistance == '10' ? 'selected' : ''}> 10 miles</option>
+                    <option value = '15' ${param.maxDistance == '15' ? 'selected' : ''}> 15 miles</option>
+                    <option value = '20' ${param.maxDistance == '20' ? 'selected' : ''}> 20 miles</option>
+                    <option value = '30' ${param.maxDistance == '30' ? 'selected' : ''}> 30 miles</option>
                 </select>
                 <input id="searchButton" type="submit" value="" onClick="$('#loadingDiv').fadeIn('fast');"/>
             </li>
@@ -125,7 +125,7 @@
 </div>
 
 <div id="map"></div>
-<div id="moreInfo" style="text-align:center;" ><a style="padding-top:10px" href='javascript:hideMoreInfo()'>Click here to exit</a></div>
+<div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>

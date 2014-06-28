@@ -55,12 +55,10 @@ public class SearchServlet extends HttpServlet {
                 : 2359 ;
         String endAMPM = request.getParameter("endAMPM");
 
-        if (null != startAMPM && startAMPM.equals("pm")
-                && startHour != 1200 && startHour != 0) {
+        if (null != startAMPM && startAMPM.equals("pm") && startHour != 0) {
             startHour += 1200;
         }
-        if (null != endAMPM && endAMPM.equals("pm")
-                && endHour != 1200 && endHour != 2359) {
+        if (null != endAMPM && endAMPM.equals("pm") && endHour != 2359) {
             endHour += 1200;
         }
 
