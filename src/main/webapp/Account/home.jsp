@@ -13,6 +13,8 @@
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
 </head>
 <body onload="initialize()">
+<div id="loadingDiv"></div>
+<script type="text/javascript">$('#loadingDiv').fadeIn('fast');</script>
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
@@ -27,11 +29,10 @@
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
                     onblur="geocode()"/></li>
-            <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm/dd/yyyy"
+            <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm-dd-yyyy"
                        onblur="dateValidation()"  title="Default is current date." />
-                <input type="hidden" id="day" name="day" value="">
+                <input type="hidden" id="day" name="day" value="0">
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
-            </li>
             <li>
                 <select name="transportation">
                     <option value="" disabled selected>Transportation</option>
@@ -117,18 +118,19 @@
                     <option value = '20'> 20 miles</option>
                     <option value = '30'> 30 miles</option>
                 </select>
-                <input id="searchButton" type="submit" value="" />
+                <input id="searchButton" type="submit" value="" onClick="$('#loadingDiv').fadeIn('fast');"/>
             </li>
         </ul>
     </form>
 </div>
 
 <div id="map"></div>
-
+<div id="moreInfo" style="text-align:center;" ><a style="padding-top:10px" href='javascript:hideMoreInfo()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
-            <h4 style="color: lightsteelblue;">Click on a place to see it on the map and more details</h4>
+            <h4 style="color: lightsteelblue;"><%=places.size()%> Results found<br/>
+                Click on a place to see it on the map and more details</h4>
 
             <script type="text/javascript">
                 var mapCenter = new google.maps.LatLng(<%=request.getAttribute("center")%>);
@@ -143,36 +145,74 @@
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
                 <p>Rating:<%=places.get(x).getRating()%></p>
+                <%String date = request.getParameter("date");%>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                    var contentString = "<div id='content'>"
-                            +"<h3><%=places.get(x).getName()%></h3>"
-                            +"<p><img src='<%=places.get(x).getImageURL()%>'/><br/>"
-                            +"Address <%=places.get(x).getAddress()%><br/>"
-                            +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
-                            +"Rating: <%=places.get(x).getRating()%><br/>"
-                            +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
-                            +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
-                            +"More info: <a href='<%=places.get(x).getWebsite()%>'><%=places.get(x).getWebsite()%></a><br/>"
-                            +"<div style='width:100%;height: 150px;overflow-y: auto'>"
-                            +"Reviews: <%=places.get(x).getReviews()%><br/>"
-                            +"<br/><button type='button'>Add to Itinerary</button>"
-
-                            +"</div>"
-                            +"</div>";
+                   var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                           +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
+                           +"<div style='width:60%;float:left'>"
+                           +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
+                           +"</div>"
+                           +"<div style='width:40%;float:right;'>"
+                           +"Address: <%=(null!=places.get(x).getAddress())?places.get(x).getAddress():""%><br/>"
+                           +"Phone No: <%=(null!=places.get(x).getPhoneNumber())?places.get(x).getPhoneNumber():""%><br/>"
+                           +"Rating: <%=(null!=places.get(x).getRating())?places.get(x).getRating():""%><br/>"
+                           +"Hours on: <%=date%><br/>"
+                           +"Open Time: <%=(null!=places.get(x).getOpenTimeString())?places.get(x).getOpenTimeString():"N/A"%><br/>"
+                           +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
+                           +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
+                           +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
+                           +"<br/><button type='button'>Add to Itinerary</button>"
+                           +"</div>"
+                           +"</div>";
 
                     createMarker(placeLocation,contentString,<%=x%>);
                 </script>
 
-            <%}
+                <!-- More info Divs-->
+                <script type="text/javascript">
+                   var moreInfoContent = "<div id='moreInfoContent<%=x%>' class='moreInfoContent'></div>";
+                   var reviewsDiv = "<div id='reviewsDiv'><h3>Reviews</h3>";
+                   var photosDiv = "<div id='photosDiv'><h3>Photos</h3>";
+                    $("#moreInfo").append(moreInfoContent);
 
-        } else if( null != request.getAttribute("resultsStatus") &&
+                    <% if(places.get(x).getReviews().size() > 0) {
+                        for(int j = 0; j < places.get(x).getReviews().size(); j++) {
+                             String review = places.get(x).getReviews().get(j).replace("\"", "\\\"");
+                             review = review.replace("\'", "\\\'");
+                             review = review.replace("\n", "+");
+                        %>
+                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'><%=review%></p>";
+                        <%}%>
+
+                    <%} else {%>
+                   reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'>No Reviews Available</p>";
+                    <%}%>
+
+                   <% if(places.get(x).getImageURL().size() > 0) {
+                       for(int j = 0; j < places.get(x).getImageURL().size(); j++) {
+                            String url = places.get(x).getImageURL().get(j);
+                       %>
+                        photosDiv = photosDiv + "<br/><img style='max-width:90%;max-height:300px;display: block;margin-left: auto;margin-right:auto' src='<%=url%>'/>";
+                      <%}%>
+
+                   <%} else {%>
+                        $("#photosDiv").css("width","0");
+                   <%}%>
+
+                    reviewsDiv = reviewsDiv + "</div>";
+                    photosDiv = photosDiv + "</div>";
+                    $("#moreInfoContent<%=x%>").append(reviewsDiv).append(photosDiv);
+                </script>
+                <%}%>
+
+        <% } else if( null != request.getAttribute("resultsStatus") &&
                     request.getAttribute("resultsStatus").equals("null")){%>
             <h3>No Results found!</h3>
-        <%}%>
+         <%}%>
 </div>
 
 </body>
-
+<script type="text/javascript">$('#loadingDiv').fadeOut('fast');</script>
 </html>

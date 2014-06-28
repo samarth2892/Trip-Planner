@@ -1,5 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
+import java.util.ArrayList;
+
 public class Place {
     private String name;
     private String address;
@@ -9,11 +11,13 @@ public class Place {
     private String website;
     private int openTime;
     private int closeTime;
+    private String openTimeString;
+    private String closeTimeString;
     private String latitude;
     private String longitude;
     private double priceRange;
-    private String imageURL;
-    private String reviews;
+    private ArrayList<String> imageURL = new ArrayList<String>();
+    private ArrayList<String> reviews = new ArrayList<String>();
 
     public String getName() {
         return name;
@@ -48,6 +52,9 @@ public class Place {
     }
     public void setOpenTime(int openTime) {
         this.openTime = openTime;
+        double i = openTime / 100;
+        openTimeString = (i > 11.59) ? Double.toString(i) + " pm"
+                : Double.toString(i) + " am";
     }
 
     public int getCloseTime() {
@@ -55,6 +62,9 @@ public class Place {
     }
     public void setCloseTime(int closeTime) {
         this.closeTime = closeTime;
+        double i = closeTime / 100;
+        closeTimeString = (i > 11.59) ? Double.toString(i - 12) + " pm"
+                : Double.toString(i) + " am";
     }
 
     public String getLatitude() {
@@ -92,17 +102,25 @@ public class Place {
         this.website = website;
     }
 
-    public String getImageURL() {
+    public ArrayList<String> getImageURL() {
         return imageURL;
     }
-    public void setImageURL(String imageURL) {
+    public void setImageURL(ArrayList<String> imageURL) {
         this.imageURL = imageURL;
     }
 
-    public String getReviews() {
+    public ArrayList<String> getReviews() {
         return reviews;
     }
-    public void setReviews(String reviews) {
+    public void setReviews(ArrayList<String> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getOpenTimeString(){
+        return this.openTimeString;
+    }
+
+    public String getCloseTimeString() {
+        return this.closeTimeString;
     }
 }

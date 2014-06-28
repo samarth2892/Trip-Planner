@@ -2,15 +2,18 @@
 var geoCoder;
 var markers = [];
 var today  = new Date();
+var validAddress = false;
+var validDate = false;
+var divNumber;
+
 function initialize() {
     autoComplete();
-    currentDate();
-    $("#SearchBar:input").tooltip();
 }
 
 function autoComplete() {
     var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
         { types: ['geocode'] });
+    $("#SearchBar").find("input[type=submit]").attr("disabled", "disabled");
 }
 
 
@@ -25,23 +28,32 @@ function geocodeCallback(results, status) {
 
         $('#address').val('').attr("placeholder", "Please enter a valid address")
             .css('box-shadow','0 0 8px red');
-        return;
+        validAddress = false;
+        searchButtonStatus();
     } else {
         $('#address').css('box-shadow','none');
+        validAddress = true;
+        searchButtonStatus();
     }
-
 }
 
 function dateValidation(){
     var date = $("#date").val();
+    var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+    var dtArray = date.match(rxDatePattern);
+
     var d = new Date('"' + date + '"');
     var n = d.getDay();
-    if(isNaN(n)) {
-        $("#date").val('').attr("placeholder", "Not valid")
+    if(isNaN(n) || dtArray == null) {
+        $("#date").val('').attr("placeholder", "mm-dd-yyyy")
             .css('box-shadow','0 0 8px red');
+        validDate = false;
+        searchButtonStatus();
     } else {
         $("#date").css('box-shadow','none');
         $("#day").val(n);
+        validDate = true;
+        searchButtonStatus();
     }
 }
 
@@ -62,25 +74,25 @@ function show(i) {
     google.maps.event.trigger(markers[i], 'click');
 }
 
-function validateForm(){
-    if($("#")){
+$("#address").change(searchButtonStatus());
+$("#date").change(searchButtonStatus());
 
+function searchButtonStatus(){
+    if(validAddress && validDate){
+        $("#SearchBar").find("input[type=submit]").removeAttr("disabled");
+    } else {
+        $("#SearchBar").find("input[type=submit]").attr("disabled", "disabled");
     }
 }
 
-function currentDate() {
-    var dd = today.getDate();
-    var mm = today.getMonth()+1;
-    var yyyy = today.getFullYear();
-
-    if(dd<10) {
-        dd='0'+dd
-    }
-
-    if(mm<10) {
-        mm='0'+mm
-    }
-
-    today = mm+'/'+dd+'/'+yyyy;
+function showMoreInfo(div) {
+    divNumber = div;
+    $("#moreInfo").fadeIn("slow").find("#moreInfoContent"+divNumber).show();
 }
+
+function hideMoreInfo() {
+    $("#moreInfo").fadeOut("slow").find("#moreInfoContent"+divNumber).hide();
+}
+
+$("#SearchBar").find("input[type=submit]").click($("#moreInfo").fadeIn("slow"));
 

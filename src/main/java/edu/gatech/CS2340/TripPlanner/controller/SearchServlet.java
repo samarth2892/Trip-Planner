@@ -25,33 +25,58 @@ public class SearchServlet extends HttpServlet {
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("/Account/home.jsp");
 
-        StringBuffer error = new StringBuffer("");
-        int errorCount = 0;
-
         String address = request.getParameter("address");
+
+        String day = request.getParameter("day");
+
         String keyword = request.getParameter("keyword");
+
         String minPrice = request.getParameter("minPrice");
-        String minRating = request.getParameter("minRating");
-        String maxDistance = request.getParameter("maxDistance");
-        int startHour = Integer.parseInt(request.getParameter("startHour"));
+
+        Double minRating = (null != request.getParameter("minRating")
+                && !request.getParameter("minRating").equals(""))
+                ? Double.parseDouble(request.getParameter("minRating"))
+                : 1.0;
+
+        int radius = (null != request.getParameter("maxDistance")
+                && !request.getParameter("maxDistance").equals(""))
+                ? Integer.parseInt(request.getParameter("maxDistance"))
+                : 5000;
+
+        double startHour = (null != request.getParameter("startHour") &&
+                !request.getParameter("startHour").equals(""))
+                ? Double.parseDouble(request.getParameter("startHour"))
+                : 0 ;
         String startAMPM = request.getParameter("startAMPM");
-        int endHour = Integer.parseInt(request.getParameter("endHour"));
-        String endAMPM = request.getParameter("startAMPM");
-        
-        if (startAMPM.equals("pm")) {
+
+        double endHour = (null != request.getParameter("endHour") &&
+                    !request.getParameter("endHour").equals(""))
+                ? Double.parseDouble(request.getParameter("endHour"))
+                : 2359 ;
+        String endAMPM = request.getParameter("endAMPM");
+
+        if (null != startAMPM && startAMPM.equals("pm")
+                && startHour != 1200 && startHour != 0) {
             startHour += 1200;
         }
-        if (endAMPM.equals("pm")) {
+        if (null != endAMPM && endAMPM.equals("pm")
+                && endHour != 1200 && endHour != 2359) {
             endHour += 1200;
         }
-        
+
         address = address.replaceAll(" ", "+");
         GooglePlaceSearch search = new GooglePlaceSearch(address,
-                keyword, minPrice, minRating, maxDistance,
-                startHour, endHour);
+                Integer.parseInt(day));
+        search.setStartEndHour(startHour, endHour);
+        search.setKeyword(keyword);
+        search.setMinPrice(minPrice);
+        search.setMinRating(minRating);
+        search.setRadiusInMeters(radius * 1609.34);
+
         ArrayList<Place> placeResult = search.search();
         request.setAttribute("center",search.getLatitude()
                 + "," + search.getLongitude());
+
         request.setAttribute("placeResult", placeResult);
         dispatcher.forward(request, response);
     }
