@@ -1,6 +1,9 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Place {
     private String name;
@@ -117,10 +120,23 @@ public class Place {
     }
 
     public String getOpenTimeString(){
-        return this.openTimeString;
+        try {
+            Date startDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+            return sdf.format(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-
     public String getCloseTimeString() {
-        return this.closeTimeString;
+        try {
+            Date closeDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", closeTime));
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+            return sdf.format(closeDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
