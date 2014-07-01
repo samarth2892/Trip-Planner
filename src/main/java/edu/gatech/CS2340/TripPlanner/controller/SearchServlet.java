@@ -27,7 +27,7 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
 
-        String date = request.getSession().getAttribute("itineraryDate").toString();
+        //String date = request.getSession().getAttribute("itineraryDate").toString();
 
         String day = request.getParameter("day");
 
