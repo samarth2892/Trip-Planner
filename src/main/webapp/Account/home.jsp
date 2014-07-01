@@ -28,7 +28,7 @@
     <form action="<%=request.getContextPath()%>/Account/Search" method="POST" onSubmit="return validate();">
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
-                    value="${param.address}"/></li>
+                        onkeyup="geocode();" value="${param.address}" /></li>
             <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm-dd-yyyy"
                        value="${param.date}"/>
                 <input type="hidden" id="day" name="day" value="0">

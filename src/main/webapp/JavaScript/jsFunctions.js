@@ -2,42 +2,19 @@
 var geoCoder;
 var markers = [];
 var divNumber;
-var isValidAddress;
+var isValidAddress = false;
 
 function initialize() {
     geoCoder = new google.maps.Geocoder();
     autoComplete();
 }
 
-function validate(cleanAddress) {
-    if (dateValidation()) {
-        var address = document.getElementById('address').value;
-        geoCoder.geocode({'address': address}, function (results, status) {
-            cleanAddress(status == google.maps.GeocoderStatus.OK);
-        });
-        alert(isValidAddress);
-    } else {
-         $("#date").val('').attr("placeholder", "mm-dd-yyyy")
-         .css('box-shadow','0 0 8px red');
-        return false;
-    }
-}
 
-function cleanAddress(isValid) {
-    if(isValid == false) {
-        $('#address').val('').attr("placeholder", "Please enter a valid address")
-            .css('box-shadow','0 0 8px red');
-        isValidAddress = isValid;
-
-    } else {
-        $('#loadingDiv').fadeIn('fast');
-
-    }
-}
-
-function autoComplete() {
-    var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
-        { types: ['geocode'] });
+function geocode() {
+    var address = document.getElementById('address').value;
+    geoCoder.geocode({'address': address}, function (results, status) {
+        isValidAddress = status == google.maps.GeocoderStatus.OK;
+    });
 }
 
 function dateValidation(){
@@ -49,6 +26,35 @@ function dateValidation(){
     var n = d.getDay();
     return !(isNaN(n) || dtArray == null);
 }
+
+$('#address').autocomplete({
+    select: function (event, ui) {
+        geocode();
+    }
+});
+
+
+function validate() {
+
+    if(!isValidAddress) {
+        $('#address').val('').attr("placeholder", "Please enter a valid address")
+                .css('box-shadow','0 0 8px red');
+        return false;
+    } else if(!dateValidation()){
+        $("#date").val('').attr("placeholder", "mm-dd-yyyy")
+            .css('box-shadow','0 0 8px red');
+        return false;
+    }
+    $('#loadingDiv').fadeIn('fast');
+    return true;
+}
+
+
+function autoComplete() {
+    var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
+        { types: ['geocode'] });
+}
+
 
 function createMarker(placeLocation,contentString,i){
     var marker = new google.maps.Marker({
