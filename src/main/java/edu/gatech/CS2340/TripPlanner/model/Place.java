@@ -121,9 +121,14 @@ public class Place {
 
     public String getOpenTimeString(){
         try {
-            Date startDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-            return sdf.format(startDate);
+            Date openDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));
+            SimpleDateFormat oneDigitFormat = new SimpleDateFormat("h:mm a");
+            SimpleDateFormat twoDigitFormat = new SimpleDateFormat("hh:mm a");
+            if ((openTime >= 1000 && openTime <= 1259) || openTime >= 2200) {
+                return twoDigitFormat.format(openDate);
+            } else {
+                return oneDigitFormat.format(openDate);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -132,8 +137,13 @@ public class Place {
     public String getCloseTimeString() {
         try {
             Date closeDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", closeTime));
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-            return sdf.format(closeDate);
+            SimpleDateFormat oneDigitFormat = new SimpleDateFormat("h:mm a");
+            SimpleDateFormat twoDigitFormat = new SimpleDateFormat("hh:mm a");
+            if ((closeTime >= 1000 && closeTime <= 1259) || closeTime >= 2200) {
+                return twoDigitFormat.format(closeDate);
+            } else {
+                return oneDigitFormat.format(closeDate);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
