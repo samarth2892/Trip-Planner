@@ -1,40 +1,43 @@
 
 var geoCoder;
 var markers = [];
-var today  = new Date();
-var validAddress = false;
-var validDate = false;
 var divNumber;
+var isValidAddress;
 
 function initialize() {
+    geoCoder = new google.maps.Geocoder();
     autoComplete();
+}
+
+function validate(cleanAddress) {
+    if (dateValidation()) {
+        var address = document.getElementById('address').value;
+        geoCoder.geocode({'address': address}, function (results, status) {
+            cleanAddress(status == google.maps.GeocoderStatus.OK);
+        });
+        alert(isValidAddress);
+    } else {
+         $("#date").val('').attr("placeholder", "mm-dd-yyyy")
+         .css('box-shadow','0 0 8px red');
+        return false;
+    }
+}
+
+function cleanAddress(isValid) {
+    if(isValid == false) {
+        $('#address').val('').attr("placeholder", "Please enter a valid address")
+            .css('box-shadow','0 0 8px red');
+        isValidAddress = isValid;
+
+    } else {
+        $('#loadingDiv').fadeIn('fast');
+
+    }
 }
 
 function autoComplete() {
     var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
         { types: ['geocode'] });
-    $("#SearchBar").find("input[type=submit]").attr("disabled", "disabled");
-}
-
-
-function geocode() {
-    var address = document.getElementById('address').value;
-    geoCoder = new google.maps.Geocoder();
-    geoCoder.geocode({'address': address}, geocodeCallback);
-}
-
-function geocodeCallback(results, status) {
-    if (!(status == google.maps.GeocoderStatus.OK)) {
-
-        $('#address').val('').attr("placeholder", "Please enter a valid address")
-            .css('box-shadow','0 0 8px red');
-        validAddress = false;
-        searchButtonStatus();
-    } else {
-        $('#address').css('box-shadow','none');
-        validAddress = true;
-        searchButtonStatus();
-    }
 }
 
 function dateValidation(){
@@ -44,17 +47,7 @@ function dateValidation(){
 
     var d = new Date('"' + date + '"');
     var n = d.getDay();
-    if(isNaN(n) || dtArray == null) {
-        $("#date").val('').attr("placeholder", "mm-dd-yyyy")
-            .css('box-shadow','0 0 8px red');
-        validDate = false;
-        searchButtonStatus();
-    } else {
-        $("#date").css('box-shadow','none');
-        $("#day").val(n);
-        validDate = true;
-        searchButtonStatus();
-    }
+    return !(isNaN(n) || dtArray == null);
 }
 
 function createMarker(placeLocation,contentString,i){
@@ -74,17 +67,6 @@ function show(i) {
     google.maps.event.trigger(markers[i], 'click');
 }
 
-$("#address").change(searchButtonStatus());
-$("#date").change(searchButtonStatus());
-
-function searchButtonStatus(){
-    if(validAddress && validDate){
-        $("#SearchBar").find("input[type=submit]").removeAttr("disabled");
-    } else {
-        $("#SearchBar").find("input[type=submit]").attr("disabled", "disabled");
-    }
-}
-
 function showMoreInfo(div) {
     divNumber = div;
     $("#moreInfo").fadeIn("slow").find("#moreInfoContent"+divNumber).show();
@@ -94,5 +76,5 @@ function hideMoreInfo() {
     $("#moreInfo").fadeOut("slow").find("#moreInfoContent"+divNumber).hide();
 }
 
-$("#SearchBar").find("input[type=submit]").click($("#moreInfo").fadeIn("slow"));
+
 

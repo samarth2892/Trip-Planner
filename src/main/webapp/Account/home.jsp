@@ -14,7 +14,7 @@
 </head>
 <body onload="initialize()">
 <div id="loadingDiv"></div>
-<script type="text/javascript">$('#loadingDiv').fadeIn('fast');</script>
+
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
@@ -25,12 +25,12 @@
 </div>
 
 <div id = "SearchBar">
-    <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
+    <form action="<%=request.getContextPath()%>/Account/Search" method="POST" onSubmit="return validate();">
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
-                    onblur="geocode()" value="${param.address}"/></li>
+                    value="${param.address}"/></li>
             <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm-dd-yyyy"
-                       onblur="dateValidation()" value="${param.date}"/>
+                       value="${param.date}"/>
                 <input type="hidden" id="day" name="day" value="0">
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" value="${param.keyword}" /></li>
             <li>
@@ -118,7 +118,7 @@
                     <option value = '20' ${param.maxDistance == '20' ? 'selected' : ''}> 20 miles</option>
                     <option value = '30' ${param.maxDistance == '30' ? 'selected' : ''}> 30 miles</option>
                 </select>
-                <input id="searchButton" type="submit" value="" onClick="$('#loadingDiv').fadeIn('fast');"/>
+                <input id="searchButton" type="submit" value="" onClick=""/>
             </li>
         </ul>
     </form>
@@ -214,5 +214,5 @@
 </div>
 
 </body>
-<script type="text/javascript">$('#loadingDiv').fadeOut('fast');</script>
+
 </html>
