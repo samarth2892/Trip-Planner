@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class PlaceDb extends TripPlannerServer {
 
-    public void addPlace(Place place) {
+    public void addPlace(Place place, String date) {
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -27,6 +27,7 @@ public class PlaceDb extends TripPlannerServer {
                     "INSERT INTO itineraries VALUES("
                             + getUserId() + ","
                             + nextOrderValue + ",'"
+                            + date + ",'"
                             + place.getReference() + "','"
                             + place.getName() + "','"
                             + place.getAddress() + "','"

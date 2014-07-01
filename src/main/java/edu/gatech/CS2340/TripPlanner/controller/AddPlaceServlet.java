@@ -39,7 +39,7 @@ public class AddPlaceServlet extends HttpServlet {
         place.setCloseTime(request.getIntHeader("closeTime"));
 
         if (!placeDatabase.placeExists(place)) {
-            placeDatabase.addPlace(place);
+            placeDatabase.addPlace(place, "0"); //TODO: Get date from front end
             addConfirmation = place.getName() + " has been added to your itinerary.";
             dispatcher = request.getRequestDispatcher("home.jsp");
         } else {
