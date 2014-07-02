@@ -21,8 +21,8 @@ function dateValidation(){
     var date = $("#date").val();
     var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
     var dtArray = date.match(rxDatePattern);
-
-    var d = new Date('"' + date + '"');
+    alert(date.replace(/\-/g,','));
+    var d = new Date(date.replace(/\-/g,','));
     var n = d.getDay();
     return !(isNaN(n) || dtArray == null);
 }
