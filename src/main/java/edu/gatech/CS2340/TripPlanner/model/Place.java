@@ -21,6 +21,7 @@ public class Place {
     private double priceRange;
     private ArrayList<String> imageURL = new ArrayList<String>();
     private ArrayList<String> reviews = new ArrayList<String>();
+    private ArrayList<String> directions = new ArrayList<String>();
 
     public String getName() {
         return name;
@@ -119,6 +120,13 @@ public class Place {
         this.reviews = reviews;
     }
 
+    public ArrayList<String> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(ArrayList<String> directions) {
+        this.directions = directions;
+    }
     public String getOpenTimeString(){
         try {
             Date openDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));

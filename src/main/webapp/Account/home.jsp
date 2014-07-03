@@ -126,6 +126,7 @@
 
 <div id="map"></div>
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
+<div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
@@ -162,7 +163,8 @@
                            +"Open Time: <%=(null!=places.get(x).getOpenTimeString())?places.get(x).getOpenTimeString():"N/A"%><br/>"
                            +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
-                           +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
+                           +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a><br/>"
+                           +"<a href='javascript:showDirections(<%=x%>)'>Click here to get directions.</a>"
                            +"<br/><button type='button'>Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
@@ -204,6 +206,28 @@
                     reviewsDiv = reviewsDiv + "</div>";
                     photosDiv = photosDiv + "</div>";
                     $("#moreInfoContent<%=x%>").append(reviewsDiv).append(photosDiv);
+                </script>
+
+                <script type="text/javascript">
+                    var directionsContent = "<div id='directionsContent<%=x%>' class='directionsContent'></div>";
+                    var directionsDiv = "<div id='directionsDiv'><h3>Directions</h3>";
+                    $("#directions").append(directionsContent);
+
+                    <% if(places.get(x).getDirections().size() > 0) {
+                        for(int j = 0; j < places.get(x).getDirections().size(); j++) {
+                             String step = places.get(x).getDirections().get(j).replace("\"", "\\\"");
+                             step = step.replace("\'", "\\\'");
+                             step = step.replace("\n", "+");
+                        %>
+                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'><%=step%></p>";
+                    <%}%>
+
+                    <%} else {%>
+                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'>Directions not Available</p>";
+                    <%}%>
+
+                    directionsDiv = directionsDiv + "</div>";
+                    $("#directionsContent<%=x%>").append(directionsDiv);
                 </script>
                 <%}%>
 
