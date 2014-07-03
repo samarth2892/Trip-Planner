@@ -1,42 +1,60 @@
 
 var geoCoder;
 var markers = [];
-function autoComplete() {
-    var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
-        { types: ['geocode'] });
+var divNumber;
+var isValidAddress = false;
+
+function initialize() {
+    geoCoder = new google.maps.Geocoder();
+    autoComplete();
 }
 
 
 function geocode() {
     var address = document.getElementById('address').value;
-    geoCoder = new google.maps.Geocoder();
-    geoCoder.geocode({'address': address}, geocodeCallback);
-}
-
-function geocodeCallback(results, status) {
-    if (!(status == google.maps.GeocoderStatus.OK)) {
-
-        $('#address').val('').attr("placeholder", "Please enter a valid address")
-            .css('box-shadow','0 0 8px red');
-        return;
-    } else {
-        $('#address').css('box-shadow','none');
-    }
-
+    geoCoder.geocode({'address': address}, function (results, status) {
+        isValidAddress = status == google.maps.GeocoderStatus.OK;
+    });
 }
 
 function dateValidation(){
     var date = $("#date").val();
-    var d = new Date('"' + date + '"');
+    var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+    var dtArray = date.match(rxDatePattern);
+    alert(date.replace(/\-/g,','));
+    var d = new Date(date.replace(/\-/g,','));
     var n = d.getDay();
-    if(isNaN(n)) {
-        $("#date").val('').attr("placeholder", "Not valid")
-            .css('box-shadow','0 0 8px red');
-    } else {
-        $("#date").css('box-shadow','none');
-        $("#day").val(n);
-    }
+    return !(isNaN(n) || dtArray == null);
 }
+
+$('#address').autocomplete({
+    select: function (event, ui) {
+        geocode();
+    }
+});
+
+
+function validate() {
+
+    if(!isValidAddress) {
+        $('#address').val('').attr("placeholder", "Please enter a valid address")
+                .css('box-shadow','0 0 8px red');
+        return false;
+    } else if(!dateValidation()){
+        $("#date").val('').attr("placeholder", "mm-dd-yyyy")
+            .css('box-shadow','0 0 8px red');
+        return false;
+    }
+    $('#loadingDiv').fadeIn('fast');
+    return true;
+}
+
+
+function autoComplete() {
+    var autoComplete = new google.maps.places.Autocomplete((document.getElementById('address')),
+        { types: ['geocode'] });
+}
+
 
 function createMarker(placeLocation,contentString,i){
     var marker = new google.maps.Marker({
@@ -53,4 +71,16 @@ function createMarker(placeLocation,contentString,i){
 
 function show(i) {
     google.maps.event.trigger(markers[i], 'click');
-};
+}
+
+function showMoreInfo(div) {
+    divNumber = div;
+    $("#moreInfo").fadeIn("slow").find("#moreInfoContent"+divNumber).show();
+}
+
+function hideMoreInfo() {
+    $("#moreInfo").fadeOut("slow").find("#moreInfoContent"+divNumber).hide();
+}
+
+
+

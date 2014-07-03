@@ -21,48 +21,52 @@ public class GooglePlaceSearch {
     private String googleAPIURL = "https://maps.googleapis.com/maps/api";
     private String address = "";
     private String keyword = "Attractions";
-    private String minPrice = "";
-    private String minRating;
-    private double radius = 0.0;
-    private int startHour = 0;
-    private int endHour = 2359;
+    private String minPrice = "0";
+    private double minRating = 1.0;
+    private double radius = 5000;
+    private double startHour = 0;
+    private double endHour = 2359;
+    private int day = 0;
 
     private Object latitude;
     private Object longitude;
     private HttpClient client = HttpClientBuilder.create().build();
     private HttpResponse response;
     private HttpEntity entity;
-    private ArrayList<Place> placeResults;
 
-    public GooglePlaceSearch(String address, String keyword, String minPrice,
-                             String minRating, String maxDistance,
-                             int startHour, int endHour) {
-        if (!(null == address || address.equals(""))) this.address = address;
-        if (!(null == keyword || keyword.equals(""))) this.keyword = keyword;
-        this.minPrice = minPrice;
-        this.minRating = minRating;
-        this.setRadius(Double.parseDouble(maxDistance) / 3.28 * 5280.0);
-        this.setStartEndHour(startHour, endHour);
+    public GooglePlaceSearch(String address,int day) {
+        this.address = (!(null == address || address.equals("")))
+                ? address : "";
+        this.day = ((day > 0 && day < 7) ? day : 0);
     }
 
-    /*TODO
-    public void setMinRating(int minRating) {
-        if(minRating > 0 && minRating < 5) {
-            this.minRating = minRating;
-        }
-    }*/
-
-    public void setRadius(double radius) {
-        if (radius > 0.0 && radius < 50000.0) {
-            this.radius = radius;
-        }
+    public void setMinPrice(String minPrice ){
+        this.minPrice = (!(null == minPrice || minPrice.equals("")))
+                ? minPrice : "0";
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = (!(null == keyword || keyword.equals("")))
+                ? keyword: "Attractions";
+    }
+    public void setMinRating(double minRating) {
+        this.minRating = (minRating > 0 && minRating < 5)?
+             minRating : 1.0;
     }
 
-    public void setStartEndHour(int startHour, int endHour) {
-        if (startHour > 0 && endHour < 2400) {
-            this.startHour = startHour;
-            this.endHour = endHour;
-        }
+    public void setDay(int day) {
+        this.day = ((day > 0 && day < 7) ? day : 1);
+    }
+
+    public void setRadiusInMeters(double radius) {
+        this.radius =  (radius > 0 && radius < 50000)
+                ? radius : 5000;
+    }
+
+    public void setStartEndHour(double startHour, double endHour) {
+        this.startHour = (startHour >= 0)
+                ? startHour : 0;
+        this.endHour = (endHour <= 2359)
+                ? endHour : 2359;
     }
 
     public ArrayList<Place> search() throws MalformedURLException {
@@ -103,7 +107,7 @@ public class GooglePlaceSearch {
 
     public ArrayList<Place> generatePlaces() throws Exception{
         response = client.execute(new HttpGet(googleAPIURL
-                + "/place/nearbysearch/json?location=" + this.latitude
+                + "/place/radarsearch/json?location=" + this.latitude
                 + "," + this.longitude + "&radius=" + Double.toString(this.radius)
                 + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
                 + "&sensor=false&key=" + KEY));
@@ -118,7 +122,7 @@ public class GooglePlaceSearch {
 
     private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception {
 
-        placeResults = new ArrayList<Place>();
+        ArrayList<Place> placeResults = new ArrayList<Place>();
 
         for(int i = 0; i < results.length(); i++) {
             JSONObject place = results.getJSONObject(i);
@@ -126,65 +130,101 @@ public class GooglePlaceSearch {
                 JSONObject placeDetails =
                         getPlaceDetails(place.getString("reference"));
 
+                //Open Time
+                String openTime = ((placeDetails.has("opening_hours"))?
+                        placeDetails.getJSONObject("opening_hours")
+                        .getJSONArray("periods").getJSONObject(this.day).
+                                getJSONObject("open").get("time").toString():"0");
+                //Close Time
+                String closeTime = ((placeDetails.has("opening_hours"))?
+                        placeDetails.getJSONObject("opening_hours")
+                                .getJSONArray("periods").getJSONObject(this.day).
+                                getJSONObject("close").get("time").toString():"2359");
+                //Rating
+                String placeRatting = (placeDetails.has("rating"))
+                        ? placeDetails.get("rating").toString()
+                        : "5.0";
+
+                //Check for constraints
+                if(!isOpen(openTime,closeTime) || !hasMinRatting(placeRatting)) continue;
+
                 Place singlePlace = new Place();
+
                 singlePlace.setReference(place.getString("reference"));
-                response = client.execute(new HttpGet(googleAPIURL
-                        + "/place/details/json?reference="
-                        + singlePlace.getReference() + "&key=" + KEY));
-
-                entity = response.getEntity();
-                String responseString = EntityUtils.toString(entity, "UTF-8");
-
-                JSONObject jsonStringResult = new JSONObject(responseString);
-
-                JSONObject currentPlace = jsonStringResult
-                        .getJSONObject("result");
 
                 singlePlace.setLatitude(placeDetails.getJSONObject("geometry")
                         .getJSONObject("location").get("lat").toString());
+
                 singlePlace.setLongitude(placeDetails.getJSONObject("geometry")
                         .getJSONObject("location").get("lng").toString());
-                String openTime = currentPlace.getJSONObject("opening_hours")
-                        .getJSONArray("periods").getJSONObject(0).
-                                getJSONObject("open").get("time").toString();
-                String closeTime = currentPlace.getJSONObject("opening_hours")
-                        .getJSONArray("periods").getJSONObject(0).
-                                getJSONObject("close").get("time").toString();
 
-                String firstReview = currentPlace
-                        .getJSONArray("reviews").getJSONObject(0).get("text")
-                        .toString();
-                String photoReference = currentPlace.getJSONArray("photos")
-                        .getJSONObject(0).get("photo_reference").toString();
 
-                String phoneNumber = currentPlace.get("formatted_phone_number")
-                        .toString();
-                String website = currentPlace.get("website").toString();
+                singlePlace.setRating(placeRatting);
 
-                singlePlace.setOpenTime(Integer.parseInt(openTime));
-                singlePlace.setCloseTime(Integer.parseInt(closeTime));
+                if(null != openTime) {
+                    singlePlace.setOpenTime(Integer.parseInt(openTime));
+                }
+                if(null != closeTime) {
+                    singlePlace.setCloseTime(Integer.parseInt(closeTime));
+                }
+                //Reviews
+                JSONArray reviewArray = ((placeDetails.has("reviews"))?
+                        placeDetails.getJSONArray("reviews"):new JSONArray());
+
+                if(reviewArray.length() > 0) {
+                    ArrayList<String> reviews = new ArrayList<String>();
+                    for(int x = 0; x < reviewArray.length(); x++) {
+                        reviews.add(reviewArray.getJSONObject(x).get("text").toString());
+                    }
+                    singlePlace.setReviews(reviews);
+                }
+
+                //Photos
+                ArrayList<String> photos = new ArrayList<String>();
+                if (placeDetails.has("photos")) {
+                    JSONArray photoReferenceArray =  placeDetails.getJSONArray("photos");
+                    for(int x = 0; x < photoReferenceArray.length(); x++) {
+                        String photoReference
+                                = photoReferenceArray.getJSONObject(x).get("photo_reference").toString();
+                        if(!photoReference.equals("")) {
+                            photos.add("https://maps.googleapis.com/maps/api/place/photo?"
+                                    + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
+                        } else {
+                            photos.add("http://img4.wikia.nocookie.net/__cb20140530133130" +
+                                    "/outlast/images/6/60/No_Image_Available.png");
+                        }
+                    }
+                } else {
+                    photos.add("http://img4.wikia.nocookie.net/__cb20140530133130" +
+                            "/outlast/images/6/60/No_Image_Available.png");
+                }
+                singlePlace.setImageURL(photos);
+
+                //Phone Number
+                String phoneNumber = ((placeDetails.has("formatted_phone_number"))?
+                        placeDetails.get("formatted_phone_number") .toString():"Not Available");
+                singlePlace.setPhoneNumber(phoneNumber);
+
+                // Website
+                String website = ((placeDetails.has("website"))?
+                        placeDetails.get("website").toString():"");
+                singlePlace.setWebsite(website);
+
+                //Address
                 singlePlace.setAddress(placeDetails.get("formatted_address")
                         .toString());
+                //Name
                 singlePlace.setName(placeDetails.get("name").toString());
-                singlePlace.setRating(placeDetails.get("rating").toString());
-                singlePlace.setPhoneNumber(phoneNumber);
-                singlePlace.setWebsite(website);
-                singlePlace.setImageURL("https://maps.googleapis.com/maps/api/place/photo?"
-                        + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
-                singlePlace.setReviews(firstReview);
 
-                if (Double.parseDouble(this.minRating)
-                        <= Double.parseDouble(singlePlace.getRating())
-                        && this.startHour >= singlePlace.getOpenTime()
-                        && this.endHour <= singlePlace.getCloseTime()) {
-                    placeResults.add(singlePlace);
-                }
+                placeResults.add(singlePlace);
+
             } catch (JSONException e) {
+                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
                 System.out.println(e.getMessage());
             }
 
         }
-
         return placeResults;
     }
 
@@ -203,5 +243,19 @@ public class GooglePlaceSearch {
 
     public String getLongitude() {
         return this.longitude.toString();
+    }
+
+    private boolean isOpen(String openTime, String closeTime) {
+        double open = (null != openTime && !openTime.equals(""))
+                ? Double.parseDouble(openTime) : 0;
+        double close = (null != closeTime && !closeTime.equals(""))
+                ? Double.parseDouble(closeTime) : 2359;
+        return (this.startHour >= open || this.endHour <= close);
+    }
+
+    private boolean hasMinRatting(String placeRatting) {
+        double ratting = (null != placeRatting && placeRatting.equals(""))
+                ? Double.parseDouble(placeRatting) : 5.0;
+        return ratting >= this.minRating;
     }
 }

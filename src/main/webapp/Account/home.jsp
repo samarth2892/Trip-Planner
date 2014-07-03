@@ -10,126 +10,127 @@
     <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
+    <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
 </head>
-<body onload="autoComplete()">
+<body onload="initialize()">
+<div id="loadingDiv"></div>
+
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
-        <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut"> LogOut</a></span>
+        <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
 </div>
 
 <div id = "SearchBar">
-    <form action="<%=request.getContextPath()%>/Account/Search" method="POST">
+    <form action="<%=request.getContextPath()%>/Account/Search" method="POST" onSubmit="return validate();">
         <ul>
             <li><input id="address" name="address" type="text" placeholder="Location" style="width: 23%"
-                    onblur="geocode()"/></li>
-            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" /></li>
-            <li><input id="date" name="date" type="text" placeholder="dd/mm/yyyy" style="width: 10%"
-                       onblur="dateValidation()" />
-                <input type="hidden" id="day" name="day" value="">
-            </li>
+                        onkeyup="geocode();" value="${param.address}" /></li>
+            <li><input id="date" name="date" type="text" style="width: 10%" placeholder="mm-dd-yyyy"
+                       value="${param.date}"/>
+                <input type="hidden" id="day" name="day" value="0">
+            <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" value="${param.keyword}" /></li>
             <li>
                 <select name="transportation">
                     <option value="" disabled selected>Transportation</option>
-                    <option value="car">Car</option>
-                    <option value="bike">Bicycle</option>
-                    <option value="bus">Bus</option>
-                    <option value="walk">Walk</option>
+                    <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
+                    <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
+                    <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
+                    <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
                 </select>
             </li>
 
             <li>
                 <select name="startHour">
                     <option value="" disabled selected>From</option>
-                    <option value="0100"> 1</option>
-                    <option value="0200"> 2</option>
-                    <option value="0300"> 3</option>
-                    <option value="0400"> 4</option>
-                    <option value="0500"> 5</option>
-                    <option value="0600"> 6</option>
-                    <option value="0700"> 7</option>
-                    <option value="0800"> 8</option>
-                    <option value="0900"> 9</option>
-                    <option value="1000"> 10</option>
-                    <option value="1100"> 11</option>
-                    <option value="0000"> 12</option>
+                    <option value="0100" ${param.startHour == '0100' ? 'selected' : ''}> 1</option>
+                    <option value="0200" ${param.startHour == '0200' ? 'selected' : ''}> 2</option>
+                    <option value="0300" ${param.startHour == '0300' ? 'selected' : ''}> 3</option>
+                    <option value="0400" ${param.startHour == '0400' ? 'selected' : ''}> 4</option>
+                    <option value="0500" ${param.startHour == '0500' ? 'selected' : ''}> 5</option>
+                    <option value="0600" ${param.startHour == '0600' ? 'selected' : ''}> 6</option>
+                    <option value="0700" ${param.startHour == '0700' ? 'selected' : ''}> 7</option>
+                    <option value="0800" ${param.startHour == '0800' ? 'selected' : ''}> 8</option>
+                    <option value="0900" ${param.startHour == '0900' ? 'selected' : ''}> 9</option>
+                    <option value="1000" ${param.startHour == '1000' ? 'selected' : ''}> 10</option>
+                    <option value="1100" ${param.startHour == '1100' ? 'selected' : ''}> 11</option>
+                    <option value="0000" ${param.startHour == '0000' ? 'selected' : ''}> 12</option>
 
                 </select>
                 <select name="startAMPM">
-                    <option value = 'am'> AM </option>
-                    <option value = 'pm'> PM </option>
+                    <option value = 'am' ${param.startAMPM == 'am' ? 'selected' : ''}> AM </option>
+                    <option value = 'pm' ${param.startAMPM == 'pm' ? 'selected' : ''}> PM </option>
                 </select>
                 <select name="endHour">
                     <option value="" disabled selected>To</option>
-                    <option value="0100"> 1</option>
-                    <option value="0200"> 2</option>
-                    <option value="0300"> 3</option>
-                    <option value="0400"> 4</option>
-                    <option value="0500"> 5</option>
-                    <option value="0600"> 6</option>
-                    <option value="0700"> 7</option>
-                    <option value="0800"> 8</option>
-                    <option value="0900"> 9</option>
-                    <option value="1000"> 10</option>
-                    <option value="1100"> 11</option>
-                    <option value="0000"> 12</option>
+                    <option value="0100" ${param.endHour == '0100' ? 'selected' : ''}> 1</option>
+                    <option value="0200" ${param.endHour == '0200' ? 'selected' : ''}> 2</option>
+                    <option value="0300" ${param.endHour == '0300' ? 'selected' : ''}> 3</option>
+                    <option value="0400" ${param.endHour == '0400' ? 'selected' : ''}> 4</option>
+                    <option value="0500" ${param.endHour == '0500' ? 'selected' : ''}> 5</option>
+                    <option value="0600" ${param.endHour == '0600' ? 'selected' : ''}> 6</option>
+                    <option value="0700" ${param.endHour == '0700' ? 'selected' : ''}> 7</option>
+                    <option value="0800" ${param.endHour == '0800' ? 'selected' : ''}> 8</option>
+                    <option value="0900" ${param.endHour == '0900' ? 'selected' : ''}> 9</option>
+                    <option value="1000" ${param.endHour == '1000' ? 'selected' : ''}> 10</option>
+                    <option value="1100" ${param.endHour == '1100' ? 'selected' : ''}> 11</option>
+                    <option value="0000" ${param.endHour == '0000' ? 'selected' : ''}> 12</option>
                 </select>
                 <select name="endAMPM">
-                    <option value = 'am'> AM </option>
-                    <option value = 'pm'> PM </option>
+                    <option value = 'am' ${param.endAMPM == 'am' ? 'selected' : ''}> AM </option>
+                    <option value = 'pm' ${param.endAMPM == 'pm' ? 'selected' : ''}> PM </option>
                 </select>
             </li>
 
             <li>
                 <select name="minPrice">
                     <option value="" disabled selected>Price Range</option>
-                    <option value = '0'> $ </option>
-                    <option value = '1'> $$ </option>
-                    <option value = '2'> $$$ </option>
-                    <option value = '3'> $$$$ </option>
-                    <option value = '4'> $$$$$ </option>
+                    <option value = '0' ${param.minPrice == '0' ? 'selected' : ''}> $ </option>
+                    <option value = '1' ${param.minPrice == '1' ? 'selected' : ''}> $$ </option>
+                    <option value = '2' ${param.minPrice == '2' ? 'selected' : ''}> $$$ </option>
+                    <option value = '3' ${param.minPrice == '3' ? 'selected' : ''}> $$$$ </option>
+                    <option value = '4' ${param.minPrice == '4' ? 'selected' : ''}> $$$$$ </option>
                 </select>
             </li>
             <li>
                 <select name="minRating">
                     <option value="" disabled selected>Rating</option>
-                    <option value = '1.0'> 1 </option>
-                    <option value = '2.0'> 2 </option>
-                    <option value = '3.0'> 3 </option>
-                    <option value = '4.0'> 4 </option>
-                    <option value = '5.0'> 5 </option>
+                    <option value = '1.0' ${param.minRating == '1.0' ? 'selected' : ''}> 1 </option>
+                    <option value = '2.0' ${param.minRating == '2.0' ? 'selected' : ''}> 2 </option>
+                    <option value = '3.0' ${param.minRating == '3.0' ? 'selected' : ''}> 3 </option>
+                    <option value = '4.0' ${param.minRating == '4.0' ? 'selected' : ''}> 4 </option>
+                    <option value = '5.0' ${param.minRating == '5.0' ? 'selected' : ''}> 5 </option>
                 </select>
             </li>
             <li>
                 <select name="maxDistance">
                     <option value="" disabled selected>Within</option>
-                    <option value = '1'> 1 mile</option>
-                    <option value = '2'> 2 miles</option>
-                    <option value = '3'> 3 miles</option>
-                    <option value = '4'> 4 miles</option>
-                    <option value = '5'> 5 miles</option>
-                    <option value = '10'> 10 miles</option>
-                    <option value = '15'> 15 miles</option>
-                    <option value = '20'> 20 miles</option>
-                    <option value = '30'> 30 miles</option>
+                    <option value = '1' ${param.maxDistance == '1' ? 'selected' : ''}> 1 mile</option>
+                    <option value = '2' ${param.maxDistance == '2' ? 'selected' : ''}> 2 miles</option>
+                    <option value = '3' ${param.maxDistance == '3' ? 'selected' : ''}> 3 miles</option>
+                    <option value = '4' ${param.maxDistance == '4' ? 'selected' : ''}> 4 miles</option>
+                    <option value = '5' ${param.maxDistance == '5' ? 'selected' : ''}> 5 miles</option>
+                    <option value = '10' ${param.maxDistance == '10' ? 'selected' : ''}> 10 miles</option>
+                    <option value = '15' ${param.maxDistance == '15' ? 'selected' : ''}> 15 miles</option>
+                    <option value = '20' ${param.maxDistance == '20' ? 'selected' : ''}> 20 miles</option>
+                    <option value = '30' ${param.maxDistance == '30' ? 'selected' : ''}> 30 miles</option>
                 </select>
-            </li>
-            <li>
-                <input id="searchButton" type="submit" value="" />
+                <input id="searchButton" type="submit" value="" onClick=""/>
             </li>
         </ul>
     </form>
 </div>
 
 <div id="map"></div>
-
-<div id="searchResults">
+<div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
+<div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
-            <h4 style="color: lightsteelblue;text-align: center;">Click on a place to see it on the map and more details</h4>
+            <h4 style="color: lightsteelblue;"><%=places.size()%> Results found<br/>
+                Click on a place to see it on the map and more details</h4>
 
             <script type="text/javascript">
                 var mapCenter = new google.maps.LatLng(<%=request.getAttribute("center")%>);
@@ -143,35 +144,73 @@
             <%for(int x = 0; x < places.size(); x++) {%>
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
-                <p style="text-align: center;">Rating:<%=places.get(x).getRating()%></p>
+                <p>Rating:<%=places.get(x).getRating()%></p>
+                <%String date = request.getParameter("date");%>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                    var contentString = "<div id='content'>"
-                            +"<h3><%=places.get(x).getName()%></h3>"
-                            +"<p><img src='<%=places.get(x).getImageURL()%>'/><br/>"
-                            +"Address <%=places.get(x).getAddress()%><br/>"
-                            +"Phone No. <%=places.get(x).getPhoneNumber()%><br/>"
-                            +"Rating: <%=places.get(x).getRating()%><br/>"
-                            +"Open Time: <%=places.get(x).getOpenTime()%><br/>"
-                            +"Close Time: <%=places.get(x).getCloseTime()%><br/>"
-                            +"More info: <a href='<%=places.get(x).getWebsite()%>'><%=places.get(x).getWebsite()%></a><br/>"
-                            +"<div style='width:100%;height: 150px;overflow-y: auto'>"
-                            +"Reviews: <%=places.get(x).getReviews()%><br/>"
-                            +"<br/><button type='button'>Add to Itinerary</button>"
-
-                            +"</div>"
-                            +"</div>";
+                   var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                           +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
+                           +"<div style='width:60%;float:left'>"
+                           +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
+                           +"</div>"
+                           +"<div style='width:40%;float:right;'>"
+                           +"Address: <%=(null!=places.get(x).getAddress())?places.get(x).getAddress():""%><br/>"
+                           +"Phone No: <%=(null!=places.get(x).getPhoneNumber())?places.get(x).getPhoneNumber():""%><br/>"
+                           +"Rating: <%=(null!=places.get(x).getRating())?places.get(x).getRating():""%><br/>"
+                           +"Hours on: <%=date%><br/>"
+                           +"Open Time: <%=(null!=places.get(x).getOpenTimeString())?places.get(x).getOpenTimeString():"N/A"%><br/>"
+                           +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
+                           +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
+                           +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
+                           +"<br/><button type='button'>Add to Itinerary</button>"
+                           +"</div>"
+                           +"</div>";
 
                     createMarker(placeLocation,contentString,<%=x%>);
                 </script>
 
-            <%}
+                <!-- More info Divs-->
+                <script type="text/javascript">
+                   var moreInfoContent = "<div id='moreInfoContent<%=x%>' class='moreInfoContent'></div>";
+                   var reviewsDiv = "<div id='reviewsDiv'><h3>Reviews</h3>";
+                   var photosDiv = "<div id='photosDiv'><h3>Photos</h3>";
+                    $("#moreInfo").append(moreInfoContent);
 
-        } else if( null != request.getAttribute("resultsStatus") &&
+                    <% if(places.get(x).getReviews().size() > 0) {
+                        for(int j = 0; j < places.get(x).getReviews().size(); j++) {
+                             String review = places.get(x).getReviews().get(j).replace("\"", "\\\"");
+                             review = review.replace("\'", "\\\'");
+                             review = review.replace("\n", "+");
+                        %>
+                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'><%=review%></p>";
+                        <%}%>
+
+                    <%} else {%>
+                   reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'>No Reviews Available</p>";
+                    <%}%>
+
+                   <% if(places.get(x).getImageURL().size() > 0) {
+                       for(int j = 0; j < places.get(x).getImageURL().size(); j++) {
+                            String url = places.get(x).getImageURL().get(j);
+                       %>
+                        photosDiv = photosDiv + "<br/><img style='max-width:90%;max-height:300px;display: block;margin-left: auto;margin-right:auto' src='<%=url%>'/>";
+                      <%}%>
+
+                   <%} else {%>
+                        $("#photosDiv").css("width","0");
+                   <%}%>
+
+                    reviewsDiv = reviewsDiv + "</div>";
+                    photosDiv = photosDiv + "</div>";
+                    $("#moreInfoContent<%=x%>").append(reviewsDiv).append(photosDiv);
+                </script>
+                <%}%>
+
+        <% } else if( null != request.getAttribute("resultsStatus") &&
                     request.getAttribute("resultsStatus").equals("null")){%>
             <h3>No Results found!</h3>
-        <%}%>
+         <%}%>
 </div>
 
 </body>
