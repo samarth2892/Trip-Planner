@@ -82,5 +82,12 @@ function hideMoreInfo() {
     $("#moreInfo").fadeOut("slow").find("#moreInfoContent"+divNumber).hide();
 }
 
+function showDirections(div) {
+    divNumber = div;
+    $("#directions").fadeIn("slow").find("#directionsContent"+divNumber).show();
+}
 
+function hideDirections() {
+    $("#directions").fadeOut("slow").findj("#directionsContent"+divNumber).hide();
+}
 

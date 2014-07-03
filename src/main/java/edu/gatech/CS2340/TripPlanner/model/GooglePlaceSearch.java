@@ -105,6 +105,29 @@ public class GooglePlaceSearch {
                 .getJSONObject("location").get("lng");
     }
 
+    public ArrayList<String> getDirections(String origin, String destination) throws Exception {
+        ArrayList<String> directions = new ArrayList<String>();
+        destination = destination.replace(" ", "+");
+
+        response = client.execute(new HttpGet(googleAPIURL
+                + "/directions/json?origin=" + origin + "&destination="
+                + destination + "&key=" + KEY));
+
+        entity = response.getEntity();
+        String responseString = EntityUtils.toString(entity, "UTF-8");
+
+        JSONObject jsonStringResult = new JSONObject(responseString);
+        JSONArray steps = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                .getJSONObject(0).getJSONArray("steps");
+
+        for (int i = 0; i < steps.length(); i++) {
+            String step = steps.getJSONObject(i).get("html_instructions").toString();
+            directions.add(step);
+        }
+
+        return directions;
+    }
+
     public ArrayList<Place> generatePlaces() throws Exception{
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/radarsearch/json?location=" + this.latitude
@@ -121,7 +144,6 @@ public class GooglePlaceSearch {
     }
 
     private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception {
-
         ArrayList<Place> placeResults = new ArrayList<Place>();
 
         for(int i = 0; i < results.length(); i++) {
@@ -215,6 +237,10 @@ public class GooglePlaceSearch {
                         .toString());
                 //Name
                 singlePlace.setName(placeDetails.get("name").toString());
+
+                ArrayList<String> directions = new ArrayList<String>();
+                directions = getDirections(this.address, singlePlace.getAddress());
+                singlePlace.setDirections(directions);
 
                 placeResults.add(singlePlace);
 
