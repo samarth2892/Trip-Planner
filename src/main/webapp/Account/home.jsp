@@ -20,6 +20,7 @@
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
+        <span id="itinLink"><a href="<%=request.getContextPath()%>/Account/itineraries.jsp">Itineraries</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
@@ -127,7 +128,6 @@
 
 <div id="map"></div>
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
-<div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
         if(places != null) {%>
@@ -165,8 +165,7 @@
                            +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
                            +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a><br/>"
-                           +"<a href='javascript:showDirections(<%=x%>)'>Click here to get directions.</a>"
-                           +"<br/><button type='button' onclick='ajaxFunction(<%=x%>)'>Add to Itinerary</button>"
+                           +"<button type='button' onclick='ajaxFunction(<%=x%>)'>Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
 
