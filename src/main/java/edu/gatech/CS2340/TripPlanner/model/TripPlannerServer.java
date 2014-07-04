@@ -27,7 +27,7 @@ public abstract class TripPlannerServer {
             Class.forName(DRIVER);
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connection sucessful.");
+            System.out.println("Connection successful.");
             stmt = conn.createStatement();
             makeTables();
         } catch (ClassNotFoundException ex) {
@@ -69,7 +69,7 @@ public abstract class TripPlannerServer {
                             "phone varchar(255) NOT NULL, " +
                             "opentime int NOT NULL, " +
                             "closetime int NOT NULL, " +
-                            "PRIMARY KEY (accountid,userorder, date));";
+                            "PRIMARY KEY (accountid, userorder, date));";
             stmt.execute(createItinerariesTable);
 
             String initItineraryDb =

@@ -10,13 +10,13 @@ public class PlaceDb extends TripPlannerServer {
 
     public void addPlace(Place place, String date) {
         try {
-
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement placeStatement = conn.createStatement();
             int nextOrderValue;
 
             ResultSet itinerarySizeResult = placeStatement.executeQuery(
                     "SELECT * FROM itineraries WHERE accountid=" + getUserId() + " ORDER BY userorder DESC;");
+
             if (itinerarySizeResult.next()) {
                 nextOrderValue = itinerarySizeResult.getInt(2) + 1;
             } else {
@@ -27,7 +27,7 @@ public class PlaceDb extends TripPlannerServer {
                     "INSERT INTO itineraries VALUES("
                             + getUserId() + ","
                             + nextOrderValue + ",'"
-                            + date + ",'"
+                            + date + "','"
                             + place.getReference() + "','"
                             + place.getName() + "','"
                             + place.getAddress() + "','"
@@ -47,9 +47,11 @@ public class PlaceDb extends TripPlannerServer {
         try {
 
             String reference = place.getReference();
+
             String selectReference =
                     "SELECT * FROM itineraries WHERE " +
-                            "(reference='" + reference + "' AND userid=" + getUserId() + ");";
+                            "(reference='" + reference + "' AND accountid=" + getUserId() + ");";
+
             ResultSet exists = stmt.executeQuery(selectReference);
             return exists.next();
 
