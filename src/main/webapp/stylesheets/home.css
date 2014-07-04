@@ -289,6 +289,27 @@ input:focus{
     color: white;
 }
 
+#directions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+
+.directionsContent {
+    position: relative;
+    height: 80%;
+    width: 80%;
+    top: 8%;
+    margin: 0 auto;
+    display: none;
+    color: black;
+}
+
 #reviewsDiv {
     width: 50%;
     height: 100%;
@@ -301,6 +322,12 @@ input:focus{
     height: 100%;
     overflow-y: auto;
     float: left;
+}
+
+#directionsDiv {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 #loadingDiv {

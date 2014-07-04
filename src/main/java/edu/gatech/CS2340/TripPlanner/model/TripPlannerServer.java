@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 
 
-public class TripPlannerServer {
+public abstract class TripPlannerServer {
     static final String DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/accounts";
     static final String USER = "root";
@@ -20,14 +20,14 @@ public class TripPlannerServer {
 
     protected Connection conn;
     protected Statement stmt;
-    protected String currentUser;
+    protected static String currentUser;
 
     public void connect() {
         try {
             Class.forName(DRIVER);
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connection sucessful.");
+            System.out.println("Connection successful.");
             stmt = conn.createStatement();
             makeTables();
         } catch (ClassNotFoundException ex) {
@@ -62,18 +62,19 @@ public class TripPlannerServer {
                     "CREATE TABLE if not exists itineraries ( " +
                             "accountid int NOT NULL, " +
                             "userorder int NOT NULL, " +
+                            "date varchar(255) NOT NULL, " +
                             "reference varchar(255) NOT NULL, " +
                             "name varchar(255) NOT NULL, " +
                             "address varchar(255) NOT NULL, " +
                             "phone varchar(255) NOT NULL, " +
                             "opentime int NOT NULL, " +
                             "closetime int NOT NULL, " +
-                            "PRIMARY KEY (accountid,userorder));";
+                            "PRIMARY KEY (accountid, userorder, date));";
             stmt.execute(createItinerariesTable);
 
             String initItineraryDb =
                     "INSERT INTO itineraries VALUES (" +
-                            "1, 1, 'init', 'init', 'init', 'init', 0, 0)" +
+                            "1, 1, 'init', 'init', 'init', 'init', 'init', 0, 0)" +
                             "ON DUPLICATE KEY UPDATE accountid=1;";
             stmt.execute(initItineraryDb);
 

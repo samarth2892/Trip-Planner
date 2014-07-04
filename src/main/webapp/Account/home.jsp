@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Place" %>
+<%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -129,6 +130,7 @@
 
 <div id="map"></div>
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
+<div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
         if(places != null) {%>
@@ -152,12 +154,12 @@
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                   var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                    var contentString = "<div id='content' style='max-width:600px;height:200px'>"
                            +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
                            +"<div style='width:60%;float:left'>"
                            +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
                            +"</div>"
-                           +"<div style='width:40%;float:right;'>"
+                           +"<div id='data' style='width:40%;float:right;'>"
                            +"Address: <%=(null!=places.get(x).getAddress())?places.get(x).getAddress():""%><br/>"
                            +"Phone No: <%=(null!=places.get(x).getPhoneNumber())?places.get(x).getPhoneNumber():""%><br/>"
                            +"Rating: <%=(null!=places.get(x).getRating())?places.get(x).getRating():""%><br/>"
@@ -172,6 +174,7 @@
 
                     createMarker(placeLocation,contentString,<%=x%>);
                 </script>
+
 
                 <!-- More info Divs-->
                 <script type="text/javascript">
@@ -207,6 +210,28 @@
                     reviewsDiv = reviewsDiv + "</div>";
                     photosDiv = photosDiv + "</div>";
                     $("#moreInfoContent<%=x%>").append(reviewsDiv).append(photosDiv);
+                </script>
+
+                <script type="text/javascript">
+                    var directionsContent = "<div id='directionsContent<%=x%>' class='directionsContent'></div>";
+                    var directionsDiv = "<div id='directionsDiv'><h3>Directions</h3>";
+                    $("#directions").append(directionsContent);
+
+                    <% if(places.get(x).getDirections().size() > 0) {
+                        for(int j = 0; j < places.get(x).getDirections().size(); j++) {
+                             String step = places.get(x).getDirections().get(j).replace("\"", "\\\"");
+                             step = step.replace("\'", "\\\'");
+                             step = step.replace("\n", "+");
+                        %>
+                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'><%=step%></p>";
+                    <%}%>
+
+                    <%} else {%>
+                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'>Directions not Available</p>";
+                    <%}%>
+
+                    directionsDiv = directionsDiv + "</div>";
+                    $("#directionsContent<%=x%>").append(directionsDiv);
                 </script>
                 <%}%>
 
