@@ -10,7 +10,10 @@
     <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+    <%ArrayList<Place> itineraryPlaces = new ArrayList<Place>();
+        request.getSession().setAttribute("itineraryPlaces", itineraryPlaces);%>
 </head>
 <body onload="initialize()">
 <div id="loadingDiv"></div>
@@ -127,7 +130,7 @@
 <div id="map"></div>
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
-    <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
+    <% ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
         if(places != null) {%>
             <h4 style="color: lightsteelblue;"><%=places.size()%> Results found<br/>
                 Click on a place to see it on the map and more details</h4>
@@ -163,7 +166,7 @@
                            +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
                            +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
-                           +"<br/><button type='button'>Add to Itinerary</button>"
+                           +"<br/><button class='addButton' id='<%=x%>' type='button' onclick='javascript:addToItinerary(<%=x%>)' >Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
 
