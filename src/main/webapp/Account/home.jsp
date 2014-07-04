@@ -13,8 +13,6 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
-    <%ArrayList<Place> itineraryPlaces = new ArrayList<Place>();
-        request.getSession().setAttribute("itineraryPlaces", itineraryPlaces);%>
 </head>
 <body onload="initialize()">
 <div id="loadingDiv"></div>
@@ -24,6 +22,7 @@
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
+        <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces">(0)</span></a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
 </div>
@@ -132,7 +131,7 @@
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
 <div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
-    <% ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
+    <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
             <h4 style="color: lightsteelblue;"><%=places.size()%> Results found<br/>
                 Click on a place to see it on the map and more details</h4>
@@ -154,7 +153,7 @@
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                    var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                    var contentString = "<div id='content' style='max-width:600px;height:250px'>"
                            +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
                            +"<div style='width:60%;float:left'>"
                            +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
@@ -168,7 +167,7 @@
                            +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
                            +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
-                           +"<br/><button class='addButton' id='<%=x%>' type='button' onclick='javascript:addToItinerary(<%=x%>)' >Add to Itinerary</button>"
+                           +"<br/><button id='addButton-<%=x%>' type='button' onclick='javascript:addToItinerary(<%=x%>)' >Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
 
@@ -210,28 +209,6 @@
                     reviewsDiv = reviewsDiv + "</div>";
                     photosDiv = photosDiv + "</div>";
                     $("#moreInfoContent<%=x%>").append(reviewsDiv).append(photosDiv);
-                </script>
-
-                <script type="text/javascript">
-                    var directionsContent = "<div id='directionsContent<%=x%>' class='directionsContent'></div>";
-                    var directionsDiv = "<div id='directionsDiv'><h3>Directions</h3>";
-                    $("#directions").append(directionsContent);
-
-                    <% if(places.get(x).getDirections().size() > 0) {
-                        for(int j = 0; j < places.get(x).getDirections().size(); j++) {
-                             String step = places.get(x).getDirections().get(j).replace("\"", "\\\"");
-                             step = step.replace("\'", "\\\'");
-                             step = step.replace("\n", "+");
-                        %>
-                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'><%=step%></p>";
-                    <%}%>
-
-                    <%} else {%>
-                             directionsDiv = directionsDiv + "<br/><p style='text-align:left'>Directions not Available</p>";
-                    <%}%>
-
-                    directionsDiv = directionsDiv + "</div>";
-                    $("#directionsContent<%=x%>").append(directionsDiv);
                 </script>
                 <%}%>
 

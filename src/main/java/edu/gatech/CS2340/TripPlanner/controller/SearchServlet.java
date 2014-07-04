@@ -77,7 +77,8 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("center",search.getLatitude()
                 + "," + search.getLongitude());
 
-        request.getSession().setAttribute("placeResult", placeResult);
+        request.getSession().setAttribute("sessionPlaceResult", placeResult);
+        request.setAttribute("placeResult", placeResult );
         dispatcher.forward(request, response);
     }
 

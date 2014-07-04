@@ -10,9 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @WebServlet(
-        urlPatterns = {"/Account/addToItinerary"}
+        urlPatterns = {"/Account/changeItinerary"}
 )
 
 public class ItineraryServlet extends HttpServlet {
@@ -22,24 +23,33 @@ public class ItineraryServlet extends HttpServlet {
                           HttpServletResponse response)
             throws IOException, ServletException {
 
-        int placeId = Integer.parseInt(request.getParameter("id"));
 
-        ArrayList<Place> sessionItinerary
-                = (ArrayList<Place>)request.getSession().getAttribute("itineraryPlaces");
-
-
-        ArrayList<Place> places
-                = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
-
-        sessionItinerary.add(places.get(placeId));
-
-        request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+        HashMap<String, Place> sessionItinerary
+                = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");
 
 
+        if (!request.getParameter("addId").equals("")) {
+            ArrayList<Place> places
+                    = (ArrayList<Place>) request.getSession().getAttribute("sessionPlaceResult");
+
+            String placeId = request.getParameter("addId");
+
+            sessionItinerary.put(placeId, places.get(Integer.parseInt(placeId)));
+
+            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+
+        } else if (!request.getParameter("removeId").equals("")) {
+
+            System.out.println("before removeId");
+
+            String placeId = request.getParameter("removeId");
+
+            sessionItinerary.remove(placeId);
+
+            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+
+        }
         response.getWriter().print(sessionItinerary.size());
 
-
     }
-
-
 }

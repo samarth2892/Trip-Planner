@@ -27,12 +27,6 @@ function dateValidation(){
     return !(isNaN(n) || dtArray == null);
 }
 
-$('#address').autocomplete({
-    select: function (event, ui) {
-        geocode();
-    }
-});
-
 
 function validate() {
 
