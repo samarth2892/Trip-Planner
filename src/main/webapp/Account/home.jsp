@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Place" %>
+<%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -128,7 +129,7 @@
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
 <div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
-    <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
+    <% ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
         if(places != null) {%>
             <h4 style="color: lightsteelblue;"><%=places.size()%> Results found<br/>
                 Click on a place to see it on the map and more details</h4>
@@ -150,12 +151,12 @@
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                   var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                    var contentString = "<div id='content' style='max-width:600px;height:200px'>"
                            +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
                            +"<div style='width:60%;float:left'>"
                            +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
                            +"</div>"
-                           +"<div style='width:40%;float:right;'>"
+                           +"<div id='data' style='width:40%;float:right;'>"
                            +"Address: <%=(null!=places.get(x).getAddress())?places.get(x).getAddress():""%><br/>"
                            +"Phone No: <%=(null!=places.get(x).getPhoneNumber())?places.get(x).getPhoneNumber():""%><br/>"
                            +"Rating: <%=(null!=places.get(x).getRating())?places.get(x).getRating():""%><br/>"
@@ -165,11 +166,44 @@
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
                            +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a><br/>"
                            +"<a href='javascript:showDirections(<%=x%>)'>Click here to get directions.</a>"
-                           +"<br/><button type='button'>Add to Itinerary</button>"
+                           +"<br/><button type='button' onclick='ajaxFunction(<%=x%>)'>Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
 
                     createMarker(placeLocation,contentString,<%=x%>);
+                </script>
+
+                <script language="javascript" type="text/javascript">
+                    function ajaxFunction(x){
+                        var ajaxRequest;
+
+                        try{
+                            // Opera 8.0+, Firefox, Safari
+                            ajaxRequest = new XMLHttpRequest();
+                        } catch (e){
+                            // Internet Explorer Browsers
+                            try{
+                                ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+                            } catch (e) {
+                                try{
+                                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                                } catch (e){
+                                    // Something went wrong
+                                    alert("Your browser broke!");
+                                    return false;
+                                }
+                            }
+                        }
+                        // Create a function that will receive data sent from the server
+                        ajaxRequest.onreadystatechange = function(){
+                            if(ajaxRequest.readyState == 4){
+
+                            }
+                        }
+
+                        ajaxRequest.open("POST", "/TripPlanner/Account/AddPlace?index=" + x, true);
+                        ajaxRequest.send(null);
+                    }
                 </script>
 
                 <!-- More info Divs-->

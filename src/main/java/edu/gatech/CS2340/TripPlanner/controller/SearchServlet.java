@@ -2,6 +2,7 @@ package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.GooglePlaceSearch;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
+import main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -77,7 +78,7 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("center",search.getLatitude()
                 + "," + search.getLongitude());
 
-        request.setAttribute("placeResult", placeResult);
+        request.getSession().setAttribute("placeResult", placeResult);
         dispatcher.forward(request, response);
     }
 
