@@ -70,18 +70,18 @@ public class PlaceDb extends TripPlannerServer {
             ArrayList<Place> itinerary = new ArrayList<Place>();
 
             String selectPlaces =
-                    "SELECT * FROM itineraries WHERE accountid='" + getUserId() + "' ORDER BY userorder;";
+                    "SELECT * FROM itineraries WHERE accountid=" + getUserId() + " ORDER BY userorder;";
             ResultSet places = placeStatement.executeQuery(selectPlaces);
 
             Place place;
             while(places.next()) {
                 place = new Place();
-                place.setReference(places.getString(3));
-                place.setName(places.getString(4));
-                place.setAddress(places.getString(5));
-                place.setPhoneNumber(places.getString(6));
-                place.setOpenTime(places.getInt(7));
-                place.setCloseTime(places.getInt(8));
+                place.setReference(places.getString(4));
+                place.setName(places.getString(5));
+                place.setAddress(places.getString(6));
+                place.setPhoneNumber(places.getString(7));
+                place.setOpenTime(places.getInt(8));
+                place.setCloseTime(places.getInt(9));
                 itinerary.add(place);
             }
             return itinerary;

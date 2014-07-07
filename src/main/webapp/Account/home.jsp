@@ -129,7 +129,6 @@
 
 <div id="map"></div>
 <div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
-<div id="directions" style="text-align:center;" ><a href='javascript:hideDirections()'>Click here to exit</a></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
