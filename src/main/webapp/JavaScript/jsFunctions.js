@@ -7,6 +7,7 @@ var isValidAddress = false;
 function initialize() {
     geoCoder = new google.maps.Geocoder();
     autoComplete();
+    geocode();
 }
 
 

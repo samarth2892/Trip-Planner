@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <Title>Home</Title>
+    <Title>Itineraries</Title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
     <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
@@ -30,23 +30,43 @@
 <%HashMap<String, Place> sessionItinerary
 = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");%>
 <div id="currentItinerary">
-    <h2>Current Itinerary</h2>
+    <%if(sessionItinerary.size() > 0) {%>
+    <form action="<%=request.getContextPath()%>/Account/finalizeItinerary" method="post">
+    <div id="currentItineraryTitle"><b>Current Itinerary</b>
+        <select style="margin-left:50px" name="transportation">
+            <option value="" disabled selected>Transportation</option>
+            <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
+            <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
+            <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
+            <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
+        </select>
+        <button type="submit">Finalize and get directions</button> <button type="button" onclick="javascript:startOver()">Start Over</button>
+        <br/></b>
+    </div>
     <% for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {%>
-        <div class="itineraryPlace" id="<%=entry.getValue()%>">
+        <div class="itineraryPlace" id="itineraryPlace-<%=entry.getKey()%>">
             <span class="helper"></span><img src="<%=entry.getValue().getImageURL().get(0)%>" />
             <div id="itineraryPlaceDetails">
-                <h4><%=entry.getValue().getName()%></h4>
+                <h4><%=entry.getValue().getName()%> <span style="float: right">Order of visit:
+                    <input name="<%=entry.getKey()%>-order" min="1" max="<%=sessionItinerary.size()%>"type="number" style="width:40px"/></span></h4>
+
                     <p> Address: <%=entry.getValue().getAddress()%><br/>
-                        Rating: <%=entry.getValue().getRating()%><br/>
-                        <button type="button">Remove from Itinerary</button>
+                        Hours on: <%=request.getSession().getAttribute("date").toString()%>
+                        &nbsp;Open: <%=entry.getValue().getOpenTimeString()%>
+                        &nbsp;Close: <%=entry.getValue().getCloseTimeString()%><br/>
+                        <button type="button" onclick="javascript:removeFromItinerary(<%=entry.getKey()%>)">Remove from Itinerary</button>
                     </p>
             </div>
         </div>
     <%}%>
+    </form>
+    <%} else {%>
+        <div id="currentItineraryTitle"><b>You have not added any places.</b></div>
+    <%}%>
 </div>
 
 <div id="savedItineraries" >
-    <h3>Saved Itineraries</h3>
+    <div id="savedItineraryTitle"><b>Saved Itineraries</b></div>
 
 </div>
 

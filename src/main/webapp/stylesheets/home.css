@@ -156,11 +156,10 @@ body{
     float: left;
     left: 0;
     width: 70%;
-    height: calc(100% - 60px);
+    height: calc(100% - 160px);
     padding: 0;
-    border-right: 2px solid black;
     overflow-y: auto;
-    margin-top: 60px;
+    margin-top: 160px;
 }
 
 #savedItineraries {
@@ -168,9 +167,9 @@ body{
     float: right;
     left: 70%;
     width: 30%;
-    height: calc(100% - 60px);
+    height: calc(100% - 160px);
     padding: 0;
-    margin-top: 60px;
+    margin-top: 160px;
     overflow-y: auto;
 }
 
@@ -198,6 +197,34 @@ body{
 #itineraryPlaceDetails {
     width: 75%;
     float: right;
+}
+
+#currentItineraryTitle {
+    position: fixed;
+    width: 70%;
+    height: 50px;
+    top: 60px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+    color: brown;
+    font-size: 18px
+}
+
+#currentItineraryTitle button {
+    margin: 0 0 0 50px;
+}
+
+#savedItineraryTitle {
+    position: fixed;
+    width: 30%;
+    height: 50px;
+    top: 60px;
+    line-height: 50px;
+    text-align: center;
+    color: brown;
+    vertical-align: middle;
+    font-size: 18px
 }
 
 /* Credentials change Form*/

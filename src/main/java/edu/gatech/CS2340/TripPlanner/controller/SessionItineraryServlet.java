@@ -16,7 +16,7 @@ import java.util.HashMap;
         urlPatterns = {"/Account/changeItinerary"}
 )
 
-public class ItineraryServlet extends HttpServlet {
+public class SessionItineraryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -40,14 +40,16 @@ public class ItineraryServlet extends HttpServlet {
 
         } else if (!request.getParameter("removeId").equals("")) {
 
-            System.out.println("before removeId");
-
             String placeId = request.getParameter("removeId");
 
             sessionItinerary.remove(placeId);
 
             request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
 
+        } else if (!request.getParameter("startOver").equals("")) {
+            sessionItinerary.clear();
+
+            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
         }
         response.getWriter().print(sessionItinerary.size());
 

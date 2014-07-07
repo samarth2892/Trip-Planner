@@ -149,7 +149,7 @@
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
                 <p>Rating:<%=places.get(x).getRating()%></p>
-                <%String date = request.getParameter("date");%>
+                <%String date = request.getSession().getAttribute("date").toString();%>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
