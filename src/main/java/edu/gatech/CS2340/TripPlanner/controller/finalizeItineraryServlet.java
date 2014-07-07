@@ -21,6 +21,7 @@ public class finalizeItineraryServlet extends HttpServlet {
         RequestDispatcher dispatcher;
         PlaceDb places = new PlaceDb();
         places.connect();
+        System.out.println("here");
 
 
     }
