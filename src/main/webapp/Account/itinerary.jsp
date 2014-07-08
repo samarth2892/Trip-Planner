@@ -12,6 +12,7 @@
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+    <% String error = String.valueOf(request.getAttribute("error")); %>
 </head>
 
 <body>
@@ -41,14 +42,15 @@
             <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
         </select>
         <button type="submit">Finalize and get directions</button> <button type="button" onclick="javascript:startOver()">Start Over</button>
-        <br/></b>
+        <br/><span style="color: red"><b><%= ((error.equals("null"))?"":error) %></b></span>
     </div>
     <% for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {%>
         <div class="itineraryPlace" id="itineraryPlace-<%=entry.getKey()%>">
             <span class="helper"></span><img src="<%=entry.getValue().getImageURL().get(0)%>" />
             <div id="itineraryPlaceDetails">
                 <h4><%=entry.getValue().getName()%> <span style="float: right">Order of visit:
-                    <input name="<%=entry.getKey()%>-order" min="1" max="<%=sessionItinerary.size()%>"type="number" style="width:40px"/></span></h4>
+                    <input name="<%=entry.getKey()%>-order" min="1" max="<%=sessionItinerary.size()%>"
+                           type="number" style="width:40px" value="<%=request.getParameter(entry.getKey() + "-order")%>"/></span></h4>
 
                     <p> Address: <%=entry.getValue().getAddress()%><br/>
                         Hours on: <%=request.getSession().getAttribute("date").toString()%>

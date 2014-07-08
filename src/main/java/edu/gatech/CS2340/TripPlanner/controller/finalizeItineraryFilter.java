@@ -30,9 +30,31 @@ public class finalizeItineraryFilter implements Filter {
         HashMap<String, Place> sessionItinerary
                 = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");
 
-        //TODO this where we will check if the user entered the right order and mode of transportation
-        for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {
-            System.out.println(request.getParameter(entry.getKey() + "-order"));
+        Place[] orderedPlaces = new Place[sessionItinerary.size()];
+
+        if (null == request.getParameter("transportation")) {
+            request.setAttribute("error","*Please select a mode of transportation");
+            dispatcher.forward(request, response);
+            return;
+
+        } else {
+            for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {
+                int order
+                        = (!request.getParameter(entry.getKey() + "-order").equals(""))
+                        ? Integer.parseInt(request.getParameter(entry.getKey() + "-order"))
+                        : -1;
+                if (order != -1 && orderedPlaces[order - 1] == null) {
+                    orderedPlaces[order - 1] = entry.getValue();
+                } else {
+                    request.setAttribute("error","Please select a valid order of visit");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+            }
+        }
+
+        for (Place orderedPlace : orderedPlaces) {
+            System.out.println(orderedPlace.getName());
         }
         dispatcher.forward(request, response);
         return;
