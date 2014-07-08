@@ -58,13 +58,8 @@ public class finalizeItineraryFilter implements Filter {
             }
         }
 
-        for (Place orderedPlace : orderedPlaces) {
-            System.out.println(orderedPlace.getName());
-        }
-        dispatcher.forward(request, response);
-        return;
-
-        //filterChain.doFilter(servletRequest, servletResponse);
+        request.setAttribute("orderedPlaces", orderedPlaces);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
