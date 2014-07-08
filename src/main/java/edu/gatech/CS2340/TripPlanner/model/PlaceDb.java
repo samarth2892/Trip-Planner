@@ -62,7 +62,7 @@ public class PlaceDb extends TripPlannerServer {
         }
         return true;
     }
-    public ArrayList<Place> loadItinerary() {
+    public ArrayList<Place> loadItinerary(int itineraryId) {
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -70,7 +70,9 @@ public class PlaceDb extends TripPlannerServer {
             ArrayList<Place> itinerary = new ArrayList<Place>();
 
             String selectPlaces =
-                    "SELECT * FROM itineraries WHERE accountid=" + getUserId() + " ORDER BY userorder;";
+                    "SELECT * FROM itineraries WHERE " +
+                            "(accountid=" + getUserId() + " AND itineraryid=" + itineraryId + ") " +
+                            "ORDER BY userorder;";
             ResultSet places = placeStatement.executeQuery(selectPlaces);
 
             Place place;
@@ -85,6 +87,27 @@ public class PlaceDb extends TripPlannerServer {
                 itinerary.add(place);
             }
             return itinerary;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<ArrayList<Place>> loadAllItineraries() {
+
+        ArrayList<ArrayList<Place>> allItineraries = new ArrayList<ArrayList<Place>>();
+        String selectUniqueDates =
+                "SELECT count(DISTINCT(itineraryid)) FROM itineraries WHERE accountid=" + getUserId() +";";
+        try {
+            ResultSet uniqueDates = stmt.executeQuery(selectUniqueDates);
+            int totalUniqueDates = uniqueDates.getInt(1);
+            for (int i = 1; i <= totalUniqueDates; i++) {
+                allItineraries.add(loadItinerary(i));
+            }
+            return allItineraries;
 
         } catch (SQLException e) {
             e.printStackTrace();
