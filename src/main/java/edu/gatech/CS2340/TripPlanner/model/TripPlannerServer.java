@@ -62,19 +62,21 @@ public abstract class TripPlannerServer {
                     "CREATE TABLE if not exists itineraries ( " +
                             "accountid int NOT NULL, " +
                             "userorder int NOT NULL, " +
+                            "itineraryid int NOT NULL, " +
                             "date varchar(255) NOT NULL, " +
+                            "startaddress varchar(255) NOT NULL, " +
                             "reference varchar(255) NOT NULL, " +
                             "name varchar(255) NOT NULL, " +
                             "address varchar(255) NOT NULL, " +
                             "phone varchar(255) NOT NULL, " +
                             "opentime int NOT NULL, " +
                             "closetime int NOT NULL, " +
-                            "PRIMARY KEY (accountid, userorder, date));";
+                            "PRIMARY KEY (accountid, userorder, itineraryid));";
             stmt.execute(createItinerariesTable);
 
             String initItineraryDb =
                     "INSERT INTO itineraries VALUES (" +
-                            "1, 1, 'init', 'init', 'init', 'init', 'init', 0, 0)" +
+                            "1, 1, 1, 'init', 'init', 'init', 'init', 'init', 'init', 0, 0)" +
                             "ON DUPLICATE KEY UPDATE accountid=1;";
             stmt.execute(initItineraryDb);
 
