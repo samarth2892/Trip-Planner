@@ -27,6 +27,8 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
 
+        request.getSession().setAttribute("date",request.getParameter("date"));
+
         String day = request.getParameter("day");
 
         String keyword = request.getParameter("keyword");
@@ -75,7 +77,8 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("center",search.getLatitude()
                 + "," + search.getLongitude());
 
-        request.setAttribute("placeResult", placeResult);
+        request.getSession().setAttribute("sessionPlaceResult", placeResult);
+        request.setAttribute("placeResult", placeResult );
         dispatcher.forward(request, response);
     }
 

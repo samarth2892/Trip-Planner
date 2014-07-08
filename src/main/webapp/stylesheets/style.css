@@ -1,6 +1,9 @@
 body {
-    background: url("../images/road-background.png") no-repeat;
-    background-size: 100%;
+    background: url("../images/road-background.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     font-family: "berlin_sans_fb_demibold", Century Gothic, sans-serif;
 }
 

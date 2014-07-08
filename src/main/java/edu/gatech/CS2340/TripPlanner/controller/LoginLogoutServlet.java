@@ -1,6 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
+import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @WebServlet(
@@ -35,6 +38,8 @@ public class LoginLogoutServlet extends HttpServlet {
 
         if (database.login(username, password)) {
             request.getSession().setAttribute("userStatus", username);
+            Map<String, Place> itineraryPlaces = new HashMap<String, Place>();
+            request.getSession().setAttribute("itineraryPlaces", itineraryPlaces);
             dispatcher = request.getRequestDispatcher("/Account/home.jsp");
             dispatcher.forward(request, response);
             return;

@@ -105,15 +105,27 @@ body{
     text-decoration:none;
 }
 
-#accLink, #logoutLink {
+#logoutLink{
     padding-left: 5px;
     padding-right: 5px;
+}
+
+#itineraryLink {
+    padding-left: 7px;
+    padding-right: 7px;
+    border-right: 2px solid white;
 }
 
 #accLink {
     padding-left: 7px;
     padding-right: 7px;
     border-right: 2px solid white;
+    border-left: 2px solid white;
+}
+
+#itinLink {
+    padding-left: 7px;
+    paddint-right: 7px;
     border-left: 2px solid white;
 }
 
@@ -125,6 +137,7 @@ body{
 
 /* End of Top bar */
 
+/* Content */
 #searchResults {
     position: absolute;
     left: 0;
@@ -142,6 +155,82 @@ body{
     height: calc(100% - 110px);
     padding: 0;
     margin-top: 110px;
+}
+
+#currentItinerary {
+    position: absolute;
+    float: left;
+    left: 0;
+    width: 70%;
+    height: calc(100% - 160px);
+    padding: 0;
+    overflow-y: auto;
+    margin-top: 160px;
+}
+
+#savedItineraries {
+    position: absolute;
+    float: right;
+    left: 70%;
+    width: 30%;
+    height: calc(100% - 160px);
+    padding: 0;
+    margin-top: 160px;
+    overflow-y: auto;
+}
+
+.itineraryPlace {
+    position: relative;
+    width: 80%;
+    height: 150px;
+    border-bottom: 2px solid gray;
+    margin: 10px auto 0;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.itineraryPlace img {
+    max-height: 140px;
+    max-width: 20%;
+    margin: auto 0;
+    vertical-align: middle;
+}
+
+#itineraryPlaceDetails {
+    width: 75%;
+    float: right;
+}
+
+#currentItineraryTitle {
+    position: fixed;
+    width: 70%;
+    height: 50px;
+    top: 60px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+    color: brown;
+    font-size: 18px
+}
+
+#currentItineraryTitle button {
+    margin: 0 0 0 50px;
+}
+
+#savedItineraryTitle {
+    position: fixed;
+    width: 30%;
+    height: 50px;
+    top: 60px;
+    line-height: 50px;
+    text-align: center;
+    color: brown;
+    vertical-align: middle;
+    font-size: 18px
 }
 
 /* Credentials change Form*/
@@ -289,6 +378,27 @@ input:focus{
     color: white;
 }
 
+#directions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+
+.directionsContent {
+    position: relative;
+    height: 80%;
+    width: 80%;
+    top: 8%;
+    margin: 0 auto;
+    display: none;
+    color: black;
+}
+
 #reviewsDiv {
     width: 50%;
     height: 100%;
@@ -301,6 +411,12 @@ input:focus{
     height: 100%;
     overflow-y: auto;
     float: left;
+}
+
+#directionsDiv {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 #loadingDiv {

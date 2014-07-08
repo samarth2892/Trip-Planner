@@ -7,6 +7,7 @@ var isValidAddress = false;
 function initialize() {
     geoCoder = new google.maps.Geocoder();
     autoComplete();
+    geocode();
 }
 
 
@@ -21,17 +22,11 @@ function dateValidation(){
     var date = $("#date").val();
     var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
     var dtArray = date.match(rxDatePattern);
-    alert(date.replace(/\-/g,','));
+
     var d = new Date(date.replace(/\-/g,','));
     var n = d.getDay();
     return !(isNaN(n) || dtArray == null);
 }
-
-$('#address').autocomplete({
-    select: function (event, ui) {
-        geocode();
-    }
-});
 
 
 function validate() {
@@ -82,5 +77,12 @@ function hideMoreInfo() {
     $("#moreInfo").fadeOut("slow").find("#moreInfoContent"+divNumber).hide();
 }
 
+function showDirections(div) {
+    divNumber = div;
+    $("#directions").fadeIn("slow").find("#directionsContent"+divNumber).show();
+}
 
+function hideDirections() {
+    $("#directions").fadeOut("slow").findj("#directionsContent"+divNumber).hide();
+}
 

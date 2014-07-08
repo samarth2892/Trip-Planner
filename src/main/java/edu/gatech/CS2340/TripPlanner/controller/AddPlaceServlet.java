@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = {
         "/Account/AddPlace"
@@ -22,24 +23,25 @@ public class AddPlaceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
-
+        ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
+        int index = Integer.parseInt(request.getParameter("index"));
         RequestDispatcher dispatcher;
         String addConfirmation;
-        AccountDb accountDatabase = new AccountDb();
+        //AccountDb accountDatabase = new AccountDb();
         PlaceDb placeDatabase = new PlaceDb();
-        accountDatabase.connect();
-        int userId = accountDatabase.getUserId();
+        placeDatabase.connect();
+        //int userId = accountDatabase.getUserId();
 
         Place place = new Place();
-        place.setReference(request.getParameter("reference"));
-        place.setName(request.getParameter("name"));
-        place.setAddress(request.getParameter("address"));
-        place.setPhoneNumber(request.getParameter("phone"));
-        place.setOpenTime(request.getIntHeader("openTime"));
-        place.setCloseTime(request.getIntHeader("closeTime"));
+        place.setReference(places.get(index).getReference());
+        place.setName(places.get(index).getName());
+        place.setAddress(places.get(index).getAddress());
+        place.setPhoneNumber(places.get(index).getPhoneNumber());
+        place.setOpenTime(places.get(index).getOpenTime());
+        place.setCloseTime(places.get(index).getCloseTime());
 
         if (!placeDatabase.placeExists(place)) {
-            placeDatabase.addPlace(place);
+            placeDatabase.addPlace(place, "0"); //TODO: Get date from front end
             addConfirmation = place.getName() + " has been added to your itinerary.";
             dispatcher = request.getRequestDispatcher("home.jsp");
         } else {
@@ -55,5 +57,6 @@ public class AddPlaceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
+
     }
 }

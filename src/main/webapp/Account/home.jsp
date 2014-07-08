@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Place" %>
+<%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,7 @@
     <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true_or_false"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
 </head>
 <body onload="initialize()">
@@ -20,6 +22,7 @@
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
+        <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces">(0)</span></a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
 </div>
@@ -145,16 +148,16 @@
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
                 <p>Rating:<%=places.get(x).getRating()%></p>
-                <%String date = request.getParameter("date");%>
+                <%String date = request.getSession().getAttribute("date").toString();%>
                 <script type="text/javascript">
                     var placeLocation
                             = new google.maps.LatLng(<%=places.get(x).getLatitude()%>,<%=places.get(x).getLongitude()%>);
-                   var contentString = "<div id='content' style='max-width:600px;height:200px'>"
+                    var contentString = "<div id='content' style='max-width:600px;height:250px'>"
                            +"<h3 style='text-align:center'><%=(null!=places.get(x).getName())?places.get(x).getName():""%></h3>"
                            +"<div style='width:60%;float:left'>"
                            +"<p><img style='max-width:90%;max-height:90%;display: block;margin-left: auto;margin-right:auto' src='<%=places.get(x).getImageURL().get(0)%>'/><br/>"
                            +"</div>"
-                           +"<div style='width:40%;float:right;'>"
+                           +"<div id='data' style='width:40%;float:right;'>"
                            +"Address: <%=(null!=places.get(x).getAddress())?places.get(x).getAddress():""%><br/>"
                            +"Phone No: <%=(null!=places.get(x).getPhoneNumber())?places.get(x).getPhoneNumber():""%><br/>"
                            +"Rating: <%=(null!=places.get(x).getRating())?places.get(x).getRating():""%><br/>"
@@ -163,12 +166,13 @@
                            +"Close Time: <%=(null!=places.get(x).getCloseTimeString())?places.get(x).getCloseTimeString():"N/A"%><br/>"
                            +"<a href='<%=places.get(x).getWebsite()%>' target='_blank'>Click here to open website.</a><br/>"
                            +"<a href='javascript:showMoreInfo(<%=x%>)'>Click here to see  more reviews and photos.</a>"
-                           +"<br/><button type='button'>Add to Itinerary</button>"
+                           +"<br/><button id='addButton-<%=x%>' type='button' onclick='javascript:addToItinerary(<%=x%>)' >Add to Itinerary</button>"
                            +"</div>"
                            +"</div>";
 
                     createMarker(placeLocation,contentString,<%=x%>);
                 </script>
+
 
                 <!-- More info Divs-->
                 <script type="text/javascript">
