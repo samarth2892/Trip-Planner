@@ -42,7 +42,7 @@ public class finalizeItineraryFilter implements Filter {
         dispatcher.forward(request, response);
         return;
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        //filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
