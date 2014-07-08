@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebFilter(
+        filterName = "finalizeItineraryFilter",
         urlPatterns = {"/Account/finalizeItinerary"}
 )
 public class finalizeItineraryFilter implements Filter {
@@ -20,7 +21,11 @@ public class finalizeItineraryFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain filterChain)
+        throws IOException, ServletException {
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -58,6 +63,8 @@ public class finalizeItineraryFilter implements Filter {
         }
         dispatcher.forward(request, response);
         return;
+
+        //filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
