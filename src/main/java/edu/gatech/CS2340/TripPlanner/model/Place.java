@@ -127,6 +127,7 @@ public class Place {
     public void setDirections(ArrayList<String> directions) {
         this.directions = directions;
     }
+
     public String getOpenTimeString(){
         try {
             Date openDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));
