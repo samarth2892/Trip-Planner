@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {
-        "/finalizeItinerary"
+        "/Account/finalizeItinerary"
 })
 
 public class finalizeItineraryServlet extends HttpServlet {
@@ -18,10 +18,15 @@ public class finalizeItineraryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
-        RequestDispatcher dispatcher;
+        System.out.println("afjkdfj");
+        RequestDispatcher dispatcher
+                = request.getRequestDispatcher("itinerary.jsp");
+
         PlaceDb places = new PlaceDb();
         places.connect();
         System.out.println("here");
+
+        dispatcher.forward(request, response);
 
 
     }
