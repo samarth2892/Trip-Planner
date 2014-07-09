@@ -43,9 +43,9 @@
       </copy>
 
       <mkdir    dir="${build.home}/WEB-INF/classes"/>
-    <javac srcdir="${src.main}/java"
-          destdir="${build.home}/WEB-INF/classes">
-        <classpath refid="compile.classpath"/>
+    <javac  srcdir="${src.main}/java"
+            destdir="${build.home}/WEB-INF/classes">
+            <classpath refid="compile.classpath"/>
     </javac>
 
   </target>

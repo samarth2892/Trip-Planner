@@ -1,6 +1,8 @@
 <%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Place" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -28,10 +30,12 @@
     </div>
 </div>
 
-<%HashMap<String, Place> sessionItinerary
-= (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");%>
+<% Itinerary sessionItinerary
+        = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+   HashMap<String, Place> itineraryPlaces
+        = sessionItinerary.getMap();%>
 <div id="currentItinerary">
-    <%if(sessionItinerary.size() > 0) {%>
+    <%if(itineraryPlaces.size() > 0) {%>
     <form action="<%=request.getContextPath()%>/Account/finalizeItinerary" method="post">
     <div id="currentItineraryTitle"><b>Current Itinerary</b>
         <select style="margin-left:50px" name="transportation">
@@ -44,16 +48,16 @@
         <button type="submit">Finalize and get directions</button> <button type="button" onclick="javascript:startOver()">Start Over</button>
         <br/><span style="color: red"><b><%= ((error.equals("null"))?"":error) %></b></span>
     </div>
-    <% for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {%>
+    <% for(Map.Entry<String, Place> entry : itineraryPlaces.entrySet()) {%>
         <div class="itineraryPlace" id="itineraryPlace-<%=entry.getKey()%>">
             <span class="helper"></span><img src="<%=entry.getValue().getImageURL().get(0)%>" />
             <div id="itineraryPlaceDetails">
                 <h4><%=entry.getValue().getName()%> <span style="float: right">Order of visit:
-                    <input name="<%=entry.getKey()%>-order" min="1" max="<%=sessionItinerary.size()%>"
+                    <input name="<%=entry.getKey()%>-order" min="1" max="<%=itineraryPlaces.size()%>"
                            type="number" style="width:40px" value="<%=request.getParameter(entry.getKey() + "-order")%>"/></span></h4>
 
                     <p> Address: <%=entry.getValue().getAddress()%><br/>
-                        Hours on: <%=request.getSession().getAttribute("date").toString()%>
+                        Hours on: <%=request.getSession().getAttribute("sessionDate").toString()%>
                         &nbsp;Open: <%=entry.getValue().getOpenTimeString()%>
                         &nbsp;Close: <%=entry.getValue().getCloseTimeString()%><br/>
                         <button type="button" onclick="javascript:removeFromItinerary(<%=entry.getKey()%>)">Remove from Itinerary</button>
@@ -68,8 +72,14 @@
 </div>
 
 <div id="savedItineraries" >
+    <% ArrayList<Itinerary> savedSessionItineraries
+            = (ArrayList<Itinerary>) request.getSession().getAttribute("savedSessionItineraries");%>
     <div id="savedItineraryTitle"><b>Saved Itineraries</b></div>
-
+    <%if(savedSessionItineraries.size() > 0) {%>
+        <%for(Itinerary itinerary : savedSessionItineraries) {%>
+            <b><%=itinerary.getDate()%></b><br/>
+        <%}%>
+    <%}%>
 </div>
 
 </body>

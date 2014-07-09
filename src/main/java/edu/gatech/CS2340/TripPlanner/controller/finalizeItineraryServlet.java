@@ -1,5 +1,6 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 import main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @WebServlet(urlPatterns = {
@@ -28,17 +30,30 @@ public class finalizeItineraryServlet extends HttpServlet {
         PlaceDb places = new PlaceDb();
         places.connect();
 
-        HashMap<String, Place> sessionItinerary
-                = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");
+        Itinerary sessionItinerary
+                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+        HashMap<String, Place> itineraryPlaces
+                = sessionItinerary.getMap();
 
         Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
 
+        String username = request.getSession().getAttribute("userStatus").toString();
+        sessionItinerary.setOrderedPlacesArray(orderedPlaces);
+        sessionItinerary.setOrigin(request.getSession().getAttribute("sessionStartAddress").toString());
+        sessionItinerary.setDate(request.getSession().getAttribute("sessionDate").toString());
 
-        for (Place orderedPlace : orderedPlaces) {
-            System.out.println(orderedPlace.getName());
-        }
+
+        places.addItinerary(sessionItinerary, username);
+
+        itineraryPlaces.clear();
+        sessionItinerary.setMap(itineraryPlaces);
+        request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+
+        ArrayList<Itinerary> savedSessionItineraries = places.loadAllItineraries(username);
+
+        request.getSession().setAttribute("savedSessionItineraries", savedSessionItineraries);
+
         dispatcher.forward(request, response);
-
 
     }
 

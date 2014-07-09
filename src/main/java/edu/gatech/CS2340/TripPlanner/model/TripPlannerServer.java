@@ -67,12 +67,13 @@ public abstract class TripPlannerServer {
                             "phone varchar(255) NOT NULL, " +
                             "opentime int NOT NULL, " +
                             "closetime int NOT NULL, " +
+                            "imageuRL longtext NOT NULL," +
                             "PRIMARY KEY (accountid, userorder, itineraryid));";
             stmt.execute(createItinerariesTable);
 
             String initItineraryDb =
                     "INSERT INTO itineraries VALUES (" +
-                            "1, 1, 1, 'init', 'init', 'init', 'init', 'init', 'init', 0, 0)" +
+                            "1, 1, 1, 'init', 'init', 'init', 'init', 'init', 'init', 0, 0,'init')" +
                             "ON DUPLICATE KEY UPDATE accountid=1;";
             stmt.execute(initItineraryDb);
 

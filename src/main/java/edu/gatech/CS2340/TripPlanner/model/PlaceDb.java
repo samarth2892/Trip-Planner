@@ -10,35 +10,45 @@ import java.util.HashMap;
 public class PlaceDb extends TripPlannerServer {
 
 
-    public void addPlace(Place[] places, String date, String userName, String startAddress) {
+    public void addItinerary(Itinerary itinerary, String userName) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement placeStatement = conn.createStatement();
             int nextOrderValue;
 
-            ResultSet itinerarySizeResult = placeStatement.executeQuery(
-                    "SELECT * FROM itineraries WHERE accountid='" + getUserId(userName) + "' ORDER BY userorder DESC;");
+            if(itinerary.getId() == 0) {
+                ResultSet itinerarySizeResult = placeStatement.executeQuery(
+                        "SELECT * FROM itineraries WHERE accountid='" + getUserId(userName) + "' ORDER BY itineraryid DESC;");
 
-            if (itinerarySizeResult.next()) {
-                nextOrderValue = itinerarySizeResult.getInt(2) + 1;
+                if (itinerarySizeResult.next()) {
+                    nextOrderValue = itinerarySizeResult.getInt(3) + 1;
+                } else {
+                    nextOrderValue = 1;
+                }
+
             } else {
-                nextOrderValue = 1;
+                clearItinerary(userName, itinerary.getId());
+                nextOrderValue = itinerary.getId();
             }
 
+            Place[] places = itinerary.getOrderedPlacesArray();
+
             for (int i = 0; i < places.length; i++) {
+                int j = i + 1;
                 String insertPlace =
                         "INSERT INTO itineraries VALUES("
                                 + getUserId(userName) + ","
-                                + i + 1 + ","
+                                + j + ","
                                 + nextOrderValue + ",'"
-                                + date + "','"
+                                + itinerary.getDate() + "','"
+                                + itinerary.getOrigin() + "','"
                                 + places[i].getReference() + "','"
-                                + startAddress + "','"
                                 + places[i].getName() + "','"
                                 + places[i].getAddress() + "','"
                                 + places[i].getPhoneNumber() + "',"
                                 + places[i].getOpenTime() + ","
-                                + places[i].getCloseTime() + ");";
+                                + places[i].getCloseTime() + ",'"
+                                + places[i].getImageURL().get(0) + "');";
                 stmt.executeUpdate(insertPlace);
             }
         } catch (SQLException e) {
@@ -90,9 +100,14 @@ public class PlaceDb extends TripPlannerServer {
                     place.setPhoneNumber(places.getString(9));
                     place.setOpenTime(places.getInt(10));
                     place.setCloseTime(places.getInt(11));
+                    String image = places.getString(12);
+                    ArrayList<String> s = new ArrayList<String>();
+                    s.add(0,image);
+                    place.setImageURL(s);
                     placesInItinerary.put(places.getInt(2), place);
                 }
 
+                itinerary.setId(itineraryId);
                 itinerary.setMap(placesInItinerary);
                 return itinerary;
 
@@ -124,7 +139,39 @@ public class PlaceDb extends TripPlannerServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<Itinerary>();
+    }
+
+    public boolean hasItinerary(String userName, int itineraryId){
+
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement placeStatement = conn.createStatement();
+            String selectItinerary;
+
+            selectItinerary = "SELECT * FROM itineraries WHERE " +
+                    "accountid="+getUserId(userName)+ " AND itineraryid=" + itineraryId + ";";
+
+            ResultSet result1 = placeStatement.executeQuery(selectItinerary);
+
+            return result1.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void clearItinerary(String userName, int itineraryID) {
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement deleteStatement = conn.createStatement();
+            String deleteItinerary = "DELETE FROM itineraries WHERE" +
+                    " accountid="+getUserId(userName)+" AND itineraryid="+itineraryID+";";
+
+            deleteStatement.executeUpdate(deleteItinerary);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateOrder(Place place1, Place place2, String userName) {
@@ -173,13 +220,37 @@ public class PlaceDb extends TripPlannerServer {
         }
     }
 
-    public static void main(String...args) {
+    /*public static void main(String...args) {
         PlaceDb p = new PlaceDb();
         p.connect();
 
+        Place[] places = new Place[4];
+        for (int i = 0; i < places.length; i++) {
+            Place place = new Place();
+            place.setName("Test1");
+            place.setReference("Test1");
+            place.setAddress("Test1");
+            place.setPhoneNumber("Test1");
+            place.setOpenTime(1);
+            place.setCloseTime(2);
+            String image = "test1";
+            ArrayList<String> s = new ArrayList<String>();
+            s.add(0,image);
+            place.setImageURL(s);
+            places[i] = place;
+        }
+
+        Itinerary itinerary = new Itinerary();
+        itinerary.setId(2);
+        itinerary.setDate("Test1");
+        itinerary.setOrigin("Test1");
+        itinerary.setOrderedPlacesArray(places);
+
+        p.addItinerary(itinerary,"admin");
+
         ArrayList<Itinerary> a = p.loadAllItineraries("admin");
         HashMap<Integer,Place> place = a.get(0).getMap();
-        System.out.println(place.get(1).getName());
+        System.out.println(place.get(1).getImageURL().get(0));
 
-    }
+    }*/
 }

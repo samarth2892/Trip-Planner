@@ -1,5 +1,6 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 
 import javax.servlet.*;
@@ -32,10 +33,12 @@ public class finalizeItineraryFilter implements Filter {
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("itinerary.jsp");
 
-        HashMap<String, Place> sessionItinerary
-                = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");
+        Itinerary sessionItinerary
+                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+        HashMap<String, Place> itineraryPlaces
+                = sessionItinerary.getMap();
 
-        Place[] orderedPlaces = new Place[sessionItinerary.size()];
+        Place[] orderedPlaces = new Place[itineraryPlaces.size()];
 
         if (null == request.getParameter("transportation")) {
             request.setAttribute("error","*Please select a mode of transportation");
@@ -43,7 +46,7 @@ public class finalizeItineraryFilter implements Filter {
             return;
 
         } else {
-            for(Map.Entry<String, Place> entry : sessionItinerary.entrySet()) {
+            for(Map.Entry<String, Place> entry : itineraryPlaces.entrySet()) {
                 int order
                         = (!request.getParameter(entry.getKey() + "-order").equals(""))
                         ? Integer.parseInt(request.getParameter(entry.getKey() + "-order"))

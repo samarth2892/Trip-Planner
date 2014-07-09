@@ -22,12 +22,15 @@ public class SearchServlet extends HttpServlet {
                           HttpServletResponse response)
             throws IOException, ServletException {
 
+
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("/Account/home.jsp");
 
         String address = request.getParameter("address");
 
-        request.getSession().setAttribute("date",request.getParameter("date"));
+
+        request.getSession().setAttribute("sessionDate",request.getParameter("date"));
+        request.getSession().setAttribute("sessionStartAddress", address);
 
         String day = request.getParameter("day");
 
@@ -64,6 +67,7 @@ public class SearchServlet extends HttpServlet {
             endHour += 1200;
         }
 
+
         address = address.replaceAll(" ", "+");
         GooglePlaceSearch search = new GooglePlaceSearch(address,
                 Integer.parseInt(day));
@@ -73,12 +77,14 @@ public class SearchServlet extends HttpServlet {
         search.setMinRating(minRating);
         search.setRadiusInMeters(radius * 1609.34);
 
+
         ArrayList<Place> placeResult = search.search();
         request.setAttribute("center",search.getLatitude()
                 + "," + search.getLongitude());
 
         request.getSession().setAttribute("sessionPlaceResult", placeResult);
         request.setAttribute("placeResult", placeResult );
+
         dispatcher.forward(request, response);
     }
 
