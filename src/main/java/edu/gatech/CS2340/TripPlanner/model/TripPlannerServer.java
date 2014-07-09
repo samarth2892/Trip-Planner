@@ -60,7 +60,7 @@ public abstract class TripPlannerServer {
                             "userorder int NOT NULL, " +
                             "itineraryid int NOT NULL, " +
                             "date varchar(255) NOT NULL, " +
-                            "startaddress varchar(255) NOT NULL, " +
+                            "originaddress varchar(255) NOT NULL, " +
                             "reference varchar(255) NOT NULL, " +
                             "name varchar(255) NOT NULL, " +
                             "address varchar(255) NOT NULL, " +

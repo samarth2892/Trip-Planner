@@ -1,7 +1,9 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
+
 import java.util.HashMap;
 
 public class Itinerary {
+
     private int id = 0;
     private String origin;
     private String date;
@@ -25,7 +27,7 @@ public class Itinerary {
     public HashMap<String,Place> getMap() {
         return map;
     }
-    public void setMap(HashMap map) {
+    public void setMap(HashMap<String,Place> map) {
         this.map = map;
     }
 

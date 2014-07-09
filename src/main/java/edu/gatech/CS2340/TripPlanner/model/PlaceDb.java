@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 public class PlaceDb extends TripPlannerServer {
 
-
     public void addItinerary(Itinerary itinerary, String userName) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -78,12 +77,14 @@ public class PlaceDb extends TripPlannerServer {
         return true;
     }
     public Itinerary loadItinerary(int itineraryId, String userName) {
+
         try {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement placeStatement = conn.createStatement();
             Itinerary itinerary = new Itinerary();
-            HashMap<Integer,Place> placesInItinerary = new HashMap<Integer, Place>();
+
+            HashMap<String,Place> placesInItinerary = new HashMap<String, Place>();
 
             String selectPlaces =
                     "SELECT * FROM itineraries WHERE " +
@@ -104,7 +105,7 @@ public class PlaceDb extends TripPlannerServer {
                     ArrayList<String> s = new ArrayList<String>();
                     s.add(0,image);
                     place.setImageURL(s);
-                    placesInItinerary.put(places.getInt(2), place);
+                    placesInItinerary.put(Integer.toString(places.getInt(2)), place);
                 }
 
                 itinerary.setId(itineraryId);
@@ -183,6 +184,7 @@ public class PlaceDb extends TripPlannerServer {
 
             selectPlaces =
                     "SELECT * FROM itineraries WHERE " +
+
                             "(accountid=" + getUserId(userName) + " AND reference='" + place1.getReference() + "');";
             ResultSet result1 = placeStatement.executeQuery(selectPlaces);
             result1.next();
@@ -220,7 +222,7 @@ public class PlaceDb extends TripPlannerServer {
         }
     }
 
-    /*public static void main(String...args) {
+    public static void main(String...args) {
         PlaceDb p = new PlaceDb();
         p.connect();
 
@@ -248,9 +250,6 @@ public class PlaceDb extends TripPlannerServer {
 
         p.addItinerary(itinerary,"admin");
 
-        ArrayList<Itinerary> a = p.loadAllItineraries("admin");
-        HashMap<Integer,Place> place = a.get(0).getMap();
-        System.out.println(place.get(1).getImageURL().get(0));
 
-    }*/
+    }
 }
