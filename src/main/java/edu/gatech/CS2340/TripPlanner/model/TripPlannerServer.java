@@ -5,11 +5,7 @@ import sun.misc.BASE64Encoder;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
 
 
 public abstract class TripPlannerServer {
@@ -87,11 +83,11 @@ public abstract class TripPlannerServer {
         }
     }
 
-    public int getUserId() {
+    public int getUserId(String userName) {
         try{
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             String selectUser =
-                    "SELECT id FROM accounts WHERE user=" + currentUser + ";";
+                    "SELECT id FROM accounts.accounts WHERE user='" + userName + "';";
             ResultSet findUser = stmt.executeQuery(selectUser);
             if (findUser.next()) {
                 return findUser.getInt(1);

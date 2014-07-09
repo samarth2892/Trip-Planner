@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class Itinerary {
     private String origin;
     private String date;
-    private HashMap map;
+    private HashMap<Integer,Place> map;
 
     public String getOrigin() {
         return origin;
@@ -20,7 +20,7 @@ public class Itinerary {
         this.date = date;
     }
 
-    public HashMap getMap() {
+    public HashMap<Integer,Place> getMap() {
         return map;
     }
     public void setMap(HashMap map) {
