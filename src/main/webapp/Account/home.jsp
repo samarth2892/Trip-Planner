@@ -13,18 +13,26 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/jsFunctions.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
     <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/facebook.js"></script>
 </head>
 <body onload="initialize()">
 <div id="loadingDiv"></div>
 
 <div id="NavBar">
     <div id="topLeftText"> Welcome  <%= request.getSession().getAttribute("userStatus")%></div>
+    <div id="facebookLogin">
+        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true">
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+        </div>
+    </div>
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
         <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces">(0)</span></a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
+
 </div>
 
 <div id = "SearchBar">
