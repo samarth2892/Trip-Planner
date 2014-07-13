@@ -1,6 +1,5 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
-import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 import main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb;
 
@@ -40,7 +39,7 @@ public class AddPlaceServlet extends HttpServlet {
         place.setOpenTime(places.get(index).getOpenTime());
         place.setCloseTime(places.get(index).getCloseTime());
 
-        if (!placeDatabase.placeExists(place)) {
+        /*if (!placeDatabase.placeExists(place)) {
             placeDatabase.addPlace(place, "0"); //TODO: Get date from front end
             addConfirmation = place.getName() + " has been added to your itinerary.";
             dispatcher = request.getRequestDispatcher("home.jsp");
@@ -50,7 +49,7 @@ public class AddPlaceServlet extends HttpServlet {
             dispatcher = request.getRequestDispatcher("home.jsp");
         }
         request.setAttribute("error", addConfirmation);
-        dispatcher.forward(request, response);
+        dispatcher.forward(request, response);*/
     }
 
     @Override

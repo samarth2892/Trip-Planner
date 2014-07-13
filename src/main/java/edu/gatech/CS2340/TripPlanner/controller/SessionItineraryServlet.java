@@ -1,6 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 
 import javax.servlet.ServletException;
@@ -24,8 +25,10 @@ public class SessionItineraryServlet extends HttpServlet {
             throws IOException, ServletException {
 
 
-        HashMap<String, Place> sessionItinerary
-                = (HashMap<String, Place>) request.getSession().getAttribute("itineraryPlaces");
+        Itinerary sessionItinerary
+                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+        HashMap<String, Place> itineraryPlaces
+                = sessionItinerary.getMap();
 
 
         if (!request.getParameter("addId").equals("")) {
@@ -34,24 +37,26 @@ public class SessionItineraryServlet extends HttpServlet {
 
             String placeId = request.getParameter("addId");
 
-            sessionItinerary.put(placeId, places.get(Integer.parseInt(placeId)));
-
-            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+            itineraryPlaces.put(placeId, places.get(Integer.parseInt(placeId)));
+            sessionItinerary.setMap(itineraryPlaces);
+            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
 
         } else if (!request.getParameter("removeId").equals("")) {
 
             String placeId = request.getParameter("removeId");
 
-            sessionItinerary.remove(placeId);
+            itineraryPlaces.remove(placeId);
 
-            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+            sessionItinerary.setMap(itineraryPlaces);
+
+            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
 
         } else if (!request.getParameter("startOver").equals("")) {
-            sessionItinerary.clear();
-
-            request.getSession().setAttribute("itineraryPlaces", sessionItinerary);
+            itineraryPlaces.clear();
+            sessionItinerary.setMap(itineraryPlaces);
+            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
         }
-        response.getWriter().print(sessionItinerary.size());
+        response.getWriter().print(itineraryPlaces.size());
 
     }
 }
