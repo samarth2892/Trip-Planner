@@ -1,21 +1,20 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlaceDb extends TripPlannerServer {
 
     public void addItinerary(Itinerary itinerary, String userName) {
+        int nextOrderValue = 1;
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement placeStatement = conn.createStatement();
-            int nextOrderValue;
 
-            if(itinerary.getId() == 0) {
+
+            if (itinerary.getId() == 0) {
+
                 ResultSet itinerarySizeResult = placeStatement.executeQuery(
                         "SELECT * FROM itineraries WHERE accountid='" + getUserId(userName) + "' ORDER BY itineraryid DESC;");
 
@@ -34,21 +33,28 @@ public class PlaceDb extends TripPlannerServer {
 
             for (int i = 0; i < places.length; i++) {
                 int j = i + 1;
+                int next = nextOrderValue + 1;
                 String insertPlace =
-                        "INSERT INTO itineraries VALUES("
-                                + getUserId(userName) + ","
-                                + j + ","
-                                + nextOrderValue + ",'"
-                                + itinerary.getDate() + "','"
-                                + itinerary.getOrigin() + "','"
-                                + places[i].getReference() + "','"
-                                + places[i].getName() + "','"
-                                + places[i].getAddress() + "','"
-                                + places[i].getPhoneNumber() + "',"
-                                + places[i].getOpenTime() + ","
-                                + places[i].getCloseTime() + ",'"
-                                + places[i].getImageURL().get(0) + "');";
-                stmt.executeUpdate(insertPlace);
+                        "INSERT INTO itineraries "
+                                + "(accountid,userorder,itineraryid,date,startaddress,"
+                                + "reference,name,address,phone,opentime,closetime,imageuRL) "
+                                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                PreparedStatement prep = conn.prepareStatement(insertPlace);
+                prep.setInt(1,getUserId(userName));
+                prep.setInt(2,j);
+                prep.setInt(3,nextOrderValue);
+                prep.setString(4, itinerary.getDate());
+                prep.setString(5, itinerary.getOrigin());
+                prep.setString(6, places[i].getReference());
+                prep.setString(7, places[i].getName());
+                prep.setString(8, places[i].getAddress());
+                prep.setString(9, places[i].getPhoneNumber());
+                prep.setInt(10, places[i].getOpenTime());
+                prep.setInt(11, places[i].getCloseTime());
+                prep.setString(12, places[i].getImageURL().get(0));
+
+                prep.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -175,45 +181,28 @@ public class PlaceDb extends TripPlannerServer {
         }
     }
 
-    public void updateOrder(Place place1, Place place2, String userName) {
+    public void updateAllItineraryIds(int deletedItineraryId, String userName) {
+        String select =
+                "SELECT COUNT(DISTINCT(itineraryid)) FROM itineraries WHERE accountid=" + getUserId(userName) +" AND "
+                        + "itineraryid > "+ deletedItineraryId +";";
         try {
-
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement placeStatement = conn.createStatement();
-            String selectPlaces;
 
-            selectPlaces =
-                    "SELECT * FROM itineraries WHERE " +
-
-                            "(accountid=" + getUserId(userName) + " AND reference='" + place1.getReference() + "');";
-            ResultSet result1 = placeStatement.executeQuery(selectPlaces);
-            result1.next();
-            int userOrder1 = result1.getInt(2);
-
-            selectPlaces =
-                    "SELECT * FROM itineraries WHERE " +
-                            "(accountid=" + getUserId(userName) + " AND reference='" + place2.getReference() + "');";
-            ResultSet result2 = placeStatement.executeQuery(selectPlaces);
-            result2.next();
-            int userOrder2 = result2.getInt(2);
-
-            placeStatement.executeUpdate(
-                    "UPDATE itineraries " +
-                            "SET userorder=0 WHERE " +
-                            "(accountid=" + getUserId(userName) + " AND userorder=" + userOrder1 + ");"
-            );
-
-            placeStatement.executeUpdate(
-                    "UPDATE itineraries " +
-                            "SET userorder=" + userOrder1 + " WHERE " +
-                            "(accountid=" + getUserId(userName) + " AND userorder=" + userOrder2 + ");"
-            );
-
-            placeStatement.executeUpdate(
-                    "UPDATE itineraries " +
-                            "SET userorder=" + userOrder2 + " WHERE " +
-                            "(accountid=" + getUserId(userName) + " AND userorder=0);"
-            );
+            ResultSet resultSet = stmt.executeQuery(select);
+            if (resultSet.next()) {
+                int rows = resultSet.getInt(1);
+                int i = deletedItineraryId + 1;
+                for (int j = 1; j <= rows; j++) {
+                    Statement updateStatement = conn.createStatement();
+                    updateStatement.executeUpdate(
+                            "UPDATE itineraries "
+                                    + "SET itineraryid = itineraryid - 1 WHERE "
+                                    + "accountid=" + getUserId(userName) + " AND itineraryid =" + i + ";"
+                    );
+                    updateStatement.close();
+                    i++;
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,10 +211,11 @@ public class PlaceDb extends TripPlannerServer {
         }
     }
 
-    public static void main(String...args) {
+    /*public static void main(String...args) {
         PlaceDb p = new PlaceDb();
         p.connect();
-
+        p.clearItinerary("admin",3);
+        //p.updateAllItineraryIds(1,"admin");
         Place[] places = new Place[4];
         for (int i = 0; i < places.length; i++) {
             Place place = new Place();
@@ -243,13 +233,15 @@ public class PlaceDb extends TripPlannerServer {
         }
 
         Itinerary itinerary = new Itinerary();
-        itinerary.setId(2);
+        itinerary.setId(0);
         itinerary.setDate("Test1");
         itinerary.setOrigin("Test1");
         itinerary.setOrderedPlacesArray(places);
 
         p.addItinerary(itinerary,"admin");
 
+        //ArrayList<Itinerary> itineraries = p.loadAllItineraries("admin");
+        //System.out.println(itineraries.size());
 
-    }
+    }*/
 }

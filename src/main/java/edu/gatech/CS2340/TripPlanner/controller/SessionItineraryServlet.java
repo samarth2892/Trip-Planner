@@ -52,8 +52,8 @@ public class SessionItineraryServlet extends HttpServlet {
             request.getSession().setAttribute("sessionItinerary", sessionItinerary);
 
         } else if (!request.getParameter("startOver").equals("")) {
-            itineraryPlaces.clear();
-            sessionItinerary.setMap(itineraryPlaces);
+            sessionItinerary = new Itinerary();
+            sessionItinerary.setMap(new HashMap<String, Place>());
             request.getSession().setAttribute("sessionItinerary", sessionItinerary);
         }
         response.getWriter().print(itineraryPlaces.size());
