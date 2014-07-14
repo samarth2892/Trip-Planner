@@ -19,7 +19,8 @@
     });
   }
 
-  window.fbAsyncInit = function() {
+  window.fbAsyncInit = function () {
+
   FB.init({
     appId      : '914424721916552',
     cookie     : true,  // enable cookies to allow the server to access
@@ -37,16 +38,6 @@
   FB.Event.subscribe('auth.logout', function(response) {
           alert("logged off");
   });
-
-  FB.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-        console.log('Logged in.');
-      }
-      else {
-        FB.login();
-      }
-  });
-
   };
 
   // Load the SDK asynchronously

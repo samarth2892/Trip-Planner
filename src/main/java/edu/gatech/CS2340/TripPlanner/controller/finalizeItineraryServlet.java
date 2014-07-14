@@ -39,8 +39,10 @@ public class finalizeItineraryServlet extends HttpServlet {
                 = (Itinerary) request.getSession().getAttribute("sessionItinerary");
 
         HashMap<String, Place> itineraryPlaces = sessionItinerary.getMap();
-
-        if(request.getAttribute("orderedPlaces") != null) {
+        if(request.getParameter("directionsButton") != null
+                && request.getParameter("directionsButton").equals("Get Directions")) {
+            request.setAttribute("directions", "test");
+        } else if(request.getAttribute("orderedPlaces") != null) {
 
             Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
             sessionItinerary.setOrderedPlacesArray(orderedPlaces);

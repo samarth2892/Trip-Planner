@@ -46,7 +46,7 @@
             <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
         </select>
         <input style="margin-left:40px" type="submit" value="Save" />
-        <button type="button"> Get directions</button>
+        <input style="margin-left:40px" type="submit" name="directionsButton" value="Get Directions"/>
         <button type="button" onclick="javascript:startOver()">Start Over</button>
         <br/><span style="color: red"><b><%= ((error.equals("null"))?"":error) %></b></span>
     </div>
@@ -98,5 +98,15 @@
     <%}%>
 </div>
 
+<%if(request.getAttribute("directions") != null){%>
+<script type="text/javascript">
+    var popup =
+    window.open(encodeURI('<%=request.getContextPath()%>'
+                    +'/Account/directions.jsp?directions=<%=request.getAttribute("directions")%>'));
+    if(!popup) {
+        alert("Please turn off popup blocker");
+    }
+</script>
+<%}%>
 </body>
 </html>

@@ -210,38 +210,4 @@ public class PlaceDb extends TripPlannerServer {
             e.printStackTrace();
         }
     }
-
-    /*public static void main(String...args) {
-        PlaceDb p = new PlaceDb();
-        p.connect();
-        p.clearItinerary("admin",3);
-        //p.updateAllItineraryIds(1,"admin");
-        Place[] places = new Place[4];
-        for (int i = 0; i < places.length; i++) {
-            Place place = new Place();
-            place.setName("Test1");
-            place.setReference("Test1");
-            place.setAddress("Test1");
-            place.setPhoneNumber("Test1");
-            place.setOpenTime(1);
-            place.setCloseTime(2);
-            String image = "test1";
-            ArrayList<String> s = new ArrayList<String>();
-            s.add(0,image);
-            place.setImageURL(s);
-            places[i] = place;
-        }
-
-        Itinerary itinerary = new Itinerary();
-        itinerary.setId(0);
-        itinerary.setDate("Test1");
-        itinerary.setOrigin("Test1");
-        itinerary.setOrderedPlacesArray(places);
-
-        p.addItinerary(itinerary,"admin");
-
-        //ArrayList<Itinerary> itineraries = p.loadAllItineraries("admin");
-        //System.out.println(itineraries.size());
-
-    }*/
 }
