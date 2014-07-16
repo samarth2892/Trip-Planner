@@ -36,7 +36,7 @@ public class PlaceDb extends TripPlannerServer {
                 int next = nextOrderValue + 1;
                 String insertPlace =
                         "INSERT INTO itineraries "
-                                + "(accountid,userorder,itineraryid,date,startaddress,"
+                                + "(accountid,userorder,itineraryid,date,originaddress,"
                                 + "reference,name,address,phone,opentime,closetime,imageuRL) "
                                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -96,6 +96,7 @@ public class PlaceDb extends TripPlannerServer {
                     "SELECT * FROM itineraries WHERE " +
                             "(accountid=" + getUserId(userName) + " AND itineraryid=" + itineraryId + ") " +
                             "ORDER BY userorder;";
+
             ResultSet places = placeStatement.executeQuery(selectPlaces);
             while (places.next()) {
                     itinerary.setDate(places.getString(4));
@@ -123,6 +124,7 @@ public class PlaceDb extends TripPlannerServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("returning null");
         return null;
     }
 
