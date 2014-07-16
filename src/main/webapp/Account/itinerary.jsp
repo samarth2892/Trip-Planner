@@ -40,10 +40,10 @@
     <div id="currentItineraryTitle"><b>Current Itinerary</b>
         <select style="margin-left:40px" name="transportation">
             <option value="" disabled selected>Transportation</option>
-            <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
-            <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
+            <option value="driving" ${param.transportation == 'driving' ? 'selected' : ''}>Car</option>
+            <option value="bicycling" ${param.transportation == 'bicycling' ? 'selected' : ''}>Bicycle</option>
             <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
-            <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
+            <option value="walking" ${param.transportation == 'walking' ? 'selected' : ''}>Walk</option>
         </select>
         <input style="margin-left:40px" type="submit" value="Save" />
         <input style="margin-left:40px" type="submit" name="directionsButton" value="Get Directions"/>
@@ -98,7 +98,7 @@
     <%}%>
 </div>
 
-<%if(request.getAttribute("directions") != null){%>
+<%if(request.getSession().getAttribute("directions") != null){%>
 <script type="text/javascript">
     var popup =
     window.open(encodeURI('<%=request.getContextPath()%>'
