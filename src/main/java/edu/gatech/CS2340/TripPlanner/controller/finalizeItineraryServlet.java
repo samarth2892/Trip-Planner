@@ -1,5 +1,6 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
+import main.java.edu.gatech.CS2340.TripPlanner.model.GooglePlaceSearch;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 import main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb;
@@ -42,6 +43,20 @@ public class finalizeItineraryServlet extends HttpServlet {
         if(request.getParameter("directionsButton") != null
                 && request.getParameter("directionsButton").equals("Get Directions")) {
             request.setAttribute("directions", "test");
+
+            Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
+
+            GooglePlaceSearch search = new GooglePlaceSearch("",0);
+
+            try {
+                ArrayList<String> directions
+                    = search.getDirections(sessionItinerary.getOrigin(), orderedPlaces[1].getAddress());
+                System.out.println(directions.get(0));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } else if(request.getAttribute("orderedPlaces") != null) {
 
             Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");

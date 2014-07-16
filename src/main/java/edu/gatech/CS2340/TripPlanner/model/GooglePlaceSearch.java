@@ -108,6 +108,7 @@ public class GooglePlaceSearch {
     public ArrayList<String> getDirections(String origin, String destination) throws Exception {
         ArrayList<String> directions = new ArrayList<String>();
         destination = destination.replace(" ", "+");
+        origin = origin.replace(" ","+");
 
         response = client.execute(new HttpGet(googleAPIURL
                 + "/directions/json?origin=" + origin + "&destination="
