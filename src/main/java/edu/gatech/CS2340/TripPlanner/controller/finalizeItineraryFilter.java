@@ -38,30 +38,32 @@ public class finalizeItineraryFilter implements Filter {
         HashMap<String, Place> itineraryPlaces
                 = sessionItinerary.getMap();
 
-        Place[] orderedPlaces = new Place[itineraryPlaces.size()];
+        if(!itineraryPlaces.isEmpty()){
+            Place[] orderedPlaces = new Place[itineraryPlaces.size()];
 
-        if (null == request.getParameter("transportation")) {
-            request.setAttribute("error","*Please select a mode of transportation");
-            dispatcher.forward(request, response);
-            return;
-
-        } else {
-            for(Map.Entry<String, Place> entry : itineraryPlaces.entrySet()) {
-                int order
-                        = (!request.getParameter(entry.getKey() + "-order").equals(""))
-                        ? Integer.parseInt(request.getParameter(entry.getKey() + "-order"))
-                        : -1;
-                if (order != -1 && orderedPlaces[order - 1] == null) {
-                    orderedPlaces[order - 1] = entry.getValue();
-                } else {
-                    request.setAttribute("error","Please select a valid order of visit");
-                    dispatcher.forward(request, response);
-                    return;
+            if (null == request.getParameter("transportation")) {
+                request.setAttribute("error","Please select a mode of transportation");
+                dispatcher.forward(request, response);
+                return;
+            } else {
+                for (Map.Entry<String, Place> entry : itineraryPlaces.entrySet()) {
+                    int order
+                            = (!request.getParameter(entry.getKey() + "-order").equals(""))
+                            ? Integer.parseInt(request.getParameter(entry.getKey() + "-order"))
+                            : -1;
+                    if (order != -1 && orderedPlaces[order - 1] == null) {
+                        orderedPlaces[order - 1] = entry.getValue();
+                    } else {
+                        request.setAttribute("error", "Please select a valid order of visit");
+                        dispatcher.forward(request, response);
+                        return;
+                    }
                 }
             }
+
+            request.setAttribute("orderedPlaces", orderedPlaces);
         }
 
-        request.setAttribute("orderedPlaces", orderedPlaces);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

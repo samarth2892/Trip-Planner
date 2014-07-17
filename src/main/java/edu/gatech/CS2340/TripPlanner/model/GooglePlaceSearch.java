@@ -105,13 +105,43 @@ public class GooglePlaceSearch {
                 .getJSONObject("location").get("lng");
     }
 
-    public ArrayList<String> getDirections(String origin, String destination) throws Exception {
+    public ArrayList<String> getDirections(String URLarguments, String modeOfTransportation) throws Exception {
+
+        ArrayList<String> directions = new ArrayList<String>();
+
+        response = client.execute(new HttpGet(googleAPIURL
+                + "/directions/json?" + URLarguments + "&mode="
+                + modeOfTransportation + "&key=" + KEY));
+
+        entity = response.getEntity();
+        String responseString = EntityUtils.toString(entity, "UTF-8");
+
+        JSONObject jsonStringResult = new JSONObject(responseString);
+        int length = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").length();
+
+        for (int i = 0; i < length; i++) {
+            JSONArray steps = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                    .getJSONObject(i).getJSONArray("steps");
+
+            for (int j = 0; j < steps.length(); j++) {
+                String step = steps.getJSONObject(j).get("html_instructions").toString();
+                directions.add(step);
+            }
+        }
+
+        return directions;
+    }
+
+    public ArrayList<String> getBusDirections(String origin, String destination) throws Exception {
+
         ArrayList<String> directions = new ArrayList<String>();
         destination = destination.replace(" ", "+");
+        origin = origin.replace(" ","+");
 
         response = client.execute(new HttpGet(googleAPIURL
                 + "/directions/json?origin=" + origin + "&destination="
-                + destination + "&key=" + KEY));
+                + destination + "&mode=transit"
+                + "&departure_time=1405535888" + "&key=" + KEY));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -238,9 +268,9 @@ public class GooglePlaceSearch {
                 //Name
                 singlePlace.setName(placeDetails.get("name").toString());
 
-                ArrayList<String> directions = new ArrayList<String>();
-                directions = getDirections(this.address, singlePlace.getAddress());
-                singlePlace.setDirections(directions);
+                //ArrayList<String> directions = new ArrayList<String>();
+                //directions = getDirections(this.address, singlePlace.getAddress());
+                //singlePlace.setDirections(directions);
 
                 placeResults.add(singlePlace);
 

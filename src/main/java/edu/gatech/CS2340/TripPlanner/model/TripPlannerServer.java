@@ -71,11 +71,11 @@ public abstract class TripPlannerServer {
                             "PRIMARY KEY (accountid, userorder, itineraryid));";
             stmt.execute(createItinerariesTable);
 
-            String initItineraryDb =
+            /*String initItineraryDb =
                     "INSERT INTO itineraries VALUES (" +
                             "1, 1, 1, 'init', 'init', 'init', 'init', 'init', 'init', 0, 0,'init')" +
                             "ON DUPLICATE KEY UPDATE accountid=1;";
-            stmt.execute(initItineraryDb);
+            stmt.execute(initItineraryDb);*/
 
         } catch (SQLException e) {
             e.printStackTrace();

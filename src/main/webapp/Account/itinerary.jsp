@@ -38,14 +38,16 @@
     <%if(itineraryPlaces.size() > 0) {%>
     <form action="<%=request.getContextPath()%>/Account/finalizeItinerary" method="post">
     <div id="currentItineraryTitle"><b>Current Itinerary</b>
-        <select style="margin-left:50px" name="transportation">
+        <select style="margin-left:40px" name="transportation">
             <option value="" disabled selected>Transportation</option>
-            <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
-            <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
+            <option value="driving" ${param.transportation == 'driving' ? 'selected' : ''}>Car</option>
+            <option value="bicycling" ${param.transportation == 'bicycling' ? 'selected' : ''}>Bicycle</option>
             <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
-            <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
+            <option value="walking" ${param.transportation == 'walking' ? 'selected' : ''}>Walk</option>
         </select>
-        <button type="submit">Finalize and get directions</button> <button type="button" onclick="javascript:startOver()">Start Over</button>
+        <input style="margin-left:40px" type="submit" value="Save" />
+        <input style="margin-left:40px" type="submit" name="directionsButton" value="Get Directions"/>
+        <button type="button" onclick="javascript:startOver()">Start Over</button>
         <br/><span style="color: red"><b><%= ((error.equals("null"))?"":error) %></b></span>
     </div>
     <% for(Map.Entry<String, Place> entry : itineraryPlaces.entrySet()) {%>
@@ -75,12 +77,36 @@
     <% ArrayList<Itinerary> savedSessionItineraries
             = (ArrayList<Itinerary>) request.getSession().getAttribute("savedSessionItineraries");%>
     <div id="savedItineraryTitle"><b>Saved Itineraries</b></div>
-    <%if(savedSessionItineraries.size() > 0) {%>
+    <%if(savedSessionItineraries.size() > 0) {
+        int count = 1;%>
         <%for(Itinerary itinerary : savedSessionItineraries) {%>
-            <b><%=itinerary.getDate()%></b><br/>
-        <%}%>
+            <div id="savedItinerary">
+                <form action="<%=request.getContextPath()%>/Account/showSavedItinerary" method="get">
+                    <h3>Itinerary <%=count%> </h3>
+                        <span id="savedItineraryContent" >
+                            <b>Date: <%=itinerary.getDate()%></b><br/>
+                            <b>Places near: <br/>
+                               <%=itinerary.getOrigin()%>
+                            </b><br/>
+                            <input type="hidden" name="savedItineraryId" value="<%=(count - 1)%>"/>
+                        </span>
+                    <input type="submit" value="Show this itinerary" />
+                </form>
+            </div>
+        <% count++;
+          }%>
     <%}%>
 </div>
 
+<%if(request.getSession().getAttribute("directions") != null){%>
+<script type="text/javascript">
+    var popup =
+    window.open(encodeURI('<%=request.getContextPath()%>'
+                    +'/Account/directions.jsp?directions=<%=request.getAttribute("directions")%>'));
+    if(!popup) {
+        alert("Please turn off popup blocker");
+    }
+</script>
+<%}%>
 </body>
 </html>
