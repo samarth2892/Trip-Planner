@@ -10,12 +10,19 @@
 <html>
 <head>
   <title>Directions</title>
+  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
+  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
+  <link rel="stylesheet" type = "text/css" href="<%=request.getContextPath()%>/stylesheets/print.css"/>
 </head>
+
 <body>
+<center> <h3> Directions </h3> </center>
+    <ol>
         <%
         ArrayList<String> directions = (ArrayList<String>) request.getSession().getAttribute("directions");
         for (String route : directions) {%>
-            <%=route%><br/>
+            <li><%=route%></li><br/>
         <%}%>
+    </ol>
 </body>
 </html>
