@@ -1,8 +1,18 @@
-@media print {
 
- body {
+ #content {
     font-size : 14pt;
     color: black;
+    text-align: center;
+    font-family: "Century Gothic",serif;
  }
 
-}
+ #content ul {
+     list-style: none;
+ }
+
+ #startEndAddress {
+     position: relative;
+     display:block;
+     width: 50%;
+     margin: 0 auto;
+ }

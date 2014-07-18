@@ -105,27 +105,49 @@ public class GooglePlaceSearch {
                 .getJSONObject("location").get("lng");
     }
 
-    public ArrayList<String> getDirections(String URLarguments, String modeOfTransportation) throws Exception {
+    public ArrayList<String> getDirections(Itinerary itinerary, String modeOfTransportation) throws Exception {
 
         ArrayList<String> directions = new ArrayList<String>();
+        directions.add("<h3><span id='startEndAddress'>Directions</span></h3>");
+        String origin = itinerary.getOrigin();
+        StringBuilder destination = new StringBuilder();
+        Place[] orderedPlaces = itinerary.getOrderedPlacesArray();
+
+        for (Place orderedPlace : orderedPlaces) {
+            destination.append("%7C").append(orderedPlace.getAddress().replace(" ", "+"));
+        }
 
         response = client.execute(new HttpGet(googleAPIURL
-                + "/directions/json?" + URLarguments + "&mode="
-                + modeOfTransportation + "&key=" + KEY));
+                + "/directions/json?origin=" + origin.replace(" ","+")
+                + "&waypoints=optimize:true" + destination.toString()
+                + "&mode="+ modeOfTransportation + "&key=" + KEY));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
 
         JSONObject jsonStringResult = new JSONObject(responseString);
-        int length = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").length();
+        JSONArray legs = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
 
-        for (int i = 0; i < length; i++) {
-            JSONArray steps = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
-                    .getJSONObject(i).getJSONArray("steps");
+        for (int i = 0; i < legs.length(); i++) {
+            JSONArray steps = legs.getJSONObject(i).getJSONArray("steps");
+            String from;
+            String to;
+            if (i == 0) {
+                from = "<span id='startEndAddress'>" + itinerary.getOrigin() + "</span>";
+                to = orderedPlaces[i].getName() + "<br/><span id='startEndAddress'>"
+                        + legs.getJSONObject(i).get("end_address").toString() + "</span></h2>";
+            } else {
+                from = orderedPlaces[i - 1].getName() + "<br /><span id='startEndAddress'>"
+                        + legs.getJSONObject(i).get("start_address").toString() + "</span>";
+                to = orderedPlaces[i].getName() + "<br/><span id='startEndAddress'>"
+                        + legs.getJSONObject(i).get("end_address").toString() + "</span></h2>";
+            }
+            directions.add("<h2>From: " + from
+                    + "<br/>To: " + to);
 
             for (int j = 0; j < steps.length(); j++) {
                 String step = steps.getJSONObject(j).get("html_instructions").toString();
-                directions.add(step);
+                directions.add((j + 1)  +". " + step);
             }
         }
 
@@ -267,10 +289,6 @@ public class GooglePlaceSearch {
                         .toString());
                 //Name
                 singlePlace.setName(placeDetails.get("name").toString());
-
-                //ArrayList<String> directions = new ArrayList<String>();
-                //directions = getDirections(this.address, singlePlace.getAddress());
-                //singlePlace.setDirections(directions);
 
                 placeResults.add(singlePlace);
 

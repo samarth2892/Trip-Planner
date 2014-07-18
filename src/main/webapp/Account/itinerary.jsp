@@ -25,7 +25,7 @@
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
         <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
-        <span id="itineraryLink"><a href="#">Itinerary<span id="noOfPlaces"></span></a></span>
+        <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces"></span></a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
 </div>
@@ -98,11 +98,12 @@
     <%}%>
 </div>
 
-<%if(request.getSession().getAttribute("directions") != null){%>
+<%if(request.getAttribute("directionsStatus") != null
+        && request.getAttribute("directionsStatus").equals("OK")){%>
 <script type="text/javascript">
     var popup =
     window.open(encodeURI('<%=request.getContextPath()%>'
-                    +'/Account/directions.jsp?directions=<%=request.getAttribute("directions")%>'));
+                    +'/Account/directions.jsp'));
     if(!popup) {
         alert("Please turn off popup blocker");
     }
