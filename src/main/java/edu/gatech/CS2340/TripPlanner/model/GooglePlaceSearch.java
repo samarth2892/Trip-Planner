@@ -117,10 +117,12 @@ public class GooglePlaceSearch {
             destination.append("%7C").append(orderedPlace.getAddress().replace(" ", "+"));
         }
 
-        response = client.execute(new HttpGet(googleAPIURL
-                + "/directions/json?origin=" + origin.replace(" ","+")
+        String url = googleAPIURL
+                + "/directions/json?origin=" + origin.replace(" ", "+")
                 + "&waypoints=optimize:true" + destination.toString()
-                + "&mode="+ modeOfTransportation + "&key=" + KEY));
+                + "&mode=" + modeOfTransportation + "&key=" + KEY;
+
+        response = client.execute(new HttpGet(url.replace("#","")));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
