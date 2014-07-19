@@ -36,14 +36,15 @@ public class finalizeItineraryServlet extends HttpServlet {
                 = (Itinerary) request.getSession().getAttribute("sessionItinerary");
         places.connect();
 
+        Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
+        sessionItinerary.setOrderedPlacesArray(orderedPlaces);
+
         if(request.getParameter("directionsButton") != null
                 && request.getParameter("directionsButton").equals("Get Directions")) {
 
             GooglePlaceSearch search = new GooglePlaceSearch("",0);
             ArrayList<String> directions = new ArrayList<String>();
 
-            Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
-            sessionItinerary.setOrderedPlacesArray(orderedPlaces);
 
             if(request.getParameter("transportation").equals("bus")) {
                 directions = getDirectionsByBus(sessionItinerary);
@@ -58,6 +59,7 @@ public class finalizeItineraryServlet extends HttpServlet {
 
             request.setAttribute("directionsStatus", "OK");
             request.getSession().setAttribute("directions", directions);
+
         } else if(request.getAttribute("orderedPlaces") != null) {
 
             if (sessionItinerary.getOrigin() == null) {
@@ -67,6 +69,7 @@ public class finalizeItineraryServlet extends HttpServlet {
             if (sessionItinerary.getDate() == null) {
                 sessionItinerary.setDate(request.getSession().getAttribute("sessionDate").toString());
             }
+
             places.addItinerary(sessionItinerary, username);
 
         } else if(sessionItinerary.getId() != 0) {
@@ -147,8 +150,8 @@ public class finalizeItineraryServlet extends HttpServlet {
                 e.printStackTrace();
             }
 
-            for (String step : steps) {
-                directions.add(step);
+            for (int j = 0; j < steps.size(); j++) {
+                directions.add((j + 1) + ". " + steps.get(j));
             }
             i++;
         }

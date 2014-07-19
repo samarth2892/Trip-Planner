@@ -1,6 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.GooglePlaceSearch;
+import main.java.edu.gatech.CS2340.TripPlanner.model.Itinerary;
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 
 import javax.servlet.RequestDispatcher;
@@ -28,9 +29,14 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
 
-
         request.getSession().setAttribute("sessionDate",request.getParameter("date"));
         request.getSession().setAttribute("sessionStartAddress", address);
+
+        Itinerary sessionItinerary
+                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+        sessionItinerary.setOrigin(request.getSession().getAttribute("sessionStartAddress").toString());
+
+        request.getSession().setAttribute("sessionItinerary", sessionItinerary);
 
         String day = request.getParameter("day");
 
@@ -72,7 +78,7 @@ public class SearchServlet extends HttpServlet {
         GooglePlaceSearch search = new GooglePlaceSearch(address,
                 Integer.parseInt(day));
         search.setStartEndHour(startHour, endHour);
-        search.setKeyword(keyword);
+        search.setKeyword(keyword.replace(" ","+"));
         search.setMinPrice(minPrice);
         search.setMinRating(minRating);
         search.setRadiusInMeters(radius * 1609.34);
