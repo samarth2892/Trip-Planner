@@ -324,7 +324,7 @@ public class GooglePlaceSearch {
                 ? Double.parseDouble(openTime) : 0;
         double close = (null != closeTime && !closeTime.equals(""))
                 ? Double.parseDouble(closeTime) : 2359;
-        return (open >= this.startHour || close <= this.endHour);
+        return (open >= this.startHour || close >= this.endHour);
     }
 
     private boolean hasMinRatting(String placeRatting) {
