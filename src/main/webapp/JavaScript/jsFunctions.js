@@ -3,6 +3,7 @@ var geoCoder;
 var markers = [];
 var divNumber;
 var isValidAddress = false;
+var bounds = new google.maps.LatLngBounds();
 
 function initialize() {
     geoCoder = new google.maps.Geocoder();
@@ -52,6 +53,7 @@ function autoComplete() {
 
 
 function createMarker(placeLocation,contentString,i){
+
     var marker = new google.maps.Marker({
         map: map,
         position: placeLocation
@@ -61,6 +63,9 @@ function createMarker(placeLocation,contentString,i){
         infoWindow.setContent(contentString);
         infoWindow.open(map, this);
     });
+
+    bounds.extend(marker.position);
+    map.fitBounds(bounds);
     markers[i] = marker
 }
 

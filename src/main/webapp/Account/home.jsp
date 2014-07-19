@@ -195,7 +195,7 @@
                              review = review.replace("\'", "\\\'");
                              review = review.replace("\n", "+");
                         %>
-                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'><%=review%></p>";
+                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left;width:90%;'><%=review%></p>";
                         <%}%>
 
                     <%} else {%>
