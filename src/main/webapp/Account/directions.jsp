@@ -8,9 +8,11 @@
   <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
   <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
   <link rel="stylesheet" type = "text/css" href="<%=request.getContextPath()%>/stylesheets/print.css"/>
+  <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/facebook.js"></script>
 </head>
 
 <body>
+<div class="fb-share-button" data-href="<%=request.getContextPath()%>/Account/directions.jsp" data-width="50px"></div>
     <div id="content" >
 
         <ul>
