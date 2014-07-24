@@ -329,6 +329,8 @@ input:focus{
     height: 100%;
     overflow-y: auto;
     float: right;
+    padding-right: 20px;
+    text-align: left;
 }
 
 #photosDiv {

@@ -258,7 +258,10 @@ public class GooglePlaceSearch {
                 if(reviewArray.length() > 0) {
                     ArrayList<String> reviews = new ArrayList<String>();
                     for(int x = 0; x < reviewArray.length(); x++) {
-                        reviews.add(reviewArray.getJSONObject(x).get("text").toString());
+
+                        reviews.add("<h3><u>" + reviewArray.getJSONObject(x).get("author_name").toString() + " gave "
+                        + reviewArray.getJSONObject(x).getJSONArray("aspects").getJSONObject(0).get("rating").toString()
+                        + "</u></h3>" + reviewArray.getJSONObject(x).get("text").toString());
                     }
                     singlePlace.setReviews(reviews);
                 }
