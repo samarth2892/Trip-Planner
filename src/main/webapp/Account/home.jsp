@@ -45,16 +45,6 @@
                 <input type="hidden" id="day" name="day" value="0">
             <li><input name="keyword" type="text" placeholder="Search" style="width: 12%" value="${param.keyword}" /></li>
             <li>
-                <select name="transportation">
-                    <option value="" disabled selected>Transportation</option>
-                    <option value="car" ${param.transportation == 'car' ? 'selected' : ''}>Car</option>
-                    <option value="bike" ${param.transportation == 'bike' ? 'selected' : ''}>Bicycle</option>
-                    <option value="bus" ${param.transportation == 'bus' ? 'selected' : ''}>Bus</option>
-                    <option value="walk" ${param.transportation == 'walk' ? 'selected' : ''}>Walk</option>
-                </select>
-            </li>
-
-            <li>
                 <select name="startHour">
                     <option value="" disabled selected>From</option>
                     <option value="0100" ${param.startHour == '0100' ? 'selected' : ''}> 1</option>
@@ -98,8 +88,8 @@
 
             <li>
                 <select name="minPrice">
-                    <option value="" disabled selected>Price Range</option>
-                    <option value = '0' ${param.minPrice == '0' ? 'selected' : ''}> $ </option>
+                    <option value = '0' disabled selected>Min Price Range</option>
+                    <option value = '0' ${param.minPrice == '0' ? 'selected' : ''}> $  </option>
                     <option value = '1' ${param.minPrice == '1' ? 'selected' : ''}> $$ </option>
                     <option value = '2' ${param.minPrice == '2' ? 'selected' : ''}> $$$ </option>
                     <option value = '3' ${param.minPrice == '3' ? 'selected' : ''}> $$$$ </option>
@@ -155,7 +145,8 @@
             <%for(int x = 0; x < places.size(); x++) {%>
             <a href="javascript:show(<%=x%>)" id="<%=x%>" style="color: dimgrey;text-align: center;">
                 <h3><%=places.get(x).getName()%></h3></a>
-                <p>Rating:<%=places.get(x).getRating()%></p>
+                <p>Rating: <%=places.get(x).getRating()%></p>
+                <p>Price Range: <%=places.get(x).getPriceLevel()%></p>
                 <%String date = request.getSession().getAttribute("sessionDate").toString();%>
                 <script type="text/javascript">
                     var placeLocation

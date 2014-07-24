@@ -42,7 +42,9 @@ public class SearchServlet extends HttpServlet {
 
         String keyword = request.getParameter("keyword");
 
-        String minPrice = request.getParameter("minPrice");
+        String minPrice = (null != request.getParameter("minPrice"))
+                ? request.getParameter("minPrice")
+                : "0";
 
         Double minRating = (null != request.getParameter("minRating")
                 && !request.getParameter("minRating").equals(""))

@@ -186,8 +186,7 @@ public class GooglePlaceSearch {
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/radarsearch/json?location=" + this.latitude
                 + "," + this.longitude + "&radius=" + Double.toString(this.radius)
-                + "&keyword=" + this.keyword + "&minprice=" + this.minPrice
-                + "&sensor=false&key=" + KEY));
+                + "&keyword=" + this.keyword + "&sensor=false&key=" + KEY));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -217,12 +216,19 @@ public class GooglePlaceSearch {
                                 .getJSONArray("periods").getJSONObject(this.day).
                                 getJSONObject("close").get("time").toString():"2359");
                 //Rating
-                String placeRatting = (placeDetails.has("rating"))
+                String placeRatting = (placeDetails.has("rating")
+                        && !placeDetails.get("rating").toString().equals(""))
                         ? placeDetails.get("rating").toString()
-                        : "5.0";
+                        : "N/A";
+                //Price level
+                String placePriceLevel =  (placeDetails.has("price_level") &&
+                        !placeDetails.get("price_level").toString().equals(""))
+                        ? placeDetails.get("price_level").toString()
+                        : "N/A";
 
                 //Check for constraints
-                if(!isOpen(openTime,closeTime) || !hasMinRatting(placeRatting)) continue;
+                if(!isOpen(openTime,closeTime) || !hasMinRatting(placeRatting)
+                        || !inPriceRange(placePriceLevel)) continue;
 
                 Place singlePlace = new Place();
 
@@ -236,6 +242,8 @@ public class GooglePlaceSearch {
 
 
                 singlePlace.setRating(placeRatting);
+
+                singlePlace.setPriceLevel(placePriceLevel);
 
                 if(null != openTime) {
                     singlePlace.setOpenTime(Integer.parseInt(openTime));
@@ -331,8 +339,16 @@ public class GooglePlaceSearch {
     }
 
     private boolean hasMinRatting(String placeRatting) {
-        double ratting = (null != placeRatting && placeRatting.equals(""))
-                ? Double.parseDouble(placeRatting) : 5.0;
+        if(placeRatting.equals("N/A")) return true;
+        double ratting = Double.parseDouble(placeRatting);
         return ratting >= this.minRating;
     }
+
+    private boolean inPriceRange(String placePriceLevel) {
+        if(placePriceLevel.equals("N/A")) return true;
+        int priceLevel = Integer.parseInt(placePriceLevel);
+        int minPrice = Integer.parseInt(this.minPrice);
+        return priceLevel >= minPrice;
+    }
+
 }

@@ -14,8 +14,7 @@ public class Place {
     private String website;
     private int openTime;
     private int closeTime;
-    private String openTimeString;
-    private String closeTimeString;
+    private String priceLevel;
     private String latitude;
     private String longitude;
     private double priceRange;
@@ -51,25 +50,12 @@ public class Place {
         this.reference = reference;
     }
 
-    public int getOpenTime() {
-        return openTime;
-    }
-    public void setOpenTime(int openTime) {
-        this.openTime = openTime;
-        double i = openTime / 100;
-        openTimeString = (i > 11.59) ? Double.toString(i) + " pm"
-                : Double.toString(i) + " am";
-    }
+    public int getOpenTime() { return this.openTime;}
+    public void setOpenTime(int openTime) { this.openTime = openTime;}
 
-    public int getCloseTime() {
-        return closeTime;
-    }
+    public int getCloseTime() { return this.closeTime;}
     public void setCloseTime(int closeTime) {
-        this.closeTime = closeTime;
-        double i = closeTime / 100;
-        closeTimeString = (i > 11.59) ? Double.toString(i - 12) + " pm"
-                : Double.toString(i) + " am";
-    }
+        this.closeTime = closeTime;}
 
     public String getLatitude() {
         return latitude;
@@ -78,6 +64,15 @@ public class Place {
         this.latitude = latitude;
     }
 
+    public String getPriceLevel(){ return this.priceLevel;}
+    public void setPriceLevel(String priceLevel) {
+        if(!priceLevel.equals("N/A")) {
+            int p = Integer.parseInt(priceLevel) + 1;
+            this.priceLevel = Integer.toString(p);
+        } else {
+        this.priceLevel = priceLevel;
+        }
+    }
     public String getLongitude() {
         return longitude;
     }
