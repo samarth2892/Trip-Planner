@@ -91,3 +91,15 @@ function hideDirections() {
     $("#directions").fadeOut("slow").findj("#directionsContent"+divNumber).hide();
 }
 
+function navigate(url) {
+    $.ajax({
+        url: url,
+        method: 'get',
+        success: function(html){
+            // find the content to be displayed
+            $('#content').html(html.find('#content').contents())
+                .slideDown(); // then animate....
+        }
+    })
+}
+
