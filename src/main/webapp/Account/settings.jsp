@@ -5,6 +5,8 @@
         <Title>Home</Title>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/stylesheets/home.css">
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Fonts/stylesheet.css">
+        <script src="<%=request.getContextPath()%>/JavaScript/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/JavaScript/itinerary.js"></script>
         <%  String changeUsernameError = String.valueOf(request.getAttribute("changeUsernameError"));
             String changePasswordError = String.valueOf(request.getAttribute("changePasswordError"));
             int errorCount = 0;
@@ -25,7 +27,7 @@
             <div id="links">
                 <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
                 <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
-                <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itineraries</a></span>
+                <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces">(0)</span></a></span>
                 <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut"> LogOut</a></span>
             </div>
         </div>

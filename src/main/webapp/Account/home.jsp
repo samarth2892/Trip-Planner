@@ -126,7 +126,7 @@
 </div>
 
 <div id="map"></div>
-<div id="moreInfo" style="text-align:center;" ><a href='javascript:hideMoreInfo()'>Click here to exit</a></div>
+<div id="moreInfo"><span style="position:absolute;width:100%;text-align: center"><a href='javascript:hideMoreInfo()'>Click here to exit</a></span></div>
 <div id="searchResults" style="text-align: center;">
     <% ArrayList<Place> places = (ArrayList<Place>) request.getAttribute("placeResult");
         if(places != null) {%>
@@ -180,20 +180,20 @@
                    var photosDiv = "<div id='photosDiv'><h3>Photos</h3>";
                     $("#moreInfo").append(moreInfoContent);
 
-                    <% if(places.get(x).getReviews().size() > 0) {
+                    <% if(!places.get(x).getReviews().isEmpty()) {
                         for(int j = 0; j < places.get(x).getReviews().size(); j++) {
                              String review = places.get(x).getReviews().get(j).replace("\"", "\\\"");
                              review = review.replace("\'", "\\\'");
                              review = review.replace("\n", "+");
                         %>
-                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left;width:90%;'><%=review%></p>";
+                            reviewsDiv = reviewsDiv + "<br/><p style='text-align:left;width:90%;margin: 0 auto;'><%=review%></p>";
                         <%}%>
 
                     <%} else {%>
-                   reviewsDiv = reviewsDiv + "<br/><p style='text-align:left'>No Reviews Available</p>";
+                   reviewsDiv = reviewsDiv + "<br/><p style='text-align:left;margin: 0 auto;'>No Reviews Available</p>";
                     <%}%>
 
-                   <% if(places.get(x).getImageURL().size() > 0) {
+                   <% if(!places.get(x).getImageURL().isEmpty()) {
                        for(int j = 0; j < places.get(x).getImageURL().size(); j++) {
                             String url = places.get(x).getImageURL().get(j);
                        %>
