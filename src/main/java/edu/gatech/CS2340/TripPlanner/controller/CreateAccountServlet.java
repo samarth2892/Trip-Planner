@@ -29,6 +29,7 @@ public class CreateAccountServlet extends HttpServlet {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String password = request.getParameter("createPassword");
+        String email = reques.getParameter("email");
 
         if (!database.usernameIsInUse(username)) {
             database.create(username, password, name);

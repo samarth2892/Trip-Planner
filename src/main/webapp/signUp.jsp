@@ -25,6 +25,7 @@
             <input name="username" type="text" placeholder="Create a Username" />
             <input name="createPassword" type="password" placeholder="Create a Password" />
             <input name="confirmPassword" type="password" placeholder="Confirm Password" />
+            <input name= "email" type= "text" placeholder = "Email" />
             <input id="SignUpButton" type="submit" value="" />
             or <br/>
             <a id="LogInText"href = "index.jsp" title = "Click here to sign up">

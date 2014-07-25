@@ -9,13 +9,12 @@
 
   </head>
   <body>
-    <div id="form" class="loginForm">
-        <form action="LogIn" method="POST">
+    <div id="form" class = "forgotPasswordForm">
+        <form action="forgotPassword" method="POST">
             <%= ((error.equals("null"))?"":error) %>
             <input name="username" type="text" placeholder="Username"/>
-            <input name="password" type="password" placeholder="Password" />
-            <a href = "forgotPassword.jsp"> Forgot your password? </a>
-            <input id="loginButton" type="submit" value="" />
+            <input name="email" type = "text" placeholder = "Email"/>
+            <input id="emailAddress" type="submit" value="" />
             or <br/>
             <a id="SignUpText"href = "signUp.jsp" title = "Click here to sign up">
                            Create an account</a>

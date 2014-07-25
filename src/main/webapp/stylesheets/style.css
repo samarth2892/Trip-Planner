@@ -26,13 +26,18 @@ body {
 
 .loginForm {
     width: 250px;
-    height: 240px;
+    height: 250px;
 }
 
 .signUpForm {
     width: 250px;
+    height: 400px;
 }
 
+.forgotPasswordForm {
+    width: 250px;
+    height: 200px;
+}
 input {
     width: 80%;
     height: 30px;

@@ -49,6 +49,7 @@ public class CreateAccountFilter implements Filter {
         String username = request.getParameter("username");
         String password = request.getParameter("createPassword");
         String confirmPassword = request.getParameter("confirmPassword");
+        String email = request.getParameter("email");
 
         if (name.equals("")) {
             error.append("Please enter a name");
@@ -68,6 +69,11 @@ public class CreateAccountFilter implements Filter {
             errorCount = errorCount + 6;
         } else if (!password.equals(confirmPassword)) {
             error.append("<br/>Passwords do not match");
+            errorCount++;
+        }
+
+        if (!email.equals("")) {
+            error.append("Please enter an email address");
             errorCount++;
         }
 
