@@ -27,7 +27,7 @@ public class AccountDb extends TripPlannerServer {
         return true;
     }
 
-    public Integer create(String username, String password, String name) {
+    public Integer create(String username, String password, String name, String email) {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement accountStatement = conn.createStatement();
@@ -37,10 +37,11 @@ public class AccountDb extends TripPlannerServer {
             id.next();
 
             String insertAccount =
-                        "INSERT INTO accounts (user, pass, name) VALUES(('"
+                        "INSERT INTO accounts (user, pass, name,email) VALUES(('"
                                 + username + "'),('"
                                 + encode(password) + "'),('"
-                                + name + "'));";
+                                + name + "'),('"
+                                + email + "'));";
             stmt.executeUpdate(insertAccount);
 
             id =

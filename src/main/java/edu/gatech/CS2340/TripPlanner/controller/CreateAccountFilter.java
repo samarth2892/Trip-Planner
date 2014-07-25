@@ -72,11 +72,6 @@ public class CreateAccountFilter implements Filter {
             errorCount++;
         }
 
-        if (!email.equals("")) {
-            error.append("Please enter an email address");
-            errorCount++;
-        }
-
         if (!error.toString().equals("")) {
             request.setAttribute("error", error);
             request.setAttribute("errorCount", Integer.toString(errorCount));

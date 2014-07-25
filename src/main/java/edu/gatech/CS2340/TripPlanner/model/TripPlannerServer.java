@@ -45,12 +45,13 @@ public abstract class TripPlannerServer {
                             "user varchar(255) NOT NULL, " +
                             "pass varchar(255) NOT NULL, " +
                             "name varchar(255) NOT NULL, " +
+                            "email varchar(255) NOT NULL, " +
                             "PRIMARY KEY (id));";
             stmt.execute(createAccountsTable);
 
             String initAccountDb =
                     "INSERT INTO accounts VALUES (" +
-                            "1, 'admin', '0DPiKuNIrrVmD8IUCuw1hQxNqZc=', 'admin')" +
+                            "1, 'admin', '0DPiKuNIrrVmD8IUCuw1hQxNqZc=', 'admin', 'email')" +
                             "ON DUPLICATE KEY UPDATE id=1;";
             stmt.execute(initAccountDb);
 
