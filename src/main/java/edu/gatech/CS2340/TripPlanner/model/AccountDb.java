@@ -95,12 +95,10 @@ public class AccountDb extends TripPlannerServer {
             ResultSet usernameInput2 =
                     stmt.executeQuery("SELECT * FROM accounts "
                             + "WHERE user='" + username + "';");
-System.out.println(usernameInput2.next());
             if (usernameInput2.next()) {
                 try {
                     if (usernameInput2.getString("email")
                             .equals(email)) {
-                        currentUser = username;
                         System.out.println("Username and email match.");
                         return true;
                     } else {

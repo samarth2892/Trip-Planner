@@ -27,7 +27,7 @@ public class forgotPasswordServlet extends HttpServlet {
         database.connect();
 
         String matchConfirmation;
-        String username = request.getParameter("useraname");
+        String username = request.getParameter("username");
         String email = request.getParameter("email");
 
         if (database.userEmailMatch(username, email)) {
