@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 @WebServlet(urlPatterns = {
         "/forgotPassword"
@@ -30,10 +32,11 @@ public class forgotPasswordServlet extends HttpServlet {
         String matchConfirmation;
         String username = request.getParameter("username");
         String email = request.getParameter("email");
+        String temPassword = createRandomPassword();
 
         if (database.userEmailMatch(username, email)) {
             matchConfirmation = "Temporary password sent to email";
-            //EmailSender emailSender = new EmailSender();
+            EmailSender.sendTempPassword(username,email,temPassword);
         } else {
             matchConfirmation = "Username and email do not match";
         }
@@ -47,5 +50,10 @@ public class forgotPasswordServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
+    }
+
+    private String createRandomPassword() {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 }
