@@ -60,6 +60,11 @@ public class CreateAccountFilter implements Filter {
             errorCount = errorCount + 2;
         }
 
+        if (email.equals("")) {
+            error.append("Please enter an email");
+            errorCount++;
+        }
+
         if (!validatePassword(password)) {
             error.append("<br/>Password must contain at least"
                     + "<br/>one number, one uppercase "

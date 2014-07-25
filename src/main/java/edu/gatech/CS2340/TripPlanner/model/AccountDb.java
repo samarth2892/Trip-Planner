@@ -89,6 +89,35 @@ public class AccountDb extends TripPlannerServer {
         return false;
     }
 
+    public boolean userEmailMatch(String username, String email) {
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            ResultSet usernameInput2 =
+                    stmt.executeQuery("SELECT * FROM accounts "
+                            + "WHERE user='" + username + "';");
+System.out.println(usernameInput2.next());
+            if (usernameInput2.next()) {
+                try {
+                    if (usernameInput2.getString("email")
+                            .equals(email)) {
+                        currentUser = username;
+                        System.out.println("Username and email match.");
+                        return true;
+                    } else {
+                        System.out.println("Wrong email");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Wrong username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void
     updateUsername(String oldUsername, String password, String newUsername) {
         try {
