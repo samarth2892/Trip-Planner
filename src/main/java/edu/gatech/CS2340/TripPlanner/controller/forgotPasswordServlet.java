@@ -1,6 +1,7 @@
 package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.AccountDb;
+import main.java.edu.gatech.CS2340.TripPlanner.model.EmailSender;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,7 +32,8 @@ public class forgotPasswordServlet extends HttpServlet {
         String email = request.getParameter("email");
 
         if (database.userEmailMatch(username, email)) {
-            matchConfirmation = "Username and email match";
+            matchConfirmation = "Temporary password sent to email";
+            //EmailSender emailSender = new EmailSender();
         } else {
             matchConfirmation = "Username and email do not match";
         }
