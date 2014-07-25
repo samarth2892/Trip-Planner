@@ -162,4 +162,25 @@ public class AccountDb extends TripPlannerServer {
             e.printStackTrace();
         }
     }
+
+    public void resetPassword(String username, String temPassword) {
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            ResultSet updateTarget =
+                    stmt.executeQuery("SELECT * FROM accounts "
+                            + "WHERE user='" + username + "';");
+            if (updateTarget.next()) {
+                stmt.executeUpdate("UPDATE accounts "
+                        + "SET pass='" + encode(temPassword) + "'"
+                        + "WHERE user='" + username + "';");
+                System.out.println("Update successful.");
+            } else {
+                System.out.println("Invalid");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

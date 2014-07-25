@@ -29,7 +29,8 @@ public class EmailSender {
 
         Session session = Session.getDefaultInstance(props, authenticator);
 
-        String msgBody = "This is your temporary Password is <b>" + TempPassword + "</b>";
+        String msgBody = "This is your temporary Password is " + TempPassword + " " +
+                "\n" + "Login with this temporary password then go to Account Setting to reset your password";
 
         try {
             Message msg = new MimeMessage(session);

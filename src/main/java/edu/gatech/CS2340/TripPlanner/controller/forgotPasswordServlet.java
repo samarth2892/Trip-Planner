@@ -37,6 +37,7 @@ public class forgotPasswordServlet extends HttpServlet {
         if (database.userEmailMatch(username, email)) {
             matchConfirmation = "Temporary password sent to email";
             EmailSender.sendTempPassword(username,email,temPassword);
+            database.resetPassword(username,temPassword);
         } else {
             matchConfirmation = "Username and email do not match";
         }
