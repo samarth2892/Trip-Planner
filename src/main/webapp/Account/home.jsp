@@ -28,7 +28,7 @@
     </div>
     <div id="links">
         <span id="homeLink"><a href="<%=request.getContextPath()%>/Account/home.jsp">Home</a></span>
-        <span id="accLink"><a href="<%=request.getContextPath()%>/Account/settings.jsp">Account Settings</a></span>
+        <span id="accLink"><a href="https://localhost:8443/TripPlanner/Account/settings.jsp">Account Settings</a></span>
         <span id="itineraryLink"><a href="<%=request.getContextPath()%>/Account/itinerary.jsp">Itinerary<span id="noOfPlaces">(0)</span></a></span>
         <span id="logoutLink"><a href="<%=request.getContextPath()%>/LogOut">LogOut</a></span>
     </div>
