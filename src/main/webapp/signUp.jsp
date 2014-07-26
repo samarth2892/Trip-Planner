@@ -28,8 +28,8 @@
             <input name= "email" type= "text" placeholder = "Email" />
             <input id="SignUpButton" type="submit" value="" />
             or <br/>
-            <a id="LogInText"href = "index.jsp" title = "Click here to sign up">
-                Log In</a>
+            <a id="HomePageText" href = "http://localhost:8080/TripPlanner/index.jsp" title = "Click here to Return to home page">
+                Click here to return to home page</a>
         </form>
     </div>
 </body>

@@ -19,7 +19,7 @@ import java.util.HashMap;
 @WebServlet(
         urlPatterns = {
         "/LogOut",
-        "/LogIn" }
+        "/AccountLogIn" }
 )
 
 public class LoginLogoutServlet extends HttpServlet {
@@ -52,13 +52,12 @@ public class LoginLogoutServlet extends HttpServlet {
             ArrayList<Itinerary> savedSessionItineraries = places.loadAllItineraries(username);
             request.getSession().setAttribute("savedSessionItineraries", savedSessionItineraries);
 
-            dispatcher = request.getRequestDispatcher("/Account/home.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("http://localhost:8080/TripPlanner/Account/home.jsp");
             return;
         } else {
             error = "Username or password incorrect";
             request.setAttribute("error", error);
-            dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher = request.getRequestDispatcher("logIn.jsp");
         }
 
         dispatcher.forward(request, response);
