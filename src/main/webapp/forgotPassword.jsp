@@ -24,12 +24,12 @@
     <div id="form" class = "forgotPasswordForm">
         <form action="forgotPassword" method="POST">
             <%= ((forgotPasswordError.equals("null"))?"":forgotPasswordError) %>
-            <a href= "index.jsp" title= "Return to login page"> Log in </a> <br/>
+            <a href= "https://localhost:8443/TripPlanner/logIn.jsp" title= "Return to login page"> Log in </a> <br/>
             <input name="username" type="text" placeholder="Username"/>
             <input name="email" type = "text" placeholder = "Email"/>
             <input id="emailAddress" type="submit" value="Confirm" />
             or <br/>
-            <a id="SignUpText"href = "signUp.jsp" title = "Click here to sign up">
+            <a id="SignUpText"href = "https://localhost:8443/TripPlanner/signUp.jsp" title = "Click here to sign up">
                            Create an account</a>
         </form>
     </div>

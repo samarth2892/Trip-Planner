@@ -34,7 +34,7 @@ public class CreateAccountServlet extends HttpServlet {
         if (!database.usernameIsInUse(username)) {
             database.create(username, password, name, email);
             accountConfirmation = "Account created, please login";
-            dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher = request.getRequestDispatcher("/logIn.jsp");
         } else {
             accountConfirmation = "Please choose a different Username";
             request.setAttribute("errorCount", Integer.toString(2));
