@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div id="form" class="signUpForm" style="height:<%= formHeight%>px">
+    <div id="form" class="signUpForm" style="height:<%= formHeight+40%>px">
         <form action="Create" method="POST">
             <%= ((error.equals("null"))?"":error) %>
             <input name="operation" type="hidden" value="create" />
