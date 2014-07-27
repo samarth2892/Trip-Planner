@@ -32,7 +32,37 @@
     <delete dir="${build.home}"/>
   </target>
   
-  <target name="compile" description="Compile Java sources">
+  <target name="checkstyle" 
+        description="run checkstyle">
+        <taskdef resource="checkstyletask.properties"
+                 classpath="CheckStyle/checkstyle-5.6-all.jar"
+        />
+
+        <!-- run verification of installation-->
+        <available file="CheckStyle/checkstyle-5.6-all.jar"
+                   property="checkstyle.available"
+        />
+        <fail unless="checkstyle.available"
+              message="Error: CHECKSTYLE_HOME not set or checkstyle-all-5.0.jar not found."
+        />
+        <mkdir dir="CheckStyle/Report" />
+
+        <!-- run analysis-->
+        <checkstyle config="CheckStyle/cs1331-checkstyle.xml"
+                    failureProperty="checkstyle.failure"
+                    failOnViolation="false"
+        >
+            <formatter type="xml" tofile="CheckStyle/Report/checkstyle_report.xml" />
+            <fileset dir="src/" includes="**/*.java" />
+        </checkstyle>
+
+        <style in="CheckStyle/Report/checkstyle_report.xml"
+               out="CheckStyle/Report/checkstyle_report.html"
+			   style="CheckStyle/stylesheet/stylesheet.xsl"
+        />
+  </target>
+  
+  <target name="compile" depends="checkstyle" description="Compile Java sources">
 
     <!-- Compile Java classes as necessary -->
 	<mkdir    dir="${build.home}/WEB-INF/lib"/>
