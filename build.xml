@@ -35,20 +35,20 @@
   <target name="checkstyle" 
         description="run checkstyle">
         <taskdef resource="checkstyletask.properties"
-                 classpath="CheckStyle/checkstyle-5.6-all.jar"
+                 classpath="CheckStyle/checkstyle-5.7-all.jar"
         />
 
         <!-- run verification of installation-->
-        <available file="CheckStyle/checkstyle-5.6-all.jar"
+        <available file="CheckStyle/checkstyle-5.7-all.jar"
                    property="checkstyle.available"
         />
         <fail unless="checkstyle.available"
-              message="Error: CHECKSTYLE_HOME not set or checkstyle-all-5.0.jar not found."
+              message="Error: CHECKSTYLE_HOME not set or checkstyle-all-5.7.jar not found."
         />
         <mkdir dir="CheckStyle/Report" />
 
         <!-- run analysis-->
-        <checkstyle config="CheckStyle/cs1331-checkstyle.xml"
+        <checkstyle config="CheckStyle/sun_checks.xml"
                     failureProperty="checkstyle.failure"
                     failOnViolation="false"
         >
