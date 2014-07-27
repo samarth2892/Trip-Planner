@@ -7,3 +7,4 @@ out/
 *.war
 *.ear
 target/
+CheckStyle/Report/
