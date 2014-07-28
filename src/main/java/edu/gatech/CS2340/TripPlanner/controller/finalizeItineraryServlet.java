@@ -20,7 +20,7 @@ import java.util.HashMap;
         "/Account/showSavedItinerary"
         })
 
-public class FinalizeItineraryServlet extends HttpServlet {
+public class finalizeItineraryServlet extends HttpServlet {
 
     private PlaceDb places = new PlaceDb();
 

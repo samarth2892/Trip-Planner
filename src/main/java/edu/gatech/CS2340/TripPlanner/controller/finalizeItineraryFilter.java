@@ -22,7 +22,7 @@ import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
         filterName = "finalizeItineraryFilter",
         urlPatterns = {"/Account/finalizeItinerary" }
 )
-public class FinalizeItineraryFilter implements Filter {
+public class finalizeItineraryFilter implements Filter {
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
 

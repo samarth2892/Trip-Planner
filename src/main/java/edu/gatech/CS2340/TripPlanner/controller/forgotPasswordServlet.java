@@ -16,7 +16,7 @@ import java.security.SecureRandom;
 @WebServlet(urlPatterns = {
         "/forgotPassword"
         })
-public class ForgotPasswordServlet extends HttpServlet {
+public class forgotPasswordServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,

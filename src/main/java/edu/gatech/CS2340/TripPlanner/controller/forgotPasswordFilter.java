@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
         }
 )
 
-public class ForgotPasswordFilter implements Filter {
+public class forgotPasswordFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
