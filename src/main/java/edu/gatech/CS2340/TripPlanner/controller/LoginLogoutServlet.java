@@ -42,17 +42,22 @@ public class LoginLogoutServlet extends HttpServlet {
             request.getSession().setAttribute("userStatus", username);
 
             Itinerary sessionItinerary = new Itinerary();
-            HashMap<String, Place> itineraryPlaces = new HashMap<String, Place>();
+            HashMap<String, Place> itineraryPlaces
+                = new HashMap<String, Place>();
             sessionItinerary.setMap(itineraryPlaces);
-            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+            request.getSession().setAttribute("sessionItinerary",
+                    sessionItinerary);
 
             PlaceDb places = new PlaceDb();
             places.connect();
 
-            ArrayList<Itinerary> savedSessionItineraries = places.loadAllItineraries(username);
-            request.getSession().setAttribute("savedSessionItineraries", savedSessionItineraries);
+            ArrayList<Itinerary> savedSessionItineraries
+                = places.loadAllItineraries(username);
+            request.getSession().setAttribute("savedSessionItineraries",
+                    savedSessionItineraries);
 
-            response.sendRedirect("http://localhost:8080/TripPlanner/Account/home.jsp");
+            response.sendRedirect(
+                    "http://localhost:8080/TripPlanner/Account/home.jsp");
             return;
         } else {
             error = "Username or password incorrect";

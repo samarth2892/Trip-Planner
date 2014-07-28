@@ -1,12 +1,14 @@
 package main.java.edu.gatech.CS2340.TripPlanner.model;
 
-import sun.misc.BASE64Encoder;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.xml.bind.DatatypeConverter;
 
 public abstract class TripPlannerServer {
     static final String DRIVER = "com.mysql.jdbc.Driver";
@@ -40,41 +42,44 @@ public abstract class TripPlannerServer {
         try {
 
             String createAccountsTable =
-                    "CREATE TABLE IF NOT EXISTS accounts ( " +
-                            "id int NOT NULL AUTO_INCREMENT, " +
-                            "user varchar(255) NOT NULL, " +
-                            "pass varchar(255) NOT NULL, " +
-                            "name varchar(255) NOT NULL, " +
-                            "email varchar(255) NOT NULL, " +
-                            "PRIMARY KEY (id));";
+                    "CREATE TABLE IF NOT EXISTS accounts ( "
+                            + "id int NOT NULL AUTO_INCREMENT, "
+                            + "user varchar(255) NOT NULL, "
+                            + "pass varchar(255) NOT NULL, "
+                            + "name varchar(255) NOT NULL, "
+                            + "email varchar(255) NOT NULL, "
+                            + "PRIMARY KEY (id));";
             stmt.execute(createAccountsTable);
 
             String initAccountDb =
-                    "INSERT INTO accounts VALUES (" +
-                            "1, 'admin', '0DPiKuNIrrVmD8IUCuw1hQxNqZc=', 'admin', 'email')" +
-                            "ON DUPLICATE KEY UPDATE id=1;";
+                    "INSERT INTO accounts VALUES ("
+                            + "1, 'admin', '0DPiKuNIrrVmD8IUCuw1hQxNqZc=',"
+                            + " 'admin', 'email')"
+                            + "ON DUPLICATE KEY UPDATE id=1;";
             stmt.execute(initAccountDb);
 
             String createItinerariesTable =
-                    "CREATE TABLE if not exists itineraries ( " +
-                            "accountid int NOT NULL, " +
-                            "userorder int NOT NULL, " +
-                            "itineraryid int NOT NULL, " +
-                            "date varchar(255) NOT NULL, " +
-                            "originaddress varchar(255) NOT NULL, " +
-                            "reference varchar(255) NOT NULL, " +
-                            "name varchar(255) NOT NULL, " +
-                            "address varchar(255) NOT NULL, " +
-                            "phone varchar(255) NOT NULL, " +
-                            "opentime int NOT NULL, " +
-                            "closetime int NOT NULL, " +
-                            "imageuRL longtext NOT NULL," +
-                            "PRIMARY KEY (accountid, userorder, itineraryid));";
+                    "CREATE TABLE if not exists itineraries ( "
+                            + "accountid int NOT NULL, "
+                            + "userorder int NOT NULL, "
+                            + "itineraryid int NOT NULL, "
+                            + "date varchar(255) NOT NULL, "
+                            + "originaddress varchar(255) NOT NULL, "
+                            + "reference varchar(255) NOT NULL, "
+                            + "name varchar(255) NOT NULL, "
+                            + "address varchar(255) NOT NULL, "
+                            + "phone varchar(255) NOT NULL, "
+                            + "opentime int NOT NULL, "
+                            + "closetime int NOT NULL, "
+                            + "imageuRL longtext NOT NULL,"
+                            + "PRIMARY KEY (accountid, userorder,"
+                            + " itineraryid));";
             stmt.execute(createItinerariesTable);
 
             /*String initItineraryDb =
                     "INSERT INTO itineraries VALUES (" +
-                            "1, 1, 1, 'init', 'init', 'init', 'init', 'init', 'init', 0, 0,'init')" +
+                            "1, 1, 1, 'init', 'init',
+                             'init', 'init', 'init', 'init', 0, 0,'init')" +
                             "ON DUPLICATE KEY UPDATE accountid=1;";
             stmt.execute(initItineraryDb);*/
 
@@ -86,10 +91,11 @@ public abstract class TripPlannerServer {
     }
 
     public int getUserId(String userName) {
-        try{
+        try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             String selectUser =
-                    "SELECT id FROM accounts.accounts WHERE user='" + userName + "';";
+                    "SELECT id FROM accounts.accounts WHERE user='"
+                            + userName + "';";
             ResultSet findUser = stmt.executeQuery(selectUser);
             if (findUser.next()) {
                 return findUser.getInt(1);
@@ -115,7 +121,7 @@ public abstract class TripPlannerServer {
             throw new Exception(e.getMessage());
         }
         byte[] raw = md.digest();
-        String hash = (new BASE64Encoder()).encode(raw);
+        String hash = (DatatypeConverter.printBase64Binary(raw));
         return hash;
     }
 }

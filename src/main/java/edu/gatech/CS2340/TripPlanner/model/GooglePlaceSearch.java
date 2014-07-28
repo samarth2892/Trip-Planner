@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class GooglePlaceSearch {
-    final static String KEY = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
+    static final String KEY = "AIzaSyAekNru_w4ZwcjbMfMXwVK-TnFLtj4TQUM";
 
     private String googleAPIURL = "https://maps.googleapis.com/maps/api";
     private String address = "";
@@ -34,23 +34,23 @@ public class GooglePlaceSearch {
     private HttpResponse response;
     private HttpEntity entity;
 
-    public GooglePlaceSearch(String address,int day) {
+    public GooglePlaceSearch(String address, int day) {
         this.address = (!(null == address || address.equals("")))
                 ? address : "";
         this.day = ((day > 0 && day < 7) ? day : 0);
     }
 
-    public void setMinPrice(String minPrice ){
+    public void setMinPrice(String minPrice) {
         this.minPrice = (!(null == minPrice || minPrice.equals("")))
                 ? minPrice : "0";
     }
     public void setKeyword(String keyword) {
         this.keyword = (!(null == keyword || keyword.equals("")))
-                ? keyword: "Attractions";
+                ? keyword : "Attractions";
     }
     public void setMinRating(double minRating) {
-        this.minRating = (minRating > 0 && minRating < 5)?
-             minRating : 1.0;
+        this.minRating = (minRating > 0 && minRating < 5)
+                ? minRating : 1.0;
     }
 
     public void setDay(int day) {
@@ -105,7 +105,8 @@ public class GooglePlaceSearch {
                 .getJSONObject("location").get("lng");
     }
 
-    public ArrayList<String> getDirections(Itinerary itinerary, String modeOfTransportation) throws Exception {
+    public ArrayList<String> getDirections(Itinerary itinerary,
+            String modeOfTransportation) throws Exception {
 
         ArrayList<String> directions = new ArrayList<String>();
         directions.add("<h3><span id='startEndAddress'>Directions</span></h3>");
@@ -114,7 +115,8 @@ public class GooglePlaceSearch {
         Place[] orderedPlaces = itinerary.getOrderedPlacesArray();
 
         for (Place orderedPlace : orderedPlaces) {
-            destination.append("%7C").append(orderedPlace.getAddress().replace(" ", "+"));
+            destination.append("%7C").
+                    append(orderedPlace.getAddress().replace(" ", "+"));
         }
 
         String url = googleAPIURL
@@ -122,45 +124,55 @@ public class GooglePlaceSearch {
                 + "&waypoints=optimize:true" + destination.toString()
                 + "&mode=" + modeOfTransportation + "&key=" + KEY;
 
-        response = client.execute(new HttpGet(url.replace("#","")));
+        response = client.execute(new HttpGet(url.replace("#", "")));
 
         entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, "UTF-8");
 
         JSONObject jsonStringResult = new JSONObject(responseString);
-        JSONArray legs = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+        JSONArray legs = jsonStringResult.getJSONArray("routes").
+                getJSONObject(0).getJSONArray("legs");
 
         for (int i = 0; i < legs.length(); i++) {
             JSONArray steps = legs.getJSONObject(i).getJSONArray("steps");
             String from;
             String to;
             if (i == 0) {
-                from = "<span id='startEndAddress'>" + itinerary.getOrigin() + "</span>";
-                to = orderedPlaces[i].getName() + "<br/><span id='startEndAddress'>"
-                        + legs.getJSONObject(i).get("end_address").toString() + "</span></h2>";
+                from = "<span id='startEndAddress'>"
+                        + itinerary.getOrigin() + "</span>";
+                to = orderedPlaces[i].getName()
+                        + "<br/><span id='startEndAddress'>"
+                        + legs.getJSONObject(i).get("end_address").
+                        toString() + "</span></h2>";
             } else {
-                from = orderedPlaces[i - 1].getName() + "<br /><span id='startEndAddress'>"
-                        + legs.getJSONObject(i).get("start_address").toString() + "</span>";
-                to = orderedPlaces[i].getName() + "<br/><span id='startEndAddress'>"
-                        + legs.getJSONObject(i).get("end_address").toString() + "</span></h2>";
+                from = orderedPlaces[i - 1].getName()
+                        + "<br /><span id='startEndAddress'>"
+                        + legs.getJSONObject(i).
+                            get("start_address").toString() + "</span>";
+                to = orderedPlaces[i].getName()
+                        + "<br/><span id='startEndAddress'>"
+                        + legs.getJSONObject(i)
+                            .get("end_address").toString() + "</span></h2>";
             }
             directions.add("<h2>From: " + from
                     + "<br/>To: " + to);
 
             for (int j = 0; j < steps.length(); j++) {
-                String step = steps.getJSONObject(j).get("html_instructions").toString();
-                directions.add((j + 1)  +". " + step);
+                String step = steps.getJSONObject(j).
+                        get("html_instructions").toString();
+                directions.add((j + 1)  + ". " + step);
             }
         }
 
         return directions;
     }
 
-    public ArrayList<String> getBusDirections(String origin, String destination) throws Exception {
+    public ArrayList<String> getBusDirections(String origin,
+            String destination) throws Exception {
 
         ArrayList<String> directions = new ArrayList<String>();
         destination = destination.replace(" ", "+");
-        origin = origin.replace(" ","+");
+        origin = origin.replace(" ", "+");
 
         response = client.execute(new HttpGet(googleAPIURL
                 + "/directions/json?origin=" + origin + "&destination="
@@ -171,21 +183,24 @@ public class GooglePlaceSearch {
         String responseString = EntityUtils.toString(entity, "UTF-8");
 
         JSONObject jsonStringResult = new JSONObject(responseString);
-        JSONArray steps = jsonStringResult.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+        JSONArray steps = jsonStringResult.
+                getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
                 .getJSONObject(0).getJSONArray("steps");
 
         for (int i = 0; i < steps.length(); i++) {
-            String step = steps.getJSONObject(i).get("html_instructions").toString();
+            String step = steps.getJSONObject(i).
+                    get("html_instructions").toString();
             directions.add(step);
         }
 
         return directions;
     }
 
-    public ArrayList<Place> generatePlaces() throws Exception{
+    public ArrayList<Place> generatePlaces() throws Exception {
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/radarsearch/json?location=" + this.latitude
-                + "," + this.longitude + "&radius=" + Double.toString(this.radius)
+                + "," + this.longitude
+                + "&radius=" + Double.toString(this.radius)
                 + "&keyword=" + this.keyword + "&sensor=false&key=" + KEY));
 
         entity = response.getEntity();
@@ -196,39 +211,46 @@ public class GooglePlaceSearch {
         return generatePlaceList(places);
     }
 
-    private ArrayList<Place> generatePlaceList(JSONArray results)throws Exception {
+    private ArrayList<Place> generatePlaceList(JSONArray results)
+        throws Exception {
         ArrayList<Place> placeResults = new ArrayList<Place>();
 
-        for(int i = 0; i < results.length(); i++) {
+        for (int i = 0; i < results.length(); i++) {
             JSONObject place = results.getJSONObject(i);
             try {
                 JSONObject placeDetails =
                         getPlaceDetails(place.getString("reference"));
 
                 //Open Time
-                String openTime = ((placeDetails.has("opening_hours"))?
-                        placeDetails.getJSONObject("opening_hours")
-                        .getJSONArray("periods").getJSONObject(this.day).
-                                getJSONObject("open").get("time").toString():"0");
+                String openTime = ((placeDetails.has("opening_hours"))
+                        ? placeDetails.getJSONObject("opening_hours")
+                            .getJSONArray("periods").getJSONObject(this.day).
+                                getJSONObject("open").get("time").
+                                toString() : "0");
                 //Close Time
-                String closeTime = ((placeDetails.has("opening_hours"))?
-                        placeDetails.getJSONObject("opening_hours")
-                                .getJSONArray("periods").getJSONObject(this.day).
-                                getJSONObject("close").get("time").toString():"2359");
+                String closeTime = ((placeDetails.has("opening_hours"))
+                        ? placeDetails.getJSONObject("opening_hours")
+                                .getJSONArray("periods").
+                                getJSONObject(this.day).
+                                getJSONObject("close").get("time").
+                                toString() : "2359");
                 //Rating
                 String placeRatting = (placeDetails.has("rating")
                         && !placeDetails.get("rating").toString().equals(""))
                         ? placeDetails.get("rating").toString()
                         : "N/A";
-                //Price level
-                String placePriceLevel =  (placeDetails.has("price_level") &&
-                        !placeDetails.get("price_level").toString().equals(""))
+
+                String placePriceLevel = (placeDetails.has("price_level")
+                        && !placeDetails.get("price_level").
+                            toString().equals(""))
                         ? placeDetails.get("price_level").toString()
                         : "N/A";
 
                 //Check for constraints
-                if(!isOpen(openTime,closeTime) || !hasMinRatting(placeRatting)
-                        || !inPriceRange(placePriceLevel)) continue;
+                if (!isOpen(openTime, closeTime) || !hasMinRatting(placeRatting)
+                        || !inPriceRange(placePriceLevel)) {
+                    continue;
+                }
 
                 Place singlePlace = new Place();
 
@@ -245,23 +267,28 @@ public class GooglePlaceSearch {
 
                 singlePlace.setPriceLevel(placePriceLevel);
 
-                if(null != openTime) {
+                if (null != openTime) {
                     singlePlace.setOpenTime(Integer.parseInt(openTime));
                 }
-                if(null != closeTime) {
+                if (null != closeTime) {
                     singlePlace.setCloseTime(Integer.parseInt(closeTime));
                 }
                 //Reviews
-                JSONArray reviewArray = ((placeDetails.has("reviews"))?
-                        placeDetails.getJSONArray("reviews"):new JSONArray());
+                JSONArray reviewArray = ((placeDetails.has("reviews"))
+                        ? placeDetails.getJSONArray("reviews")
+                                : new JSONArray());
 
-                if(reviewArray.length() > 0) {
+                if (reviewArray.length() > 0) {
                     ArrayList<String> reviews = new ArrayList<String>();
-                    for(int x = 0; x < reviewArray.length(); x++) {
+                    for (int x = 0; x < reviewArray.length(); x++) {
 
-                        reviews.add("<h3><u>" + reviewArray.getJSONObject(x).get("author_name").toString() + " gave "
-                        + reviewArray.getJSONObject(x).getJSONArray("aspects").getJSONObject(0).get("rating").toString()
-                        + "</u></h3>" + reviewArray.getJSONObject(x).get("text").toString());
+                        reviews.add("<h3><u>" + reviewArray.getJSONObject(x)
+                                .get("author_name").toString() + " gave "
+                            + reviewArray.getJSONObject(x)
+                                .getJSONArray("aspects")
+                                .getJSONObject(0).get("rating").toString()
+                                + "</u></h3>" + reviewArray
+                                .getJSONObject(x).get("text").toString());
                     }
                     singlePlace.setReviews(reviews);
                 }
@@ -269,32 +296,41 @@ public class GooglePlaceSearch {
                 //Photos
                 ArrayList<String> photos = new ArrayList<String>();
                 if (placeDetails.has("photos")) {
-                    JSONArray photoReferenceArray =  placeDetails.getJSONArray("photos");
-                    for(int x = 0; x < photoReferenceArray.length(); x++) {
+                    JSONArray photoReferenceArray
+                        = placeDetails.getJSONArray("photos");
+                    for (int x = 0; x < photoReferenceArray.length(); x++) {
                         String photoReference
-                                = photoReferenceArray.getJSONObject(x).get("photo_reference").toString();
-                        if(!photoReference.equals("")) {
-                            photos.add("https://maps.googleapis.com/maps/api/place/photo?"
-                                    + "maxwidth=400&photoreference=" + photoReference + "&key=" + KEY);
+                            = photoReferenceArray.getJSONObject(x)
+                                .get("photo_reference").toString();
+                        if (!photoReference.equals("")) {
+                            photos.add("https://maps.googleapis.com"
+                                    + "/maps/api/place/photo?"
+                                    + "maxwidth=400&photoreference="
+                                    + photoReference + "&key=" + KEY);
                         } else {
-                            photos.add("http://img4.wikia.nocookie.net/__cb20140530133130" +
-                                    "/outlast/images/6/60/No_Image_Available.png");
+                            photos.add("http://img4.wikia.nocookie.net"
+                                    + "/__cb20140530133130"
+                                    + "/outlast/images"
+                                    + "/6/60/No_Image_Available.png");
                         }
                     }
                 } else {
-                    photos.add("http://img4.wikia.nocookie.net/__cb20140530133130" +
-                            "/outlast/images/6/60/No_Image_Available.png");
+                    photos
+                    .add("http://img4.wikia.nocookie.net/__cb20140530133130"
+                            + "/outlast/images/6/60/No_Image_Available.png");
                 }
                 singlePlace.setImageURL(photos);
 
                 //Phone Number
-                String phoneNumber = ((placeDetails.has("formatted_phone_number"))?
-                        placeDetails.get("formatted_phone_number") .toString():"Not Available");
+                String phoneNumber
+                    = ((placeDetails.has("formatted_phone_number"))
+                        ? placeDetails.get("formatted_phone_number")
+                                .toString() : "Not Available");
                 singlePlace.setPhoneNumber(phoneNumber);
 
                 // Website
-                String website = ((placeDetails.has("website"))?
-                        placeDetails.get("website").toString():"");
+                String website = ((placeDetails.has("website"))
+                        ? placeDetails.get("website").toString() : "");
                 singlePlace.setWebsite(website);
 
                 //Address
@@ -315,7 +351,7 @@ public class GooglePlaceSearch {
         return placeResults;
     }
 
-    private JSONObject getPlaceDetails(String reference) throws Exception{
+    private JSONObject getPlaceDetails(String reference) throws Exception {
         response = client.execute(new HttpGet(googleAPIURL
                 + "/place/details/json?reference=" + reference
                 + "&sensor=false&key=" + KEY));
@@ -342,13 +378,17 @@ public class GooglePlaceSearch {
     }
 
     private boolean hasMinRatting(String placeRatting) {
-        if(placeRatting.equals("N/A")) return true;
+        if (placeRatting.equals("N/A")) {
+            return true;
+        }
         double ratting = Double.parseDouble(placeRatting);
         return ratting >= this.minRating;
     }
 
     private boolean inPriceRange(String placePriceLevel) {
-        if(placePriceLevel.equals("N/A")) return true;
+        if (placePriceLevel.equals("N/A")) {
+            return true;
+        }
         int priceLevel = Integer.parseInt(placePriceLevel);
         int minPrice = Integer.parseInt(this.minPrice);
         return priceLevel >= minPrice;

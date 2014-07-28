@@ -8,3 +8,9 @@ out/
 *.ear
 target/
 CheckStyle/Report/
+# Eclipse crap #
+.checkstyle
+.classpath
+.externalToolBuilders
+.project
+.settings

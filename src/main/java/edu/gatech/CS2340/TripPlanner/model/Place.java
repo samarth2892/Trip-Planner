@@ -50,12 +50,13 @@ public class Place {
         this.reference = reference;
     }
 
-    public int getOpenTime() { return this.openTime;}
-    public void setOpenTime(int openTime) { this.openTime = openTime;}
+    public int getOpenTime() { return this.openTime; }
+    public void setOpenTime(int openTime) { this.openTime = openTime; }
 
-    public int getCloseTime() { return this.closeTime;}
+    public int getCloseTime() { return this.closeTime; }
     public void setCloseTime(int closeTime) {
-        this.closeTime = closeTime;}
+        this.closeTime = closeTime;
+    }
 
     public String getLatitude() {
         return latitude;
@@ -64,13 +65,13 @@ public class Place {
         this.latitude = latitude;
     }
 
-    public String getPriceLevel(){ return this.priceLevel;}
+    public String getPriceLevel() { return this.priceLevel; }
     public void setPriceLevel(String priceLevel) {
-        if(!priceLevel.equals("N/A")) {
+        if (!priceLevel.equals("N/A")) {
             int p = Integer.parseInt(priceLevel) + 1;
             this.priceLevel = Integer.toString(p);
         } else {
-        this.priceLevel = priceLevel;
+            this.priceLevel = priceLevel;
         }
     }
     public String getLongitude() {
@@ -123,9 +124,10 @@ public class Place {
         this.directions = directions;
     }
 
-    public String getOpenTimeString(){
+    public String getOpenTimeString() {
         try {
-            Date openDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", openTime));
+            Date openDate = new SimpleDateFormat("hhmm").
+                    parse(String.format("%04d", openTime));
             SimpleDateFormat oneDigitFormat = new SimpleDateFormat("h:mm a");
             SimpleDateFormat twoDigitFormat = new SimpleDateFormat("hh:mm a");
             if ((openTime >= 1000 && openTime <= 1259) || openTime >= 2200) {
@@ -140,7 +142,8 @@ public class Place {
     }
     public String getCloseTimeString() {
         try {
-            Date closeDate = new SimpleDateFormat("hhmm").parse(String.format("%04d", closeTime));
+            Date closeDate = new SimpleDateFormat("hhmm").
+                    parse(String.format("%04d", closeTime));
             SimpleDateFormat oneDigitFormat = new SimpleDateFormat("h:mm a");
             SimpleDateFormat twoDigitFormat = new SimpleDateFormat("hh:mm a");
             if ((closeTime >= 1000 && closeTime <= 1259) || closeTime >= 2200) {

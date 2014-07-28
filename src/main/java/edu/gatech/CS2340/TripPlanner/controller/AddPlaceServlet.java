@@ -2,7 +2,6 @@ package main.java.edu.gatech.CS2340.TripPlanner.controller;
 
 import main.java.edu.gatech.CS2340.TripPlanner.model.Place;
 import main.java.edu.gatech.CS2340.TripPlanner.model.PlaceDb;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,15 +13,16 @@ import java.util.ArrayList;
 
 @WebServlet(urlPatterns = {
         "/Account/AddPlace"
-})
+        })
 
 public class AddPlaceServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws IOException, ServletException {
-        ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
+    protected final void doPost(final HttpServletRequest request,
+                          final HttpServletResponse response)
+        throws IOException, ServletException {
+        ArrayList<Place> places = (ArrayList<Place>) request.
+                getSession().getAttribute("placeResult");
         int index = Integer.parseInt(request.getParameter("index"));
         RequestDispatcher dispatcher;
         String addConfirmation;
@@ -39,12 +39,14 @@ public class AddPlaceServlet extends HttpServlet {
         place.setOpenTime(places.get(index).getOpenTime());
         place.setCloseTime(places.get(index).getCloseTime());
 
-        /*if (!placeDatabase.placeExists(place)) {
-            placeDatabase.addPlace(place, "0"); //TODO: Get date from front end
-            addConfirmation = place.getName() + " has been added to your itinerary.";
+        /*fif (!placeDatabase.placeExists(place)) {
+            placeDatabase.addPlace(place, "0");
+            addConfirmation = place.getName()
+            + " has been added to your itinerary.";
             dispatcher = request.getRequestDispatcher("home.jsp");
         } else {
-            addConfirmation = place.getName() + " is already in your itinerary.";
+            addConfirmation = place.getName()
+            + " is already in your itinerary.";
             request.setAttribute("errorCount", Integer.toString(2));
             dispatcher = request.getRequestDispatcher("home.jsp");
         }
@@ -55,7 +57,7 @@ public class AddPlaceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
     }
 }

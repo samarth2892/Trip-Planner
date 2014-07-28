@@ -31,7 +31,7 @@
    description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
   </target>
-  
+
   <target name="checkstyle" 
         description="run checkstyle">
         <taskdef resource="checkstyletask.properties"

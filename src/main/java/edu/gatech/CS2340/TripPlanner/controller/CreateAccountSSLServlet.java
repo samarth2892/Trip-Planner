@@ -15,21 +15,23 @@ import java.io.IOException;
                 "/signUp"
         }
 )
-@ServletSecurity(@HttpConstraint(transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
+@ServletSecurity(@HttpConstraint(transportGuarantee
+        = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
 public class CreateAccountSSLServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("signUp.jsp");
+        throws IOException, ServletException {
+        RequestDispatcher dispatcher
+            = request.getRequestDispatcher("signUp.jsp");
         dispatcher.forward(request, response);
     }
 }
