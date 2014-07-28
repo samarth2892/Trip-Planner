@@ -21,7 +21,8 @@ public class AddPlaceServlet extends HttpServlet {
     protected final void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
         throws IOException, ServletException {
-        ArrayList<Place> places = (ArrayList<Place>) request.getSession().getAttribute("placeResult");
+        ArrayList<Place> places = (ArrayList<Place>) request.
+                getSession().getAttribute("placeResult");
         int index = Integer.parseInt(request.getParameter("index"));
         RequestDispatcher dispatcher;
         String addConfirmation;
