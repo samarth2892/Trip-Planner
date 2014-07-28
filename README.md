@@ -13,3 +13,9 @@ All user accounts are accessed with a JDBC connection to a database on a locally
 All server interactions are managed via http requests sent through Java Servlets.
 
 Users may register, login with, and update the username or password of their accounts.
+
+Place the pre-commit file .git\hooks, then run the following commands in git shell or cmd prompt from the
+Trip-Planner root directory:
+
+git config --add checkstyle.jar C:/path_To_Trip-Planner/CheckStyle/checkstyle-5.7-all.jar
+git config --add checkstyle.checkfile C:/path_To_Trip-Planner/CheckStyle/sun_checks.xml

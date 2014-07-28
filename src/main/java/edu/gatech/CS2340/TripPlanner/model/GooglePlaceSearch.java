@@ -115,8 +115,7 @@ public class GooglePlaceSearch {
         Place[] orderedPlaces = itinerary.getOrderedPlacesArray();
 
         for (Place orderedPlace : orderedPlaces) {
-            destination.append("%7C").
-                    append(orderedPlace.getAddress().replace(" ", "+"));
+            destination.append("%7C").append(orderedPlace.getAddress().replace(" ", "+"));
         }
 
         String url = googleAPIURL
