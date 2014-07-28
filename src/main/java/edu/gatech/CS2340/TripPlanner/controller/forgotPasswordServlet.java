@@ -15,17 +15,16 @@ import java.security.SecureRandom;
 
 @WebServlet(urlPatterns = {
         "/forgotPassword"
-}
-)
-public class forgotPasswordServlet extends HttpServlet {
+        })
+public class ForgotPasswordServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         RequestDispatcher dispatcher
-                = request.getRequestDispatcher("/forgotPassword.jsp");
+            = request.getRequestDispatcher("/forgotPassword.jsp");
         AccountDb database = new AccountDb();
         database.connect();
 
@@ -36,8 +35,8 @@ public class forgotPasswordServlet extends HttpServlet {
 
         if (database.userEmailMatch(username, email)) {
             matchConfirmation = "Temporary password sent to email";
-            EmailSender.sendTempPassword(username,email,temPassword);
-            database.resetPassword(username,temPassword);
+            EmailSender.sendTempPassword(username, email, temPassword);
+            database.resetPassword(username, temPassword);
         } else {
             matchConfirmation = "Username and email do not match";
         }
@@ -50,7 +49,7 @@ public class forgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
     }
 
     private String createRandomPassword() {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @WebServlet(
-        urlPatterns = {"/Account/changeItinerary"}
+        urlPatterns = {"/Account/changeItinerary" }
 )
 
 public class SessionItineraryServlet extends HttpServlet {
@@ -22,24 +22,26 @@ public class SessionItineraryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
 
         Itinerary sessionItinerary
-                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+            = (Itinerary) request.getSession().getAttribute("sessionItinerary");
         HashMap<String, Place> itineraryPlaces
-                = sessionItinerary.getMap();
+            = sessionItinerary.getMap();
 
 
         if (!request.getParameter("addId").equals("")) {
             ArrayList<Place> places
-                    = (ArrayList<Place>) request.getSession().getAttribute("sessionPlaceResult");
+                = (ArrayList<Place>) request.getSession().
+                    getAttribute("sessionPlaceResult");
 
             String placeId = request.getParameter("addId");
 
             itineraryPlaces.put(placeId, places.get(Integer.parseInt(placeId)));
             sessionItinerary.setMap(itineraryPlaces);
-            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+            request.getSession().setAttribute("sessionItinerary",
+                    sessionItinerary);
 
         } else if (!request.getParameter("removeId").equals("")) {
 
@@ -49,12 +51,14 @@ public class SessionItineraryServlet extends HttpServlet {
 
             sessionItinerary.setMap(itineraryPlaces);
 
-            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+            request.getSession().
+                setAttribute("sessionItinerary", sessionItinerary);
 
         } else if (!request.getParameter("startOver").equals("")) {
             sessionItinerary = new Itinerary();
             sessionItinerary.setMap(new HashMap<String, Place>());
-            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+            request.getSession().
+                setAttribute("sessionItinerary", sessionItinerary);
         }
         response.getWriter().print(itineraryPlaces.size());
 

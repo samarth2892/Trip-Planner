@@ -18,35 +18,38 @@ import java.util.HashMap;
 @WebServlet(urlPatterns = {
         "/Account/finalizeItinerary",
         "/Account/showSavedItinerary"
-})
+        })
 
-public class finalizeItineraryServlet extends HttpServlet {
+public class FinalizeItineraryServlet extends HttpServlet {
 
     private PlaceDb places = new PlaceDb();
 
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         RequestDispatcher dispatcher
-                = request.getRequestDispatcher("itinerary.jsp");
-        String username = request.getSession().getAttribute("userStatus").toString();
+            = request.getRequestDispatcher("itinerary.jsp");
+        String username = request.getSession()
+                .getAttribute("userStatus").toString();
         Itinerary sessionItinerary
-                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+            = (Itinerary) request
+                .getSession().getAttribute("sessionItinerary");
         places.connect();
 
         Place[] orderedPlaces = (Place[]) request.getAttribute("orderedPlaces");
         sessionItinerary.setOrderedPlacesArray(orderedPlaces);
 
-        if(request.getParameter("directionsButton") != null
-                && request.getParameter("directionsButton").equals("Get Directions")) {
+        if (request.getParameter("directionsButton") != null
+                && request.getParameter("directionsButton").
+                    equals("Get Directions")) {
 
-            GooglePlaceSearch search = new GooglePlaceSearch("",0);
+            GooglePlaceSearch search = new GooglePlaceSearch("", 0);
             ArrayList<String> directions = new ArrayList<String>();
 
 
-            if(request.getParameter("transportation").equals("bus")) {
+            if (request.getParameter("transportation").equals("bus")) {
                 directions = getDirectionsByBus(sessionItinerary);
             } else {
                 try {
@@ -60,32 +63,39 @@ public class finalizeItineraryServlet extends HttpServlet {
             request.setAttribute("directionsStatus", "OK");
             request.getSession().setAttribute("directions", directions);
 
-        } else if(request.getAttribute("orderedPlaces") != null) {
+        } else if (request.getAttribute("orderedPlaces") != null) {
 
             if (sessionItinerary.getOrigin() == null) {
-                sessionItinerary.setOrigin(request.getSession().getAttribute("sessionStartAddress").toString());
+                sessionItinerary.setOrigin(request.getSession().
+                        getAttribute("sessionStartAddress").toString());
             }
 
             if (sessionItinerary.getDate() == null) {
-                sessionItinerary.setDate(request.getSession().getAttribute("sessionDate").toString());
+                sessionItinerary.setDate(request.getSession().
+                        getAttribute("sessionDate").toString());
             }
 
             places.addItinerary(sessionItinerary, username);
 
-        } else if(sessionItinerary.getId() != 0) {
-                places.clearItinerary(username, sessionItinerary.getId());
-                places.updateAllItineraryIds(sessionItinerary.getId(), username);
+        } else if (sessionItinerary.getId() != 0) {
+            places.clearItinerary(username, sessionItinerary.getId());
+            places.updateAllItineraryIds(sessionItinerary.getId(),
+                        username);
         }
 
-        if(!(request.getParameter("directionsButton") != null
-                && request.getParameter("directionsButton").equals("Get Directions"))) {
+        if (!(request.getParameter("directionsButton") != null
+                && request.getParameter("directionsButton").
+                    equals("Get Directions"))) {
             sessionItinerary = new Itinerary();
             sessionItinerary.setMap(new HashMap<String, Place>());
-            request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+            request.getSession().setAttribute("sessionItinerary",
+                    sessionItinerary);
         }
 
-        ArrayList<Itinerary> savedSessionItineraries = places.loadAllItineraries(username);
-        request.getSession().setAttribute("savedSessionItineraries", savedSessionItineraries);
+        ArrayList<Itinerary> savedSessionItineraries
+            = places.loadAllItineraries(username);
+        request.getSession().setAttribute("savedSessionItineraries",
+                savedSessionItineraries);
 
         dispatcher.forward(request, response);
 
@@ -94,25 +104,30 @@ public class finalizeItineraryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         RequestDispatcher dispatcher
-                = request.getRequestDispatcher("itinerary.jsp");
+            = request.getRequestDispatcher("itinerary.jsp");
 
         places.connect();
 
-        String username = request.getSession().getAttribute("userStatus").toString();
-        ArrayList<Itinerary> savedSessionItineraries = places.loadAllItineraries(username);
+        String username = request.getSession().
+                getAttribute("userStatus").toString();
+        ArrayList<Itinerary> savedSessionItineraries
+            = places.loadAllItineraries(username);
 
-        request.getSession().setAttribute("savedSessionItineraries", savedSessionItineraries);
+        request.getSession().setAttribute("savedSessionItineraries",
+                savedSessionItineraries);
 
         int id = Integer.parseInt(request.getParameter("savedItineraryId"));
 
         Itinerary sessionItinerary = savedSessionItineraries.get(id);
 
-        request.getSession().setAttribute("sessionDate", sessionItinerary.getDate());
+        request.getSession().setAttribute("sessionDate",
+                sessionItinerary.getDate());
 
-        request.getSession().setAttribute("sessionItinerary", sessionItinerary);
+        request.getSession().setAttribute("sessionItinerary",
+                sessionItinerary);
 
         dispatcher.forward(request, response);
     }
@@ -121,31 +136,37 @@ public class finalizeItineraryServlet extends HttpServlet {
         String origin;
         String destination;
         Place[] orderedPlaces = sessionItinerary.getOrderedPlacesArray();
-        GooglePlaceSearch search = new GooglePlaceSearch("",0);
+        GooglePlaceSearch search = new GooglePlaceSearch("", 0);
         ArrayList<String> directions = new ArrayList<String>();
         directions.add("<h3><span id='startEndAddress'>Directions</span></h3>");
         ArrayList<String> steps = new ArrayList<String>();
 
         int i = 0;
-        while(i < orderedPlaces.length) {
-            if(i == 0) {
+        while (i < orderedPlaces.length) {
+            if (i == 0) {
                 directions.add("<h3>From: "
-                        + "<span id='startEndAddress'>" + sessionItinerary.getOrigin() + "</span><br/>"
+                        + "<span id='startEndAddress'>"
+                        + sessionItinerary.getOrigin() + "</span><br/>"
                         + " To: " + orderedPlaces[i].getName() + "<br/>"
-                        + "<span id='startEndAddress'>" + orderedPlaces[i].getAddress() + "</span></h3>");
+                        + "<span id='startEndAddress'>"
+                        + orderedPlaces[i].getAddress() + "</span></h3>");
                 origin = sessionItinerary.getOrigin();
                 destination = orderedPlaces[i].getAddress();
             } else {
-                directions.add("<h3>From: " + orderedPlaces[i - 1].getName() + "<br/>"
-                        + "<span id='startEndAddress'>" + orderedPlaces[i - 1].getAddress() + "</span><br/>"
+                directions.add("<h3>From: "
+                        + orderedPlaces[i - 1].getName() + "<br/>"
+                        + "<span id='startEndAddress'>"
+                        + orderedPlaces[i - 1].getAddress() + "</span><br/>"
                         + " To: " + orderedPlaces[i].getName() + "<br/>"
-                        + "<span id='startEndAddress'>" + orderedPlaces[i].getAddress() + "</span></h3>");
+                        + "<span id='startEndAddress'>"
+                        + orderedPlaces[i].getAddress() + "</span></h3>");
                 origin = orderedPlaces[i - 1].getAddress();
                 destination = orderedPlaces[i].getAddress();
             }
 
             try {
-                steps = search.getBusDirections(origin.replace(" ","+"), destination.replace(" ","+"));
+                steps = search.getBusDirections(origin.replace(" ", "+"),
+                        destination.replace(" ", "+"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

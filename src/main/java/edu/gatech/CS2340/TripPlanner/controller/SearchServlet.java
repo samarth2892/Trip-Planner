@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 @WebServlet(urlPatterns = {
         "/Account/Search"
-})
+        })
 
 public class SearchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
 
         RequestDispatcher dispatcher =
@@ -29,12 +29,14 @@ public class SearchServlet extends HttpServlet {
 
         String address = request.getParameter("address");
 
-        request.getSession().setAttribute("sessionDate",request.getParameter("date"));
+        request.getSession().
+            setAttribute("sessionDate", request.getParameter("date"));
         request.getSession().setAttribute("sessionStartAddress", address);
 
         Itinerary sessionItinerary
-                = (Itinerary) request.getSession().getAttribute("sessionItinerary");
-        sessionItinerary.setOrigin(request.getSession().getAttribute("sessionStartAddress").toString());
+            = (Itinerary) request.getSession().getAttribute("sessionItinerary");
+        sessionItinerary.setOrigin(request.getSession().
+                getAttribute("sessionStartAddress").toString());
 
         request.getSession().setAttribute("sessionItinerary", sessionItinerary);
 
@@ -56,16 +58,16 @@ public class SearchServlet extends HttpServlet {
                 ? Integer.parseInt(request.getParameter("maxDistance"))
                 : 5000;
 
-        double startHour = (null != request.getParameter("startHour") &&
-                !request.getParameter("startHour").equals(""))
+        double startHour = (null != request.getParameter("startHour")
+                && !request.getParameter("startHour").equals(""))
                 ? Double.parseDouble(request.getParameter("startHour"))
-                : 0 ;
+                : 0;
         String startAMPM = request.getParameter("startAMPM");
 
-        double endHour = (null != request.getParameter("endHour") &&
-                    !request.getParameter("endHour").equals(""))
+        double endHour = (null != request.getParameter("endHour")
+                && !request.getParameter("endHour").equals(""))
                 ? Double.parseDouble(request.getParameter("endHour"))
-                : 2359 ;
+                : 2359;
         String endAMPM = request.getParameter("endAMPM");
 
         if (null != startAMPM && startAMPM.equals("pm") && startHour != 0) {
@@ -80,18 +82,18 @@ public class SearchServlet extends HttpServlet {
         GooglePlaceSearch search = new GooglePlaceSearch(address,
                 Integer.parseInt(day));
         search.setStartEndHour(startHour, endHour);
-        search.setKeyword(keyword.replace(" ","+"));
+        search.setKeyword(keyword.replace(" ", "+"));
         search.setMinPrice(minPrice);
         search.setMinRating(minRating);
         search.setRadiusInMeters(radius * 1609.34);
 
 
         ArrayList<Place> placeResult = search.search();
-        request.setAttribute("center",search.getLatitude()
+        request.setAttribute("center", search.getLatitude()
                 + "," + search.getLongitude());
 
         request.getSession().setAttribute("sessionPlaceResult", placeResult);
-        request.setAttribute("placeResult", placeResult );
+        request.setAttribute("placeResult", placeResult);
 
         dispatcher.forward(request, response);
     }
@@ -99,7 +101,7 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
     }
 
 }
